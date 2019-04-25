@@ -4,15 +4,17 @@ Created on Tue Apr 23 10:06:08 2019
 
 @author: Lee
 """
+# Status: passing current test
+
 import tkinter as tk
 from tkinter import filedialog
 
-expected_filename = "C:/Oregon_State/Spring_2019/Soft_dev_eng/StoveOpt/stovegeom/Stove_Geometry.xlsx" # Known filename
+expected_filename = "C:/Oregon_State/Spring_2019/Soft_dev_eng/StoveOpt/tests/Stove_test_Geometry.xlsx" # Known filename
 def test_locate_geometry():
     """ output the file location of stove geometry as a string"""
     root = tk.Tk()
     root.withdraw()
-    file_path = filedialog.askopenfilename()
+    file_path = filedialog.askopenfilename(filetypes=[("Excel files", "*.xlsx *.xls")])
     if file_path == None:
         print("file path is not defined---null. Please retry")
     else: 
@@ -23,6 +25,5 @@ def test_locate_geometry():
         exp = 1 # 1 indicates the filename matches the expected --in test assert expecation = 1 (pass)
     else:
         exp = 0 # filenames do not match   
-    return exp
     assert exp == 1  
-test_locate_geometry()
+

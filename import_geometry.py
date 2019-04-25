@@ -4,6 +4,7 @@ Created on Mon Apr 22 15:39:27 2019
 
 @author: Lee
 """
+import numpy
 import tkinter as tk
 from tkinter import filedialog
 def locate_geometry():
