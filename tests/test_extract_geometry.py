@@ -72,7 +72,7 @@ def test_extract_geometry():
     """ purpose of the test is to test that geometry can be pulled from xlsx (modern) excel versions--comparing returned values to a locked spreadsheet"""
     root = tk.Tk()
     root.withdraw()
-    file_path = filedialog.askopenfilename(filetypes=[("Excel files", "*.xlsx *.xls")])
+    file_path = filedialog.askopenfilename(title = "Please select the Stove_test_Geometry Excel file in the /tests/ directory",filetypes=[("Excel files", "*.xlsx *.xls")])
     if file_path == None:
         print("file path is not defined---null. Please retry")
     else: 
