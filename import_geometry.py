@@ -7,8 +7,9 @@ Created on Mon Apr 22 15:39:27 2019
 import numpy
 import tkinter as tk
 from tkinter import filedialog
+
 def locate_geometry():
-    """ output the file location of stove geometry as a string"""
+    """ output the file location of stove geometry as a string--to be replaced by the command line argument"""
     root = tk.Tk()
     root.withdraw()
     file_path = filedialog.askopenfilename()

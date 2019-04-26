@@ -53,7 +53,7 @@ def fuel_vertice_strings(pt17x, pt18x, pt19x, pt20x, pt17z, pt18z, pt19z, pt20z,
     return pt17xstr, pt17zstr, pt17ystr, pt18xstr, pt18zstr, pt18ystr, pt19xstr, pt19zstr, pt19ystr, pt20xstr, pt20zstr, pt20ystr
 
 
-def fuel_vertice_concatenate(pt17x, pt18x, pt19x, pt20x, pt17z, pt18z, pt19z, pt20z, pt17y, pt18y, pt19y, pt20y):
+def fuel_vertice_concatenate(pt17xstr, pt18xstr, pt19xstr, pt20xstr, pt17zstr, pt18zstr, pt19zstr, pt20zstr, pt17ystr, pt18ystr, pt19ystr, pt20ystr):
     """Use the same process as the previously written concatenating funciton"""
     pt17str = "(" + pt17xstr + " " + pt17zstr + " " + pt17ystr + ")"
     pt18str = "(" + pt18xstr + " " + pt18zstr + " " + pt18ystr + ")"
