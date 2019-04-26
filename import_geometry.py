@@ -148,9 +148,6 @@ def vertice_concatenate(pt1xstr, pt1zstr, pt1ystr, pt2xstr, pt2zstr, pt2ystr, pt
     pt16str = "(" + pt16xstr + " " + pt16zstr + " " + pt16ystr + ")"
     return pt1str, pt2str, pt3str, pt4str, pt5str, pt6str, pt7str, pt8str, pt9str, pt10str, pt11str, pt12str, pt13str, pt14str, pt15str, pt16str
 
-def assign_geomvars(pt1z, pt16z, pt2x, pt1x):
-    """pull required values, and assign locations for the wood combusiton zones (circles 2D)"""
-    
 
         
     
