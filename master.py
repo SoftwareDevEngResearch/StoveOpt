@@ -8,8 +8,26 @@ Created on Mon Apr 22 15:52:06 2019
 
 """The purpose of master.py is to call the functions in sequence from the varipus modules"""
 from import_geometry import *
-from create_blockmeshfile import *
-file_path = locate_geometry()
+import os
+import fileinput
+
+""" Command line arguments:"""
+# Import necessary packages
+import sys
+import argparse
+
+# Construct the argument parse and parse the arguments
+parser = argparse.ArgumentParser(description='Stove Optimization')
+# File directory argument
+parser.add_argument('-i', '--inputfile', required=True, help='path and filename for input.yaml')
+
+args = parser.parse_args(sys.argv[1:])
+print(args)
+# Pull filename from args
+
+# extract the excel filename and path from the input file--pass to locate geometry module
+file_path = locate_geometry(args)
+print("Here is your filepath!")
 print(file_path)
 
 # Extract geometry
@@ -23,6 +41,8 @@ pt1str, pt2str, pt3str, pt4str, pt5str, pt6str, pt7str, pt8str, pt9str, pt10str,
 
 """Moving to blockmeshfile creation--will edit an existing template for a blockmesh file"""
 
+from create_blockmeshfile import *
+
 # Create fuel blocks
 pt17x, pt18x, pt19x, pt20x, pt17z, pt18z, pt19z, pt20z, pt17y, pt18y, pt19y, pt20y = create_fuel_blocks(pt1x, pt2x)
 
@@ -32,3 +52,24 @@ pt17xstr, pt17zstr, pt17ystr, pt18xstr, pt18zstr, pt18ystr, pt19xstr, pt19zstr, 
 # Concatenate the wood zone vertices
 pt17str, pt18str, pt19str, pt20str = fuel_vertice_concatenate(pt17xstr, pt18xstr, pt19xstr, pt20xstr, pt17zstr, pt18zstr, pt19zstr, pt20zstr, pt17ystr, pt18ystr, pt19ystr, pt20ystr)
 
+"""Moving forward assuming the filepath is known for the Stoveopt master directory
+In the future, the path and filename will be an argument for the software provided by user in input file"""
+path_StoveOpt_master = "C:/Oregon_State/Spring_2019/Soft_dev_eng/StoveOpt/"
+block_mesh_template_fname = "blockMeshDict_Template_reactionfoam_empty.txt"
+dir_steps = "foamfiles/counterFlowFlame2D/system/"
+runFolder = "run/"
+
+# place template in system location if it doesn't already exist there
+replace_template(path_StoveOpt_master,block_mesh_template_fname,dir_steps)
+
+# Pull blockmesh template name
+blockmeshfile = locate_blockmesh_template(path_StoveOpt_master,block_mesh_template_fname)
+
+# Rename and relocate the blockmeshfile
+saveName = update_blockmesh(blockmeshfile,runFolder)
+
+rename_blockmesh(saveName,blockmeshfile)
+
+edit_blockmesh_template(saveName, pt1str, pt2str, pt3str, pt4str, pt5str, pt6str, pt7str, pt8str, pt9str, pt10str, pt11str, pt12str, pt13str, pt14str, pt15str, pt16str, pt17str, pt18str, pt19str, pt20str)
+
+replace_template(path_StoveOpt_master,block_mesh_template_fname,dir_steps)
