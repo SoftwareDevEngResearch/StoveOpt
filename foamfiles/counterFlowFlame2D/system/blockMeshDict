@@ -18,7 +18,6 @@ convertToMeters 1;
 
 vertices
 (
-/* Cookstove body geometry:*/
 (0.0 0.0 0.0)
 (0.0 0.1 0.0)
 (0.0 0.0 0.15)
@@ -67,27 +66,34 @@ vertices
 (-0.1 -0.04 0.3)
 (0 0.14 0.3)
 (-0.1 0.14 0.3)
-                            
-                                                                      
-                                                                  
-                                                                    
-                                                                     
-                                                                       
-                                                                        
-                                                                            
-                                                                            
-                                                                            
-                                                                            
-                                                                            
-                                                                            
-                                                                            
-                                                                            
-
+									 
+											 
+											 
+											 
+											 
+											 
+											 
+											 
+											 
+											 
+											 
+											 
+											 
+											 
+											 
 );
 
 blocks
 (
-    hex (0 1 2 3 4 5 6 7) (100 40 1) simpleGrading (1 1 1)
+    hex (16 17 39 38 19 18 40 41) (1 1 1) simpleGrading (1 1 1) 
+    hex (0 1 23 22 2 3 25 24) (1 1 1) simpleGrading (1 1 1)
+    hex (5 4 26 27 6 7 29 28) (1 1 1) simpleGrading (1 1 1)
+	hex (2 3 25 24 5 4 26 27) (1 1 1) simpleGrading (1 1 1)
+	hex (6 7 29 28 20 21 43 42) (1 1 1) simpleGrading  (1 1 1)
+	hex (7 46 47 29 21 15 37 43) (1 1 1) simpleGrading (1 1 1)
+    hex (44 6 28 45 14 20 42 36) (1 1 1) simpleGrading (1 1 1)
+    hex (9 44 45 31 10 11 33 32) (1 1 1) simpleGrading (1 1 1)
+	hex (46 8 30 47 12 13 35 34) (1 1 1) simpleGrading (1 1 1)
 );
 
 edges
@@ -101,33 +107,47 @@ boundary
         type patch;
         faces
         (
-            (0 4 7 3)
+         			
         );
     }
-    air
+    primary_air
     {
         type patch;
         faces
         (
-            (1 2 6 5)
+        	
         );
+    }
+    secondary_air_RHS
+    {
+		type patch;
+		faces
+		(
+							
+		);
+    }
+    secondary_air_LHS
+    {
+		type patch;
+		faces
+		(
+			
+		);
     }
     outlet
     {
         type patch;
         faces
         (
-            (0 1 5 4)
-            (7 6 2 3)
+        			
         );
     }
     frontAndBack
     {
         type empty;
         faces
-        (
-            (4 5 6 7)
-            (0 3 2 1)
+        (	
+			
         );
     }
 );
