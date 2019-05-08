@@ -1,0 +1,25 @@
+4/27:
+File organization:
+
+--looking at the cylinder example for guidance--there are a lot of files
+constant > polyMesh > boundary,faces,neighbour,owner,points
+0 > initialconditions (pressure velocity)
+dynamicCode > no idea
+system > blockMeshDict, controlDict, fvSchemes, fvSolution
+
+NEXT LEE
+--walkthrough all of the files in the "constant" folder. I suspect these are the ones that are going to require the heavy lifting
+
+
+Goal this week:
+-create templates for all needed files
+--create functions to edit files:
+	1.) open file: (the path and fname  will be in the input file -- worry about this later)
+	2.) seek to line for vertices (or search for the pt#i)
+	3.) write over the current entries
+	4.) save the file as a certain name in the blockmesh file folder
+		-Needs to have a number designation, or letter for iteration purposes
+	5.) close file
+	
+
+--Going with the reactionfoam for now
