@@ -8,6 +8,40 @@ import numpy
 import tkinter as tk
 from tkinter import filedialog
 
+"""Need to figure out the correct_arguments script"""
+def correct_arguments(args):
+    """Goal is to convert the geometry file argument to working syntax:
+    Single quote, back slash"""
+    input_file = args.inputfile
+    with open(input_file, 'r') as f:
+        doc = yaml.load(f)
+        path = doc['case']['geometry_file_directory'] # pulling path
+        fname = doc['case']['geometry_file_name'] #pulling filename
+        # Figure out type for each input
+        path_type = type(path)
+        fname_type = type(fname)
+        print(path_type)
+        print(fname_type)
+        if path_type == str:
+            print('The path type is a string--now going to filter out quotes to yield singles')
+            path_first_character = path[0]
+            print(path_first_character)
+        else:
+            # Convert the path to string if needed
+            path = str(path) 
+        
+        if fname_type == str:
+            print('file name is a string')
+            fname_first_character = fname[0]
+            print(fname_first_character)
+        else:
+            # Convert fname to a string
+            fname = str(fname)
+        print('This is the fname')
+        print(fname)
+        print('This is the path')
+        print(path)
+        
 import yaml
 def locate_geometry(args):
     """ Pull file path and name from the input file (command line argument)"""
@@ -17,9 +51,6 @@ def locate_geometry(args):
         doc = yaml.load(f)
         path = doc['case']['geometry_file_directory'] # pulling path
         fname = doc['case']['geometry_file_name'] #pulling filename
-        print(type(path))
-        print(path)
-        print(fname)
         # if type(path) == str:
             # concatenate the string
         file_path = path + '\\' + fname

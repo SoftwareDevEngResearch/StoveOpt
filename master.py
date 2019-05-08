@@ -22,6 +22,12 @@ parser = argparse.ArgumentParser(description='Stove Optimization')
 parser.add_argument('-i', '--inputfile', required=True, help='path and filename for input.yaml')
 
 args = parser.parse_args(sys.argv[1:])
+
+import yaml
+# Ensure the args all work-->string vs non string, slash variations, quotation marks
+correct_arguments(args)
+
+
 print(args)
 # Pull filename from args
 
