@@ -26,7 +26,7 @@ boundaryField
         type            fixedValue;
         value           uniform 293;
     }
-    air
+    primary_air
     {
         type            fixedValue;
         value           uniform 293;
@@ -37,6 +37,21 @@ boundaryField
         inletValue      uniform 293;
         value           uniform 293;
     }
+	Secondary_air_RHS
+    {
+		type            fixedValue;
+        value           uniform 293;
+    }
+    Secondary_air_LHS
+    {
+        type            fixedValue;
+        value           uniform 293;
+    }
+	stove_body //This will probably need to change
+	{
+		type			fixedValue; 
+		value			uniform 293; 
+	
     frontAndBack
     {
         type            empty;

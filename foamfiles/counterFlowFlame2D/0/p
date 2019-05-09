@@ -25,15 +25,27 @@ boundaryField
     {
         type            zeroGradient;
     }
-    air
-    {
-        type            zeroGradient;
-    }
     outlet
     {
         type            totalPressure;
         p0              $internalField;
     }
+	primary_air
+	{
+		type			zeroGradient;
+	}
+	Secondary_air_RHS 
+	{
+		type			zeroGradient;
+	}	
+	Secondary_air_LHS
+	{
+		type			zeroGradient;
+	}
+	stove_body
+	{
+		type			zeroGradient;
+	}
     frontAndBack
     {
         type            empty;
