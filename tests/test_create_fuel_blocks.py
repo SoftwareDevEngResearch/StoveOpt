@@ -19,7 +19,11 @@ def create_fuel_blocks(pt0x, pt1x):
        4) Assumed fuel wood height of 3 inches (0.0762 m)
        5) Assumed the bottom of the wood is 3 inches off of the ground (0.0762 m)
        6) pt17 is bottom left, pt18 is bottom right, pt19 is top right, pt20 is top left"""
-    fuel_width = (pt1x - pt0x)/2
+    fuel_width = 0.5*(pt1x - pt0x)
+    print("Fuel width: " + str(fuel_width))
+    print("pt0x :" + str(pt0x))
+    print("pt1x :" + str(pt1x))
+    
     fuel_x_center = fuel_width
     fuel_x_left_coord = fuel_x_center - (fuel_width)/2
     fuel_x_right_coord = fuel_x_center + (fuel_width)/2
@@ -50,6 +54,9 @@ def test_create_fuel_blocks():
     fuel_width = 1.5
     fuel_x_left_coord_expected = 0.75
     fuel_x_right_coord_expected = 2.25
+    print("This is pt17x:" + " " +  str(pt17x))
+    print("This is pt19x:" + " " +  str(pt19x))
+    
     assert pt17x == fuel_x_right_coord_expected
     assert pt19x == fuel_x_left_coord_expected
 
