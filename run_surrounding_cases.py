@@ -15,7 +15,7 @@ from os import path
 
 
 # Input velocity
-U_100 = 0.1 #m/s
+U_100 = 318 #m/s ---> to achieve 0.033 m3/s
 
 def compute_velocities(U_100):
     """Compute the secondary air flow rates (25-150%) based on the 100% airflow rate"""

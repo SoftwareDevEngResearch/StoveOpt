@@ -24,23 +24,23 @@ boundaryField
     fuel
     {
         type            fixedValue;
-        value           uniform (0 0 0.1);
+        value           uniform (0 0 10);
     }
     primary_air
     {
         type            fixedValue;
-        value           uniform (0 0 0.1);
+        value           uniform (0 0 10);
     }
-    Secondary_air_RHS
+      Secondary_air_RHS
     {
     type fixedValue;
-    value uniform (0 0.025 0);
+    value uniform (0 79.5 0);
     }
 
     Secondary_air_LHS
     {
     type fixedValue;
-    value uniform (0 -0.025 0);
+    value uniform (0 -79.5 0);
     }
 						
 												  

@@ -20,6 +20,7 @@ from os import walk
 from os import path
 from sys import path
 import numpy as np
+from numpy import hstack, vstack, sort, transpose, argsort, append
 import matplotlib.pyplot as plt
 #import h5py
 
@@ -56,7 +57,7 @@ def data_import():
             print("case list k")
             print(case_list[k])
             k = k+1
-            print(case_list, sep = ", ")
+            #print(case_list, sep = ", ")
         i = i+1
     
     # remove the final entry of the case_list vector
@@ -125,6 +126,8 @@ def data_import():
     print("Velocity matrix")
     print(list_velocities)
     return dir_list, case_list, length_case_list, list_temps, list_velocities
+
+#dir_list, case_list, length_case_list, list_temps, list_velocities = data_import()
 
 
 def average_pot_temperature(list_temps, length_case_list, list_velocities, case_list):
@@ -225,7 +228,7 @@ def average_pot_temperature(list_temps, length_case_list, list_velocities, case_
     
     # Data types for array
     dt = np.dtype([('col0', 'U10'), ('col1', float), ('col2', float)]) # first col is cases, then velocities, then temps
-   
+
     
     final_temp_row_averages_array = np.asarray(final_temp_row_averages)
     print("final temp row avg array")
@@ -266,221 +269,251 @@ def average_pot_temperature(list_temps, length_case_list, list_velocities, case_
 #def average_composition_outlets(list_GHG)
 """Take in a list of GHGs from a separate data import for the outlet nodes"""
     
+def parse_and_sort_array(new_recarr):
+    """Sort the array based on velocities, return the array with a new name"""
+    # Algorithm:
+    # (1) parse the array and create a parsed version
+    
+    case_vector = np.empty([length_case_list], dtype = "U10")
+    velocity_vector = np.empty([length_case_list], dtype = float)
+    temperature_vector = np.empty([length_case_list], dtype = float)
+    
+    print("shape of case vector")
+    print(case_vector.shape)
+    
+    case_column = 0
+    temperature_column = 2
+    velocity_column = 1
+    
+    #dtype='S10,f4,f4,f4'
+    # Add the cases to column 1
+    # Loop through the new_recarr array, extract the case names and add them to column 1
+    x = 0 # looping index
+    while x < length_case_list:
+        entry = new_recarr[x, 1]
+        print("Entry")
+        print(entry)
+        case_name= str(entry[case_column])
+        velocity_entry = entry[velocity_column] 
+        temperature_entry = entry[temperature_column] 
+        
+        # Add the values to the empty vectors.
+        case_vector[x] = case_name
+        velocity_vector[x] = velocity_entry
+        temperature_vector[x] = temperature_entry
+    
+        x = x + 1
+        
+    print("case vector")
+    print(case_vector)
+    
+    print("velocity vector")
+    print(velocity_vector)
+        
+    print("temperature vector")
+    print(temperature_vector)
+    
+    parsed_new_recarr = hstack((case_vector, velocity_vector, temperature_vector))
+    parsed_new_recarr_no_case_transposed = vstack((transpose(velocity_vector), transpose(temperature_vector)))
+    parsed_new_recarr_no_case = vstack((velocity_vector,temperature_vector))
+    
+    print("parsed new recarr after column assignments")
+    print(parsed_new_recarr)
+    
+    print("parsed new recarr, no cases, not transposed")
+    print(parsed_new_recarr_no_case)
+    
+    print("shape of parsed new recarr after vectors added")
+    print(parsed_new_recarr_no_case.shape)
+    
+    
+    """print("shape of parsed new recarr, no cases, transpose")
+    print(parsed_new_recarr_no_case_transposed.shape)"""
+    
+    #arr[arr[:, 1].argsort()]
+    
+    array_transpose = transpose(parsed_new_recarr_no_case)
+    print("array transposed")
+    print(array_transpose)
+    
+    array_sorted = array_transpose[array_transpose[:,0].argsort()]
+    print("array sorted")
+    print(array_sorted)
+
+    return array_sorted
+
+#array_sorted = parse_and_sort_array(new_recarr)
+
+
     
 
-def evaluate_optimal(new_recarr, length_case_list):
-    """The function evaluates the temperature and emission data, and uses the 
+def evaluate_optimal(array_sorted, length_case_list):
+    """The function evaluates the temperature and velocity data, and uses the 
     information to identify where the optimals live within the ranges analayzed
     
     Inputs: 
-        new_recarr: numpy array of cases, velocities, and average pot temperatures
+        array_sorted: numpy array of sorted velocities (column 1), and average pot temperatures (column 2)
     Outputs: 
         T_max: maximum average pot temperature
         case_max: case title associated with maximum average pot temp
         U_optimal: secondary air flow velocity associated with maximum average pot temperature"""
-    # Size of the array
-    shape_new_recarr = new_recarr.shape
-    print("new_recarr shape: ")
-    print(shape_new_recarr)
     
-    # Pull Temperature column, pull max and index associated with it
-    Temp_col = 2 # column with temperature data
-    velocity_col = 1 # column with the velocity data
-    case_column = 0 # velocity with case strings
+    # Find maximum temperature
+    Temp_col = 1 # column with temperature data
+    velocity_col = 0 # column with the velocity data
     
-    # for the length of the case_list, extract the temperatures per each list (like example above
-    # 2 create a vector of the temperatures in the same order as cases within for loop. 
-    # find maximum in the list, and the index
-    # return to the full array and extract the velocity and case # associated with the maximum
-    # print and validate
-    #THE STUFF BELOW IS ALL WRONG
-    y = 0 # loop index to zero
-    # empty vectors
-    case_vector = np.empty([length_case_list, 1], dtype = "U10")
-    velocity_vector = np.empty([length_case_list, 1], dtype = float)
-    temperature_vector = np.empty([length_case_list, 1], dtype = float)
-    
-    final_temp_averages_empty = np.empty([length_case_list, 1], dtype = float)
-    while y < length_case_list:
-        case = new_recarr[y,1] # looping through (case, velocity, temperature)
-        case_entry = str(case[0]) # first column
-        velocity_entry = case[1] # second column
-        temperature_entry = case[2] #third column
-
-        print("case entry")
-        print(case_entry)
-
-        print("velocity entry")
-        print(velocity_entry)
-    
-        print("temp entry")
-        print(temperature_entry) 
-
-        print("y")
-        print(y)
-        
-        # Add the entry to respective vectorys
-        case_vector[y] = case_entry
-        velocity_vector[y] = velocity_entry
-        temperature_vector[y] = temperature_entry
-        
-        
-        print("case vector")
-        print(case_vector)
-
-        print("velocity vector")
-        print(velocity_vector)
-    
-        print("temp vector")
-        print(temperature_vector)   
-        
-        y = y + 1
     
     # Find the maximum average temperature
-    T_max = np.max(temperature_vector)
+    T_max = np.max(array_sorted[:,1]) # second column of the sorted array
     #T_max_index = np.where(temperature_vector == T_max)
-    T_max_index = np.argmax(temperature_vector)
+    T_max_index = np.argmax(array_sorted[:,1])
     print("Maximum Temperature: ")
     print(T_max)
     print("Index with maximum temperature: ")
     print(T_max_index)
     
     # finding cases and velocites associated with maximum temperatures
-    case_max = case_vector[T_max_index]
-    velocity_max = velocity_vector[T_max_index]
+    velocity_max = array_sorted[:,0][T_max_index]
+    print("velocity_max")
+    print(velocity_max)
     
-    print("Maximum case: ")
-    print(case_max)
     print("max velocity entry: ")
     print(velocity_max)
-
-    return case_vector, temperature_vector, velocity_vector, T_max, case_max, velocity_max, T_max_index
+    
+    # velocity column
+    velocity_column = array_sorted[:,0]
+     
+    # temperature column
+    temperature_column = array_sorted[:,1]
     
 
-#case_vector, temperature_vector, velocity_vector, T_max, case_max, velocity_max, T_max_index = evaluate_optimal(new_recarr)
+    return T_max, velocity_max, T_max_index, velocity_column, temperature_column
+    
+
+#T_max, velocity_max, T_max_index, velocity_column, temperature_column = evaluate_optimal(array_sorted, length_case_list)
 
 
-def plot_variables(case_vector, temperature_vector, velocity_vector, T_max, case_max, velocity_max, T_max_index):
+def plot_variables(array_sorted, T_max, velocity_max, T_max_index, velocity_column, temperature_column):
     """create a matplot lib of the data extracted"""
     #fig, axs = plt.subplots(1, 3, figsize=(5,5)) # figure with multiple plots
-    
-    shape_case_vector = case_vector.shape
-    print("case vector shape")
-    print(shape_case_vector)
-    
-    shape_temp_vector = temperature_vector.shape
-    print("temp vector shape")
-    print(shape_temp_vector)
-    
-    shape_velocity_vector = velocity_vector.shape
-    print("vel vector shape")
-    print(shape_velocity_vector)
-    
-    
-    """temp_vs_case_plot = plt.scatter(case_vector[:,0], temperature_vector[:,0])
-    temp_vs_velocity_plot = plt.scatter(velocity_vector[:,0], temperature_vector[:,0])
-    velocity_vs_case_plot =  plt.scatter(case_vector[:,0], velocity_vector[:,0])
-    """
+
     plt.figure(1)
-    plt.subplot(2,1,1)
-    plt.scatter(case_vector[:,0], temperature_vector[:,0])
+    plt.scatter(velocity_column, temperature_column) # Temperature versus velocity
     plt.title("Temperature versus Case No.")
-    #plt.xlabel("Case No.")
-    #plt.ylabel("Average Pot Temperature (Celsius)")
-    plt.subplot(2,1,2)
-    plt.scatter(velocity_vector[:,0], temperature_vector[:,0])
-    plt.title("Temperature versus Secondary Air Velocity")
-    #plt.xlabel("Secondary Air Velocity (m/s)")
-    #plt.ylabel("Average Pot Temperature (Celsius)")
-    """plt.subplot(3,1,3)
-    plt.scatter(case_vector[:,0], velocity_vector[:,0])
-    plt.title("Secondary Air Velocity versus Case No.")
-    #plt.xlabel("Case No.")
-    #plt.ylabel("Secondary Air Velocity (m/s)")"""
+    plt.xlabel("Seconday Air Average Flow Velocity")
+    plt.ylabel("Average Pot Temperature (Celsius)")
     plt.show()
+     
     
-#plot_variables(case_vector, temperature_vector, velocity_vector, T_max, case_max, velocity_max, T_max_index)
+#plot_variables(array_sorted, T_max, velocity_max, T_max_index, velocity_column, temperature_column)
 
-def define_max_surrounding_velocities(case_vector, temperature_vector, velocity_vector, T_max, case_max, velocity_max, T_max_index):
-    """Use the optimal information from the evaluate optimal function to compute new secondary air flow velocities of 
-    the next 5 models"""
+def compute_neighboring_velocities(array_sorted, T_max, velocity_max, T_max_index, length_case_list, velocity_column, temperature_column):
+    """Use the maximum data solved for previously to compute 4 new neighboring velocities"""
     # Algorithm ==>
-    # (1) Find maximum average pot temperature from the data set 
-    # (2) Extract the velocities neighboring the maximum
-    # (3) Compute 3 equally spaced velocities within the range computed
-    # (4) return the new velocities as floats
-    num_cases_between = 4 # three cases in between max and (each) neighbor
-    num_cases_left = num_cases_between - 1
-    num_cases_right = num_cases_between - 1
+    # sort the new_recarr array
+    # (1) Find the location of the maximum velocity within the case list
+    # (2) Solve for 4 additional velocities with the following logic:
+        # (a) If the maximum temp is based on an interior velocity value, add two new velocities greater than and lesser than the max
+        # (b) If the max temp is associated with the lower limit velocity, compute three greater velocities, and one lesser
+        # (c) If the maximum temp is associated with the maximum velocity in the list, compute 3 lesser velocities, and one greater
     
-    # neighboring cases, temperatures, velocities
-    case_left = case_vector[T_max_index - 1]
-    case_right = case_vector[T_max_index + 1]
-    temp_left = temperature_vector[T_max_index - 1]
-    temp_right = temperature_vector[T_max_index + 1]
-    velocity_left = velocity_vector[T_max_index - 1]
-    velocity_right = velocity_vector[T_max_index + 1]
+    # empty four velocity addition
+    v_cases_added = np.empty([4,1], dtype = float)
+    shape_v_cases_added = v_cases_added.shape
+    print("shape of the added velocity vector")
+    print(shape_v_cases_added)
     
-    print("left v")
-    print(velocity_left)
+    # (a) interior logic
+    if (T_max_index != 0 and T_max_index != length_case_list):
+        # 2 new velocities on either side of interior
+        print("MAXIMUM TEMP IS WITHIN THE INTERIOR OF THE DESIGN SPACE")
+        lower_velocity = velocity_column[T_max_index - 1]
+        upper_velocity = velocity_column[T_max_index + 1]
+        velocity_spacing = velocity_column[T_max_index] - lower_velocity
+        num_values_between = 2 # number of velocities on each side of maximum
+        delta_V = velocity_spacing/(num_values_between+1) # spacing
+        # Lesser velocities
+        v_1 = velocity_max - delta_V
+        v_2 = velocity_max - 2*delta_V
+        
+        # greater velocities
+        v_3 = velocity_max + delta_V
+        v_4 = velocity_max + 2*delta_V
+        
+        v_cases_added[0,0] = v_1
+        v_cases_added[1,0] = v_2
+        v_cases_added[2,0] = v_3
+        v_cases_added[3,0] = v_4
+        print("Interior V-cases added")
+        print(v_cases_added)
+        v_cases_total_vector = v_cases_added
     
-    print("Right v")
-    print(velocity_right)
+    if T_max_index == 0:
+        print("MAXIMUM TEMP IS ON THE LOWER LIMIT OF THE DESIGN SPACE")
+        # Lower limit maximum velocity--make sure we don't approach zero on the lower side
+        # Greater side
+        upper_velocity = velocity_column[T_max_index + 1]
+        num_values_greater = 3
+        velocity_spacing = upper_velocity - velocity_column[T_max_index]
+        delta_V = velocity_spacing/(num_values_greater+1) # spacing on the greater side
+        v_1 = velocity_max + delta_V
+        v_2 = velocity_max + 2*delta_V
+        v_3 = velocity_max + 3*delta_V
+        
+        # lesser side---halfway between zero and minimum velocity
+        velocity_spacing_lower = velocity_max - 0
+        num_values_lesser = 1
+        delta_V_lower = velocity_spacing_lower/(num_values_lesser + 1)
+        v_4 = velocity_max - delta_V_lower
+        
+        v_cases_added[0,0] = v_1
+        v_cases_added[1,0] = v_2
+        v_cases_added[2,0] = v_3
+        v_cases_added[3,0] = v_4
+        print("LOWER LIMIT V-cases added")
+        print(v_cases_added)
+        v_cases_total_vector = v_cases_added
     
-    # Compute neighboring velocities
-    # Velocity steps
-    delta_V = (velocity_max-velocity_left)/num_cases_between
-    print("delta V")
-    print(delta_V)
-    
-    rows_v_inside = (num_cases_between-1)*2
-    v_cases_inside = np.empty([rows_v_inside, 1], dtype = float)
-    print("shape of inside vector")
-    p = 0 # defining loop
-    # Left hand side:
-    while p < num_cases_left:
-        v_cases_inside[p] = velocity_left + (p+1)*delta_V
-        print("v cases inside")
-        print(v_cases_inside)
-        p = p+1
-    
-    t = 0 # setting for next entry
-    
-    while t < num_cases_right:
-        v_cases_inside[t+num_cases_left] = velocity_right - (t+1)*delta_V
-        print("v cases inside")
-        print(v_cases_inside)
-        t = t+1       
-    
-    print("v cases inside")
-    print(v_cases_inside)
-    
-    v_cases_inside_shape = v_cases_inside.shape # used later
+    if T_max_index == length_case_list:
+        print("MAXIMUM TEMP IS ON THE UPPER LIMIT OF THE DESIGN SPACE")
+        lower_velocity = velocity_column[T_max_index - 1]
+        num_values_lesser = 3
+        velocity_spacing = velocity_column[T_max_index] - lower_velocity
+        delta_V = delta_V = velocity_spacing/(num_values_lesser+1) # spacing on the lower side
+        v_1 = velocity_max - delta_V
+        v_2 = velocity_max - 2*delta_V
+        v_3 = velocity_max - 3*delta_V
+        
+        # Greater side -- simply adding the delta_V
+        v_4 = velocity_max + delta_V
+        
+        v_cases_added[0,0] = v_1
+        v_cases_added[1,0] = v_2
+        v_cases_added[2,0] = v_3
+        v_cases_added[3,0] = v_4
+        print("UPPER LIMIT V-cases added")
+        print(v_cases_added)
+        v_cases_total_vector = v_cases_added
+        
+    return v_cases_added, v_cases_total_vector
 
-    return v_cases_inside, delta_V, v_cases_inside_shape
+#v_cases_added, v_cases_total_vector = compute_neighboring_velocities(array_sorted, T_max, velocity_max, T_max_index, length_case_list, velocity_column, temperature_column)
     
 #v_cases_inside, delta_V, v_cases_inside_shape = define_max_surrounding_velocities(case_vector, temperature_vector, velocity_vector, T_max, case_max, velocity_max, T_max_index)    
     
-def add_outside_velocities(case_vector, temperature_vector, velocity_vector, T_max, case_max, velocity_max, T_max_index, delta_V):
-    """Add two cases on (each of) the surrounding sides of the velocity field used"""
+#def add_outside_velocities(case_vector, temperature_vector, velocity_vector, T_max, case_max, velocity_max, T_max_index, delta_V):
+    #Add two cases on (each of) the surrounding sides of the velocity field used"""
     # find maximum, and minimum velocity in the case field
     # compute the surrounding velocities using the delta_V from the previous velocity computation
     # return the velocities
-    num_cases_right = 4 #controls the velocity loop
-    num_cases_left = 1
+    #num_cases_right = 2 #controls the velocity loop
+"""    num_cases_left = 1
     sum_cases_outside = num_cases_right + num_cases_left # sum used for looping
     
     # Find Maximum and minimum:
     V_right_max = np.max(velocity_vector)
     V_left_min = np.min(velocity_vector)
     
-    """# this would cause a zero or negative flow, so going to stop analysis here
-    if V_left_min <= delta_V:
-        print("Not computing left hand minimum Velocity (less zero)")
-    else:
-        # Think about this....
-        print("Still thinking about what to do here")"""
-    # RHS
     
     # Creating empty vector depending on number cases left
     if num_cases_left == 0:
@@ -517,12 +550,12 @@ def add_outside_velocities(case_vector, temperature_vector, velocity_vector, T_m
     v_cases_outside_shape = v_cases_outside.shape
     
     
-    return v_cases_outside, sum_cases_outside, num_cases_right, num_cases_left, v_cases_outside_shape
+    return v_cases_outside, sum_cases_outside, num_cases_right, num_cases_left, v_cases_outside_shape"""
 
 #v_cases_outside, sum_cases_outside, num_cases_right, num_cases_left, v_cases_outside_shape = add_outside_velocities(case_vector, temperature_vector, velocity_vector, T_max, case_max, velocity_max, T_max_index, delta_V)
 
-def create_new_velocity_vector(v_cases_outside, v_cases_inside, v_cases_inside_shape, v_cases_outside_shape):
-    """Add new velocities to a vector... to be used for case file creation"""
+"""def create_new_velocity_vector(v_cases_outside, v_cases_inside, v_cases_inside_shape, v_cases_outside_shape):
+    #Add new velocities to a vector... to be used for case file creation
     # append for now
     
     print("V cases inside shape")
@@ -559,15 +592,11 @@ def create_new_velocity_vector(v_cases_outside, v_cases_inside, v_cases_inside_s
 #v_cases_total_vector = create_new_velocity_vector(v_cases_outside, v_cases_inside, v_cases_inside_shape, v_cases_outside_shape)    
    
 """
-from new_case_setup import *
-
-
+"""from new_case_setup import *
 
 case_name_list, v_cases_total_vector_string, v_boundary_strings = define_new_case_names(v_cases_total_vector)
 
-
 full_case_paths = create_case_directories(case_name_list)
-
 
 zero_file_paths, constant_file_paths, system_file_paths = add_templates(full_case_paths)
 

@@ -10,7 +10,6 @@ import shutil
 from shutil import copyfile
 from shutil import copy
 
-
 """Moving forward assuming the filepath is known for the Stoveopt master directory
 In the future, the path and filename will be an argument for the software provided by user in input file"""
 block_mesh_template_fname = "blockMeshDict_Template_reactionfoam_empty" #No file type
@@ -146,7 +145,7 @@ def modify_controlDict(pt10str, pt11str, pt9str, pt48str, pt44str, pt14str, pt20
     # Path steps from StoveOpt to the case 25-150 case file
     template_steps = "/foamfiles/counterFlowFlame2D/file_templates/blank/controlDict"
     replacement_template_steps = "/foamfiles/counterFlowFlame2D/file_templates/replacement/controlDict"
-    steps_25 = "/foamfiles/counterFlowFlame2D/case_25/system/controlDict"
+    steps_25 = "\\foamfiles\\counterFlowFlame2D\\case_25\\system\\controlDict"
     steps_50 = "/foamfiles/counterFlowFlame2D/case_50/system/controlDict"
     steps_100 = "/foamfiles/counterFlowFlame2D/case_100/system/controlDict" 
     steps_125 = "/foamfiles/counterFlowFlame2D/case_125/system/controlDict"
@@ -170,6 +169,7 @@ def modify_controlDict(pt10str, pt11str, pt9str, pt48str, pt44str, pt14str, pt20
     # Open and edit template--add the probing points all around the cookstove currently includes back and front points
     with open(template_path, 'r+') as f:
         f.seek(loc)
+        #f.write('(' + '\n')
         f.write(pt10str + '\n')
         f.write("            ")
         f.write(pt11str + '\n')

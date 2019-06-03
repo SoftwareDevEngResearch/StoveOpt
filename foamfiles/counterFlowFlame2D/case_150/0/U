@@ -34,13 +34,13 @@ boundaryField
     Secondary_air_RHS
     {
     type fixedValue;
-    value uniform (0 0.150 0);
+    value uniform (0 477.0 0);
     }
 
     Secondary_air_LHS
     {
     type fixedValue;
-    value uniform (0 -0.150 0);
+    value uniform (0 -477.0 0);
     }
 						
 												  

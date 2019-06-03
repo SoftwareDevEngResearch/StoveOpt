@@ -20,15 +20,14 @@ import yaml
 
 from create_blockmeshfile import *
 from run_surrounding_cases import *
-from post_processor import *
 from new_case_setup import *
-
+from post_processor import *
 
 
 def main():
     """ Main script"""
     # Input velocity
-    U_100 = 0.1 #m/s
+    U_100 = 318 #m/s ---> to achieve 0.025 m3/s
     # Construct the argument parse and parse the arguments
     parser = argparse.ArgumentParser(description='Stove Optimization')
     # File directory argument
@@ -135,7 +134,7 @@ def main():
     """At this point, the 25-150 cases are defined.
     This is where running the cases would go"""
     
-    # post-processing
+    # -----------------------------------POST PROCESSING MODULE-------------------------------------
     
     """Looping would likely begin here"""
     # pull in the data from files with label "case"
@@ -144,26 +143,26 @@ def main():
     # pull velocity, temperature, and case data from the case files. Create np array new_recarr
     new_recarr = average_pot_temperature(list_temps, length_case_list, list_velocities, case_list)
     
-    # isolate the case, temp, velocity vectors. Find maxes and indexes
-    case_vector, temperature_vector, velocity_vector, T_max, case_max, velocity_max, T_max_index = evaluate_optimal(new_recarr, length_case_list)
+    # parse and sort
+    array_sorted = parse_and_sort_array(new_recarr)
+    
+    
+    # Evaluate the optimal
+    T_max, velocity_max, T_max_index, velocity_column, temperature_column = evaluate_optimal(array_sorted, length_case_list)
     
     # plotting
-    plot_variables(case_vector, temperature_vector, velocity_vector, T_max, case_max, velocity_max, T_max_index)
+    plot_variables(array_sorted, T_max, velocity_max, T_max_index, velocity_column, temperature_column)
     
-    # define the INSIDE velocities for next cases
-    v_cases_inside, delta_V, v_cases_inside_shape = define_max_surrounding_velocities(case_vector, temperature_vector, velocity_vector, T_max, case_max, velocity_max, T_max_index)
+    # compute neighboring velocities
+    v_cases_added, v_cases_total_vector = compute_neighboring_velocities(array_sorted, T_max, velocity_max, T_max_index, length_case_list, velocity_column, temperature_column)
     
-    # define the OUTSIDE velocities
-    v_cases_outside, sum_cases_outside, num_cases_right, num_cases_left, v_cases_outside_shape = add_outside_velocities(case_vector, temperature_vector, velocity_vector, T_max, case_max, velocity_max, T_max_index, delta_V)
+    
+    #---------------------------------------------NEW CASE SETUP---------------------------------
 
-    # create the full velocity vector
-    v_cases_total_vector = create_new_velocity_vector(v_cases_outside, v_cases_inside, v_cases_inside_shape, v_cases_outside_shape)    
-    
+
     case_name_list, v_cases_total_vector_string, v_boundary_strings = define_new_case_names(v_cases_total_vector)
 
-
     full_case_paths = create_case_directories(case_name_list)
-
 
     zero_file_paths, constant_file_paths, system_file_paths = add_templates(full_case_paths)
 
@@ -171,7 +170,7 @@ def main():
     edit_details_files(zero_file_paths, constant_file_paths, system_file_paths, v_boundary_strings)
 
     edit_iterative_boundary_conditions(zero_file_paths, constant_file_paths, system_file_paths, v_boundary_strings)
-    """Surrounding velocities computed--next up is creating the foam file cases, and editing all of the input files"""
+    
     
     
     

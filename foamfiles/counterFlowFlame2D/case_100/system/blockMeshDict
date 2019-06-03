@@ -85,17 +85,17 @@ vertices
 
 blocks
 (
-    hex (16 17 39 38 19 18 40 41) (7 7 7) simpleGrading (1 1 1)  // wood
-    hex (0 1 23 22 2 3 25 24) (7 7 7) simpleGrading (1 1 1) // bottom chamber
-    hex (5 4 26 27 6 7 29 28) (7 7 7) simpleGrading (1 1 1) //top chamber
-	hex (2 3 25 24 5 4 26 27) (7 7 7) simpleGrading (1 1 1) // secondary air region
-	hex (6 7 29 28 20 21 43 42) (7 7 7) simpleGrading  (1 1 1) // top b5 chamber
-	hex (7 46 47 29 21 15 37 43) (7 7 7) simpleGrading (1 1 1) // right block
-    hex (44 6 28 45 14 20 42 36) (7 7 7) simpleGrading (1 1 1) // left block mid
-	hex (9 44 45 31 48 14 36 49) (7 7 7) simpleGrading (1 1 1) // bottom left chamber
-    hex (48 14 36 49 10 11 33 32) (7 7 7) simpleGrading (1 1 1) //left channel
-	hex (46 8 30 47 15 50 51 37) (7 7 7) simpleGrading (1 1 1) // bottom right channel
-	hex (15 50 51 37 12 13 35 34) (7 7 7) simpleGrading (1 1 1)
+   hex (16 17 39 38 19 18 40 41) (3 3 3) simpleGrading (1 1 1)  // wood
+    hex (0 1 23 22 2 3 25 24) (3 3 3) simpleGrading (1 1 1) // bottom chamber
+    hex (5 4 26 27 6 7 29 28) (3 3 3) simpleGrading (1 1 1) //top chamber
+	hex (2 3 25 24 5 4 26 27) (3 3 3) simpleGrading (1 1 1) // secondary air region
+	hex (6 7 29 28 20 21 43 42) (3 3 3) simpleGrading  (1 1 1) // top b5 chamber
+	hex (7 46 47 29 21 15 37 43) (3 3 3) simpleGrading (1 1 1) // right block
+    hex (44 6 28 45 14 20 42 36) (3 3 3) simpleGrading (1 1 1) // left block mid
+	hex (9 44 45 31 48 14 36 49) (3 3 3) simpleGrading (1 1 1) // bottom left chamber
+    hex (48 14 36 49 10 11 33 32) (3 3 3) simpleGrading (1 1 1) //left channel
+	hex (46 8 30 47 15 50 51 37) (3 3 3) simpleGrading (1 1 1) // bottom right channel
+	hex (15 50 51 37 12 13 35 34) (3 3 3) simpleGrading (1 1 1)
 );
 
 edges
