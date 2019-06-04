@@ -14,7 +14,26 @@ from shutil import copytree
 
 
 def define_new_case_names(v_cases_total_vector):
-    """Create new case_ folders in the foamfiles folder--these need to be named iteratively"""
+    """
+    Create new case_ folders in the foamfiles folder. Named based on velocities computed in post_processor
+    
+    Parameters
+    ----------
+    
+    v_cases_total_vector
+        Numpy array listing four velocities to be added to the case queue
+        
+    case_name_list
+        List of strings each corresponding to a new case file. Named based on velocity values converted to string.
+        
+    v_cases_total_vector_string
+        Velocities converted to string dtype
+        
+    v_boundary_strings
+        Velocty data converted to string compatible with boundary condition file
+
+    
+    """
     # Algorithm ==>
     # Pull in the new velocities vector
     # convert the vector to a string of length 6. 
@@ -68,7 +87,19 @@ def define_new_case_names(v_cases_total_vector):
     return case_name_list, v_cases_total_vector_string, v_boundary_strings
 
 def  create_case_directories(case_name_list):
-    """Create the directories for next batch of simulations"""
+    """Create the directories for next batch of simulations within the foamfiles dir
+    
+    Parameters
+    ----------
+    
+    case_name_list
+        List of strings each corresponding to a new case file. Named based on velocity values converted to string.
+    
+    full_case_paths
+        List of full paths for new cases to be added. Compatible with windows os.
+    
+
+    """
     # (1) Get current WD
     # (2) add the directory steps for the foamfile
     # (3) add the case name string to the directory---loop
@@ -114,7 +145,23 @@ def  create_case_directories(case_name_list):
     return full_case_paths        
 
 def add_templates(full_case_paths):
-    """add the template files to the new case directories"""
+    """Add the template files to the new case directories
+    
+    Parameters
+    ----------
+    
+    zero_file_paths
+        List of paths leading to initial condition files for each newly added case
+    
+    constant_file_paths
+        List of paths leading to solver files for each newly added case
+    
+    system_file_paths
+        List of paths leading to mesh, schemes, time step and outfil writing files for each newly added case
+    
+    
+    
+    """
     current_dir = os.getcwd()
     template_dir_steps = "\\foamfiles\\counterFlowFlame2D\\template_case\\" # template case folder
     step_0 = "0" # zero folder
@@ -167,12 +214,21 @@ def add_templates(full_case_paths):
     return zero_file_paths, constant_file_paths, system_file_paths
     
 
-def edit_details_files(zero_file_paths, constant_file_paths, system_file_paths, v_boundary_strings):
-    """Open and edit the newly created 0 case files. Edit the empty details file with the velocity strings"""
-    # comparable to write_velocity_files from the run_surrounding_cases module
-    # Loop through the zero file paths and open the "U" file.
-    # edit the U files as in write_velocity_files
-    # v_boundary_strings are what I am looking for here
+def edit_details_files(zero_file_paths, v_boundary_strings):
+    """
+    Open and edit the newly created 0 case files. Edit the empty details file with the velocity strings
+    
+    Parameters
+    ----------
+    
+    zero_file_paths
+        List of paths leading to initial condition files for each newly added case
+        
+    v_boundary_strings
+        Velocity strings to be added to details files for respective case
+    
+    """
+
     
     details_step = "\\details" # step from zero folder to details file
     x = 0 # looping index
@@ -184,11 +240,13 @@ def edit_details_files(zero_file_paths, constant_file_paths, system_file_paths, 
             f.write(v_boundary_strings[x])
         x = x + 1
         
-    
-    
 
 def edit_iterative_boundary_conditions(zero_file_paths, constant_file_paths, system_file_paths, v_boundary_strings):
-    """edit the boundary condition files, U, in the 0 folder with the new computed velocities"""
+    """
+    Edit the boundary condition files, U, in the initial condition 0 folder with the new computed velocities
+    
+
+    """
     # comparable to edit_boundary_conditions from the run_surrounding_cases module
     # NEGATIVE data for the LHS
     # The position for the beginning of the secondary air condition RHS (0 0.1 0) is 986

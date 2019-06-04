@@ -24,12 +24,12 @@ boundaryField
     fuel
     {
         type            fixedValue;
-        value           uniform (0 0 10.);
+        value           uniform (0 0 .25);
     }
     primary_air
     {
         type            fixedValue;
-        value           uniform (0 0 10.);
+        value           uniform (0 0 2.5);
     }
                                                 
 												

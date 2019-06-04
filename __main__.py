@@ -27,7 +27,7 @@ from post_processor import *
 def main():
     """ Main script"""
     # Input velocity
-    U_100 = 318 #m/s ---> to achieve 0.025 m3/s
+    U_100 = 100 #m/s ---> to achieve 0.025 m3/s
     # Construct the argument parse and parse the arguments
     parser = argparse.ArgumentParser(description='Stove Optimization')
     # File directory argument
@@ -144,7 +144,7 @@ def main():
     new_recarr = average_pot_temperature(list_temps, length_case_list, list_velocities, case_list)
     
     # parse and sort
-    array_sorted = parse_and_sort_array(new_recarr)
+    array_sorted = parse_and_sort_array(new_recarr, length_case_list)
     
     
     # Evaluate the optimal
@@ -167,7 +167,7 @@ def main():
     zero_file_paths, constant_file_paths, system_file_paths = add_templates(full_case_paths)
 
 
-    edit_details_files(zero_file_paths, constant_file_paths, system_file_paths, v_boundary_strings)
+    edit_details_files(zero_file_paths, v_boundary_strings)
 
     edit_iterative_boundary_conditions(zero_file_paths, constant_file_paths, system_file_paths, v_boundary_strings)
     

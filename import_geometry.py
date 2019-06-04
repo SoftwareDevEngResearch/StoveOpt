@@ -8,8 +8,17 @@ import numpy
 
 """Need to figure out the correct_arguments script"""
 def correct_arguments(args):
-    """Goal is to convert the geometry file argument to working syntax:
-    Single quote, back slash"""
+    """
+    Goal is to convert the geometry file argument to working syntax: Single quote, back slash
+    
+    Parameters
+    ----------
+    args
+        object contains the contents of the input file specified by the user
+    
+    
+    
+    """
     input_file = args.inputfile
     with open(input_file, 'r') as f:
         doc = yaml.load(f)
@@ -42,7 +51,17 @@ def correct_arguments(args):
         
 import yaml
 def locate_geometry(args):
-    """ Pull file path and name from the input file (command line argument)"""
+    """
+    Pull file path and name from the input file (command line argument)
+    
+    Parameters
+    ----------
+    
+    agrs
+        Object from argparse that pulls filename and location of the stove geometry
+    
+    
+    """
     input_file = args.inputfile #first element of args = input file
     with open(input_file, 'r') as f:
         # Pull the filename and path for geometry. return file path and name for future modification
@@ -58,7 +77,17 @@ def locate_geometry(args):
        
 import xlrd
 def extract_geometry(file_path):
-    """Pulling Data from excel workbook"""
+    """
+    Pulling Data from excel workbook
+    
+    Parameters
+    ----------
+    
+    file_path
+        Windows format filepath with filename superimposed to the path. Tied to the input file
+    
+    
+    """
     workbook = xlrd.open_workbook(file_path)
     worksheet = workbook.sheet_by_name('Outputs')
     pt0x = worksheet.cell(1,2).value
@@ -118,13 +147,23 @@ def extract_geometry(file_path):
 
 # Create additional front face points including wood zone
 def create_fuel_blocks(pt0x, pt1x):
-    """Uses the geometric variables computed in assign_geomvars to create zones for the wood fuel zone:
-       1) Rectangular fuel source
-       2) centered along the flow axis of combustion chamber
-       3) Half the width of the bottom of the chamber
-       4) Assumed fuel wood height of 3 inches (0.0762 m)
-       5) Assumed the bottom of the wood is 3 inches off of the ground (0.0762 m)
-       6) pt17 is bottom left, pt18 is bottom right, pt19 is top right, pt20 is top left"""
+    """
+    Creates geometry for the fuel block with the following assumptions:  Rectangular fuel source, Centered along the vertical axis of the combustion chamber, Width of fuel block is half the diameter of the combustion chamber, Assumed fuel height of 3 inches (0.0762 m), bottom of the fuel is 3 inches off the ground.
+    
+    Parameters
+    ----------
+    
+    pt0x
+        Type: float.
+        Bottom west vertice of the cookstove combustion chamber (origin)
+        
+    pt1x
+        Type: float.
+        Bottom east vertice of cookstove combustion chamber
+    
+     
+    
+    """
     fuel_width = 0.5*(pt1x - pt0x)
     fuel_x_center = fuel_width
     fuel_x_left_coord = fuel_x_center - (fuel_width)/2
@@ -151,7 +190,17 @@ def create_fuel_blocks(pt0x, pt1x):
 # 44 defined by 14x and 9z
 # 46 defined by 15x and 8z    
 def create_additional_front_points(pt6x, pt7x, pt14x, pt9z, pt15x, pt8z, pt14z, pt9x, pt8x, pt15z):
-    """Create pot surface points to create faces--Nameing them 21(L)-22(R) to not collide with current fuel vert numbers"""
+    """
+    Create pot surface points to create faces--Naming them 21(L)-22(R) to not collide with current fuel vert numbers
+    
+    Parameters
+    ----------
+    
+    
+
+    
+    
+    """
     # Left point
     pt20x = pt6x
     pt20z = pt14z
@@ -182,7 +231,15 @@ def create_additional_front_points(pt6x, pt7x, pt14x, pt9z, pt15x, pt8z, pt14z, 
 
 # Stove front (0-15), wood front (16-19), additional points front (20,21,44,46)
 def points_to_strings(pt1x, pt1z, pt1y, pt2x, pt2z, pt2y, pt3x, pt3z, pt3y, pt4x, pt4z, pt4y, pt5x, pt5z, pt5y, pt6x, pt6z, pt6y, pt7x, pt7z, pt7y, pt8x, pt8z, pt8y, pt9x, pt9z, pt9y, pt10x, pt10z, pt10y, pt11x, pt11z, pt11y, pt12x, pt12z, pt12y, pt13x, pt13z, pt13y,  pt14x, pt14z, pt14y, pt15x, pt15z, pt15y, pt0x, pt0z, pt0y, pt17x, pt18x, pt19x, pt16x, pt17z, pt18z, pt19z, pt16z, pt17y, pt18y, pt19y, pt16y, pt20x, pt20z, pt20y, pt21x, pt21z, pt21y, pt44x, pt44z, pt44y, pt46x, pt46z, pt46y, pt48x, pt48y, pt48z, pt50x, pt50y, pt50z):
-    """ Take in the raw vertice information from spreadsheet, and format the floats into strings->For front vertices"""
+    """
+    Take in the raw vertice information from spreadsheet, and format the floats into strings->For front vertices
+    
+    Parameters
+    ----------
+    
+    
+    
+    """
     pt0xstr= str(pt0x)[:5]
     pt0zstr = str(pt0z)[:5]
     pt0ystr = str(pt0y)[:5]  
@@ -271,7 +328,16 @@ def points_to_strings(pt1x, pt1z, pt1y, pt2x, pt2z, pt2y, pt3x, pt3z, pt3y, pt4x
 # Stove front (0-15), wood front (16-19), additional points front (20,21,44,46)
 # x = x1, y = x2, z = x3 coordinates based on OpenFOAM convention
 def vertice_concatenate(pt1xstr, pt1zstr, pt1ystr, pt2xstr, pt2zstr, pt2ystr, pt3xstr, pt3zstr, pt3ystr, pt4xstr, pt4zstr, pt4ystr, pt5xstr, pt5zstr, pt5ystr, pt6xstr, pt6zstr, pt6ystr, pt7xstr, pt7zstr, pt7ystr, pt8xstr, pt8zstr, pt8ystr, pt9xstr, pt9zstr, pt9ystr, pt10xstr, pt10zstr, pt10ystr, pt11xstr, pt11zstr, pt11ystr, pt12xstr, pt12zstr, pt12ystr, pt13xstr, pt13zstr, pt13ystr,  pt14xstr, pt14zstr, pt14ystr, pt15xstr, pt15zstr, pt15ystr, pt0xstr, pt0zstr, pt0ystr, pt16xstr, pt16zstr, pt16ystr, pt17xstr, pt17zstr, pt17ystr, pt18xstr, pt18zstr, pt18ystr, pt19xstr, pt19zstr, pt19ystr, pt20xstr, pt20zstr, pt20ystr, pt21xstr, pt21zstr, pt21ystr, pt44xstr, pt44zstr, pt44ystr, pt46xstr, pt46zstr, pt46ystr, pt48xstr, pt48zstr, pt48ystr, pt50xstr, pt50zstr, pt50ystr): 
-    """convert the individual vertex strings and concatenate to the format required for blockmeshdict file"""
+    """
+    Convert the individual vertex strings and concatenate to the format required for blockmeshdict file
+    
+    Parameters
+    ----------
+    
+    
+    
+    
+    """
     # Stove Body
     pt0str = "(" + pt0ystr + " " + pt0xstr + " " + pt0zstr + ")"
     pt1str = "(" + pt1ystr + " " + pt1xstr + " " + pt1zstr + ")"
@@ -309,7 +375,14 @@ def vertice_concatenate(pt1xstr, pt1zstr, pt1ystr, pt2xstr, pt2zstr, pt2ystr, pt
 
 
 def create_back_points(shift, pt1xstr, pt1zstr, pt1ystr, pt2xstr, pt2zstr, pt2ystr, pt3xstr, pt3zstr, pt3ystr, pt4xstr, pt4zstr, pt4ystr, pt5xstr, pt5zstr, pt5ystr, pt6xstr, pt6zstr, pt6ystr, pt7xstr, pt7zstr, pt7ystr, pt8xstr, pt8zstr, pt8ystr, pt9xstr, pt9zstr, pt9ystr, pt10xstr, pt10zstr, pt10ystr, pt11xstr, pt11zstr, pt11ystr, pt12xstr, pt12zstr, pt12ystr, pt13xstr, pt13zstr, pt13ystr,  pt14xstr, pt14zstr, pt14ystr, pt15xstr, pt15zstr, pt15ystr, pt0xstr, pt0zstr, pt0ystr, pt16xstr, pt16zstr, pt16ystr, pt17xstr, pt17zstr, pt17ystr, pt18xstr, pt18zstr, pt18ystr, pt19xstr, pt19zstr, pt19ystr, pt20xstr, pt20zstr, pt20ystr, pt21xstr, pt21zstr, pt21ystr, pt44xstr, pt44zstr, pt44ystr, pt46xstr, pt46zstr, pt46ystr, pt48xstr, pt48zstr, pt48ystr, pt50xstr, pt50ystr, pt50zstr):
-    """Back coordinates of the cookstove--simply shifting the x2 (y) coordinate back by a value shift"""
+    """
+    Back coordinates of the cookstove--simply shifting the x2 (y) coordinate back by a value shift
+    
+    Parameters
+    ----------
+    
+    
+    """
     if shift > 0:
         shift = shift*(-1)
         print('Shift multiplied by -1')

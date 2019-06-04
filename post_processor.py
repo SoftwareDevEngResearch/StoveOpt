@@ -25,9 +25,28 @@ import matplotlib.pyplot as plt
 #import h5py
 
 def data_import():
-    """input a list of filenames to be pulled, put out an array of temperature data
-    (1) search the foamfiles directory for fnames that start with case_ and tally the number for looping through the file
-    (2) loop through each and pull data from the files (3) convert to numpy arrays (4) store"""
+    """input a list of filenames to be pulled, put out an array of temperature data. search the foamfiles directory for fnames that start with case_ and tally the number for looping through the file. loop through each and pull data from the files (3) convert to numpy arrays (4) store.
+    
+    Parameters
+    ----------
+    
+    dir_list
+        Dictionary of directory titles in the 'foamfiles' directory that begin with string 'case_'
+    
+    case_list
+        Dictionary of case file paths. Appended iteratively with dir_list entries.
+    
+    length_case_list
+        Type: integer. Number of excecuted case files existing in foamfiles directory
+    
+    list_temps
+        Type: float array. Populated with results from probing the CFD simulation around entire pot geometry
+    
+    list_velocities
+        Type: float array. Populated with velocity values written to "details" file in individual case files
+
+
+    """
     # navigate to the foamfiles directory
     current_directory = os.getcwd()
     #foamfile_steps = "foamfiles\counterFlowFlame2D\"
@@ -131,7 +150,17 @@ def data_import():
 
 
 def average_pot_temperature(list_temps, length_case_list, list_velocities, case_list):
-    """compute average temperatures of each of the arrays input"""
+    """
+    Compute average temperatures of each of the case temperature arrays previously extracted with data_import()
+    
+    Parameters
+    ----------
+    
+    new_recarr
+        Numpy array where column 1 is case title (str), second column is velocites for respective case, and third column is computed average pot temperature for specific case
+    
+    
+    """
     #(1) loop through the Temperature probe data and pull the final row of the array. The first entry is the time step associated with the final row
     # Convert the list_velocities to numpy array
     list_velocities_array = np.asarray(list_velocities)
@@ -269,8 +298,17 @@ def average_pot_temperature(list_temps, length_case_list, list_velocities, case_
 #def average_composition_outlets(list_GHG)
 """Take in a list of GHGs from a separate data import for the outlet nodes"""
     
-def parse_and_sort_array(new_recarr):
-    """Sort the array based on velocities, return the array with a new name"""
+def parse_and_sort_array(new_recarr, length_case_list):
+    """
+    Sort new_recarr array based on velocities, return the array with a new name
+    
+    Parameters
+    ----------
+    
+    array_sorted
+        Numpy array. Same data as new_recarr, but sorted based on velocities (least to greatest along column 2)
+    
+    """
     # Algorithm:
     # (1) parse the array and create a parsed version
     
@@ -348,15 +386,25 @@ def parse_and_sort_array(new_recarr):
     
 
 def evaluate_optimal(array_sorted, length_case_list):
-    """The function evaluates the temperature and velocity data, and uses the 
-    information to identify where the optimals live within the ranges analayzed
+    """
+    The function evaluates the temperature and velocity data, and uses the information to identify where the optimals live within the range analayzed
     
-    Inputs: 
-        array_sorted: numpy array of sorted velocities (column 1), and average pot temperatures (column 2)
-    Outputs: 
-        T_max: maximum average pot temperature
-        case_max: case title associated with maximum average pot temp
-        U_optimal: secondary air flow velocity associated with maximum average pot temperature"""
+    Parameters
+    ----------
+    
+    array_sorted
+        Numpy array of sorted velocities (column 1), and average pot temperatures (column 2) 
+    
+    T_max 
+        Maximum average pot temperature of all analyzed cases within foamfiles directory
+        
+    case_max
+        Case title associated with maximum average pot temp
+        
+    U_optimal 
+        Secondary air flow velocity associated with maximum average pot temperature
+        
+    """
     
     # Find maximum temperature
     Temp_col = 1 # column with temperature data
@@ -394,7 +442,10 @@ def evaluate_optimal(array_sorted, length_case_list):
 
 
 def plot_variables(array_sorted, T_max, velocity_max, T_max_index, velocity_column, temperature_column):
-    """create a matplot lib of the data extracted"""
+    """
+    create a matplot lib of the data extracted
+    
+    """
     #fig, axs = plt.subplots(1, 3, figsize=(5,5)) # figure with multiple plots
 
     plt.figure(1)
@@ -408,7 +459,17 @@ def plot_variables(array_sorted, T_max, velocity_max, T_max_index, velocity_colu
 #plot_variables(array_sorted, T_max, velocity_max, T_max_index, velocity_column, temperature_column)
 
 def compute_neighboring_velocities(array_sorted, T_max, velocity_max, T_max_index, length_case_list, velocity_column, temperature_column):
-    """Use the maximum data solved for previously to compute 4 new neighboring velocities"""
+    """
+    Use the maximum data solved for previously to compute 4 new neighboring velocities
+    
+    Parameters
+    ----------
+    
+    v_cases_total_vector
+        Numpy array listing four velocities to be added to the case queue
+        
+    
+    """
     # Algorithm ==>
     # sort the new_recarr array
     # (1) Find the location of the maximum velocity within the case list
@@ -496,119 +557,5 @@ def compute_neighboring_velocities(array_sorted, T_max, velocity_max, T_max_inde
         v_cases_total_vector = v_cases_added
         
     return v_cases_added, v_cases_total_vector
-
-#v_cases_added, v_cases_total_vector = compute_neighboring_velocities(array_sorted, T_max, velocity_max, T_max_index, length_case_list, velocity_column, temperature_column)
-    
-#v_cases_inside, delta_V, v_cases_inside_shape = define_max_surrounding_velocities(case_vector, temperature_vector, velocity_vector, T_max, case_max, velocity_max, T_max_index)    
-    
-#def add_outside_velocities(case_vector, temperature_vector, velocity_vector, T_max, case_max, velocity_max, T_max_index, delta_V):
-    #Add two cases on (each of) the surrounding sides of the velocity field used"""
-    # find maximum, and minimum velocity in the case field
-    # compute the surrounding velocities using the delta_V from the previous velocity computation
-    # return the velocities
-    #num_cases_right = 2 #controls the velocity loop
-"""    num_cases_left = 1
-    sum_cases_outside = num_cases_right + num_cases_left # sum used for looping
-    
-    # Find Maximum and minimum:
-    V_right_max = np.max(velocity_vector)
-    V_left_min = np.min(velocity_vector)
-    
-    
-    # Creating empty vector depending on number cases left
-    if num_cases_left == 0:
-        v_cases_outside = np.empty([num_cases_right, 1], dtype = float)
-    else:
-        v_cases_outside = np.empty([sum_cases_outside, 1], dtype = float)
-    
-    shape_V_cases_outside = v_cases_outside.shape
-    print("Shape V cases outside vector")   
-    print(shape_V_cases_outside)
-    
-    
-    # Right hand side
-    l = 0
-    while l < num_cases_right:
-        v_cases_outside[l] = V_right_max + (l+1)*delta_V #adding right hand side values in first
-        print("l equals")
-        print(l)
-        l = l+1
-        
-    if num_cases_left == 0:
-        print("No cases to add on the left side")
-    else:
-        k = 0
-        while k < num_cases_left:
-            v_cases_outside[k+num_cases_right] = V_left_min - (k+1)*delta_V
-            print("k equals")
-            print(k)
-            k = k+1
-    
-    print("V cases outside")
-    print(v_cases_outside)
-    
-    v_cases_outside_shape = v_cases_outside.shape
-    
-    
-    return v_cases_outside, sum_cases_outside, num_cases_right, num_cases_left, v_cases_outside_shape"""
-
-#v_cases_outside, sum_cases_outside, num_cases_right, num_cases_left, v_cases_outside_shape = add_outside_velocities(case_vector, temperature_vector, velocity_vector, T_max, case_max, velocity_max, T_max_index, delta_V)
-
-"""def create_new_velocity_vector(v_cases_outside, v_cases_inside, v_cases_inside_shape, v_cases_outside_shape):
-    #Add new velocities to a vector... to be used for case file creation
-    # append for now
-    
-    print("V cases inside shape")
-    print(v_cases_inside_shape)
-    
-    v_cases_inside_rows = v_cases_inside_shape[0]
-    print("v inside rows")
-    print(v_cases_inside_rows)
-    
-    print("V cases outside shape")
-    print(v_cases_outside_shape)
-    
-    v_cases_outside_rows = v_cases_outside_shape[0]
-    print("v outside rows")
-    print(v_cases_outside_rows)
-    
-    # create vector with correct number of rows
-    v_cases_total_rows = v_cases_inside_rows + v_cases_outside_rows
-    v_cases_total_vector = np.empty([v_cases_total_rows, 1], dtype = float)
-    
-    # adding inside values to the total vector
-    v_cases_total_vector[0:v_cases_inside_rows] = v_cases_inside
-    print("inside values added")
-    print(v_cases_total_vector)
-    
-    # adding outside values
-    v_cases_total_vector[v_cases_inside_rows:v_cases_total_rows] = v_cases_outside
-    print("outside values added")
-    print(v_cases_total_vector)
-    
-    return v_cases_total_vector
-    #Velocity_new_case_vector = np.empty(7,1) # 7 by 1 column
-    
-#v_cases_total_vector = create_new_velocity_vector(v_cases_outside, v_cases_inside, v_cases_inside_shape, v_cases_outside_shape)    
-   
-"""
-"""from new_case_setup import *
-
-case_name_list, v_cases_total_vector_string, v_boundary_strings = define_new_case_names(v_cases_total_vector)
-
-full_case_paths = create_case_directories(case_name_list)
-
-zero_file_paths, constant_file_paths, system_file_paths = add_templates(full_case_paths)
-
-
-edit_details_files(zero_file_paths, constant_file_paths, system_file_paths, v_boundary_strings)
-
-edit_iterative_boundary_conditions(zero_file_paths, constant_file_paths, system_file_paths, v_boundary_strings)
-
-# TESTS
-        # data_import should have a test file for comparison
-        # export_hdf_files: I am not sure
-        # average pot_temperature should have arrays (in HDF5 format) with expected average
-        # forcast next flow rate should have 3 tests: minimum flow rate MAX T, maximum flow rate MAX T, interior flow rate MAX T."""
 
 
