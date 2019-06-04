@@ -2,14 +2,14 @@
 Welcome to StoveOpt's documentation!
 ====================================
 
-.. automodule:: StoveOpt.import_geometry
+.. automodule:: import_geometry
     :members:
 
 
-.. automodule:: StoveOpt.post_processor
+.. automodule:: post_processor
     :members:
 	
-.. automodule:: StoveOpt.new_case_setup
+.. automodule:: new_case_setup
     :members:
 
 .. toctree::
