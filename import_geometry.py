@@ -11,11 +11,9 @@ def correct_arguments(args):
     """
     Goal is to convert the geometry file argument to working syntax: Single quote, back slash
     
-    Parameters
-    ----------
-    args
-        object contains the contents of the input file specified by the user
-    
+    Args:
+        
+        args (dictionary): Object contains the contents of the input file specified by the user
     
     
     """
@@ -54,11 +52,12 @@ def locate_geometry(args):
     """
     Pull file path and name from the input file (command line argument)
     
-    Parameters
-    ----------
+    Args:
+        
+        args (dictionary): Object contains the contents of the input file specified by the user
     
-    agrs
-        Object from argparse that pulls filename and location of the stove geometry
+    Returns:
+        file_path (str): full file path for input stove geometry defined by user in input yaml file.
     
     
     """
@@ -80,12 +79,12 @@ def extract_geometry(file_path):
     """
     Pulling Data from excel workbook
     
-    Parameters
-    ----------
+    Args:
     
-    file_path
-        Windows format filepath with filename superimposed to the path. Tied to the input file
+        file_path (str): full file path for input stove geometry defined by user in input yaml file.
     
+    Returns:
+        pt#i (float): A series of points pulled from the user defined geometry
     
     """
     workbook = xlrd.open_workbook(file_path)
@@ -150,18 +149,14 @@ def create_fuel_blocks(pt0x, pt1x):
     """
     Creates geometry for the fuel block with the following assumptions:  Rectangular fuel source, Centered along the vertical axis of the combustion chamber, Width of fuel block is half the diameter of the combustion chamber, Assumed fuel height of 3 inches (0.0762 m), bottom of the fuel is 3 inches off the ground.
     
-    Parameters
-    ----------
+    Args:
     
-    pt0x
-        Type: float.
-        Bottom west vertice of the cookstove combustion chamber (origin)
-        
-    pt1x
-        Type: float.
-        Bottom east vertice of cookstove combustion chamber
+        pt0x (float): origin x-coordinate of cookstove geometry        
+        pt1x (float): Bottom east vertice of cookstove combustion chamber
     
-     
+     Returns:
+         
+         points (float): x,y,z coordinates of the wood fuel block
     
     """
     fuel_width = 0.5*(pt1x - pt0x)
@@ -193,11 +188,12 @@ def create_additional_front_points(pt6x, pt7x, pt14x, pt9z, pt15x, pt8z, pt14z, 
     """
     Create pot surface points to create faces--Naming them 21(L)-22(R) to not collide with current fuel vert numbers
     
-    Parameters
-    ----------
+    Args:
+        points (float): cookstove geometry
     
-    
-
+    Returns:
+        
+        points (float): series of points created as the back plane of the stove. Used to create a 2D geometry
     
     
     """
@@ -234,11 +230,13 @@ def points_to_strings(pt1x, pt1z, pt1y, pt2x, pt2z, pt2y, pt3x, pt3z, pt3y, pt4x
     """
     Take in the raw vertice information from spreadsheet, and format the floats into strings->For front vertices
     
-    Parameters
-    ----------
+    Args:
+        points (float): all front coordinates
     
+    Returns:
+        points as strings (str): Coordinates converted to strings compatible with openfoam convention (length 5).
     
-    
+
     """
     pt0xstr= str(pt0x)[:5]
     pt0zstr = str(pt0z)[:5]
@@ -331,10 +329,11 @@ def vertice_concatenate(pt1xstr, pt1zstr, pt1ystr, pt2xstr, pt2zstr, pt2ystr, pt
     """
     Convert the individual vertex strings and concatenate to the format required for blockmeshdict file
     
-    Parameters
-    ----------
+    Args:
+        points as strings (str): Coordinates converted to strings compatible with openfoam convention (length 5).
     
-    
+    Returns:
+        concatenated front points (str): The x,y,z values of front points concatenated into single vertice location
     
     
     """
@@ -378,8 +377,8 @@ def create_back_points(shift, pt1xstr, pt1zstr, pt1ystr, pt2xstr, pt2zstr, pt2ys
     """
     Back coordinates of the cookstove--simply shifting the x2 (y) coordinate back by a value shift
     
-    Parameters
-    ----------
+    Args:
+        concatenated back points (str): The x,y,z values of back points concatenated into single vertice location
     
     
     """

@@ -85,7 +85,7 @@ vertices
 
 blocks
 (
-   hex (16 17 39 38 19 18 40 41) (3 3 3) simpleGrading (1 1 1)  // wood
+	hex (16 17 39 38 19 18 40 41) (3 3 3) simpleGrading (1 1 1)  // wood
     hex (0 1 23 22 2 3 25 24) (3 3 3) simpleGrading (1 1 1) // bottom chamber
     hex (5 4 26 27 6 7 29 28) (3 3 3) simpleGrading (1 1 1) //top chamber
 	hex (2 3 25 24 5 4 26 27) (3 3 3) simpleGrading (1 1 1) // secondary air region

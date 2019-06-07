@@ -41,7 +41,6 @@ boundaryField
     type fixedValue;
     value uniform (0 -50.0 0);
     }
-}
 						
 												  
 												  

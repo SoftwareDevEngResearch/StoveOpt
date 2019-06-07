@@ -27,23 +27,19 @@ import matplotlib.pyplot as plt
 def data_import():
     """input a list of filenames to be pulled, put out an array of temperature data. search the foamfiles directory for fnames that start with case_ and tally the number for looping through the file. loop through each and pull data from the files (3) convert to numpy arrays (4) store.
     
-    Parameters
-    ----------
+    Args:
+        None
     
-    dir_list
-        Dictionary of directory titles in the 'foamfiles' directory that begin with string 'case_'
+    Returns:
+        dir_list (dict): Dictionary of directory titles in the 'foamfiles' directory that begin with string 'case_'
     
-    case_list
-        Dictionary of case file paths. Appended iteratively with dir_list entries.
+        case_list (dir): Dictionary of case file paths. Appended iteratively with dir_list entries.
     
-    length_case_list
-        Type: integer. Number of excecuted case files existing in foamfiles directory
+        length_case_list (int): Number of excecuted case files existing in foamfiles directory
     
-    list_temps
-        Type: float array. Populated with results from probing the CFD simulation around entire pot geometry
+        list_temps (array): Populated with results from probing the CFD simulation around entire pot geometry
     
-    list_velocities
-        Type: float array. Populated with velocity values written to "details" file in individual case files
+        list_velocities (array): Populated with velocity values written to "details" file in individual case files
 
 
     """
@@ -153,11 +149,20 @@ def average_pot_temperature(list_temps, length_case_list, list_velocities, case_
     """
     Compute average temperatures of each of the case temperature arrays previously extracted with data_import()
     
-    Parameters
-    ----------
+    Args:
+        dir_list (dict): Dictionary of directory titles in the 'foamfiles' directory that begin with string 'case_'
     
-    new_recarr
-        Numpy array where column 1 is case title (str), second column is velocites for respective case, and third column is computed average pot temperature for specific case
+        case_list (dir): Dictionary of case file paths. Appended iteratively with dir_list entries.
+    
+        length_case_list (int): Number of excecuted case files existing in foamfiles directory
+    
+        list_temps (array): Populated with results from probing the CFD simulation around entire pot geometry
+    
+        list_velocities (array): Populated with velocity values written to "details" file in individual case files
+
+    Returns:
+        
+        new_recarr (array): Numpy array where column 1 is case title (str), second column is velocites for respective case, and third column is computed average pot temperature for specific case
     
     
     """
@@ -302,11 +307,14 @@ def parse_and_sort_array(new_recarr, length_case_list):
     """
     Sort new_recarr array based on velocities, return the array with a new name
     
-    Parameters
-    ----------
+    Args:
+        new_recarr (array): Numpy array where column 1 is case title (str), second column is velocites for respective case, and third column is computed average pot temperature for specific case
     
-    array_sorted
-        Numpy array. Same data as new_recarr, but sorted based on velocities (least to greatest along column 2)
+        length_case_list (int): Number of excecuted case files existing in foamfiles directory
+    
+    Returns:
+        
+        array_sorted (array): Numpy array. Same data as new_recarr, but sorted based on velocities (least to greatest along column 2)
     
     """
     # Algorithm:
@@ -389,21 +397,26 @@ def evaluate_optimal(array_sorted, length_case_list):
     """
     The function evaluates the temperature and velocity data, and uses the information to identify where the optimals live within the range analayzed
     
-    Parameters
-    ----------
+    Args:
     
-    array_sorted
-        Numpy array of sorted velocities (column 1), and average pot temperatures (column 2) 
+        array_sorted (array): Numpy array of sorted velocities (column 1), and average pot temperatures (column 2) 
     
-    T_max 
-        Maximum average pot temperature of all analyzed cases within foamfiles directory
+        length_case_list (int): Number of excecuted case files existing in foamfiles directory
+
+    
+    Returns:
+    
+        T_max (float): Maximum average pot temperature of all analyzed cases within foamfiles directory
+                
+        velocity_max (float): Secondary air flow velocity associated with maximum average pot temperature
         
-    case_max
-        Case title associated with maximum average pot temp
+        T_max_index (int): Index associated with maximum temperature.
         
-    U_optimal 
-        Secondary air flow velocity associated with maximum average pot temperature
+        velocity_column (array): Column array with case velocities
         
+        temperature_column (array): Column array with average temperatures
+
+    
     """
     
     # Find maximum temperature
@@ -443,8 +456,21 @@ def evaluate_optimal(array_sorted, length_case_list):
 
 def plot_variables(array_sorted, T_max, velocity_max, T_max_index, velocity_column, temperature_column):
     """
-    create a matplot lib of the data extracted
-    
+    Args:
+        T_max (float): Maximum average pot temperature of all analyzed cases within foamfiles directory
+                
+        velocity_max (float): Secondary air flow velocity associated with maximum average pot temperature
+        
+        T_max_index (int): Index associated with maximum temperature.
+        
+        velocity_column (array): Column array with case velocities
+        
+        temperature_column (array): Column array with average temperatures
+
+        array_sorted (array): Numpy array of sorted velocities (column 1), and average pot temperatures (column 2) 
+
+    Returns:
+        None
     """
     #fig, axs = plt.subplots(1, 3, figsize=(5,5)) # figure with multiple plots
 
@@ -462,11 +488,22 @@ def compute_neighboring_velocities(array_sorted, T_max, velocity_max, T_max_inde
     """
     Use the maximum data solved for previously to compute 4 new neighboring velocities
     
-    Parameters
-    ----------
-    
-    v_cases_total_vector
-        Numpy array listing four velocities to be added to the case queue
+    Args:
+        T_max (float): Maximum average pot temperature of all analyzed cases within foamfiles directory
+                
+        velocity_max (float): Secondary air flow velocity associated with maximum average pot temperature
+        
+        T_max_index (int): Index associated with maximum temperature.
+        
+        velocity_column (array): Column array with case velocities
+        
+        temperature_column (array): Column array with average temperatures
+
+        array_sorted (array): Numpy array of sorted velocities (column 1), and average pot temperatures (column 2) 
+
+    Returns:
+            
+        v_cases_total_vector (array): Numpy array listing four velocities to be added to the case queue
         
     
     """

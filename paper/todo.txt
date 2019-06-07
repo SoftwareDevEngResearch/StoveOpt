@@ -1,0 +1,10 @@
+Paper to do:
+
+-Abstract?
+
+
+--The paper for now won't be 2 columned for now I guess.
+
+
+--setup the foam case with 1e-3 timestep maybe --GCI
+---see what the other cases use and mimic those--killed the current case

@@ -347,28 +347,6 @@ boundaryField
         type            inletOutlet;
         inletValue      uniform 293;
         value           nonuniform List<scalar> 
-18
-(
-293
-292.325
-293
-293
-292.467
-293
-293
-293.132
-293
-293
-293.12
-293
-293
-290.316
-293
-293
-286.942
-293
-)
-;
     }
     stove_body
     {
