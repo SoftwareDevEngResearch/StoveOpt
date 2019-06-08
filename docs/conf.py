@@ -20,8 +20,8 @@
 # -- Project information -----------------------------------------------------
 
 project = u'StoveOpt'
-copyright = u'2019, Liam Cassidy'
-author = u'Liam Cassidy'
+copyright = u'2019, Liam J. Cassidy'
+author = u'Liam J. Cassidy'
 
 # The short X.Y version
 version = u''
@@ -31,7 +31,6 @@ release = u''
 import os
 import sys
 sys.path.insert(0, os.path.abspath('..'))
-
 
 # -- General configuration ---------------------------------------------------
 
@@ -44,12 +43,13 @@ sys.path.insert(0, os.path.abspath('..'))
 # ones.
 extensions = [
     'sphinx.ext.autodoc',
+    'sphinx.ext.doctest',
+    'sphinx.ext.intersphinx',
     'sphinx.ext.coverage',
     'sphinx.ext.mathjax',
     'sphinx.ext.viewcode',
-    'sphinx.ext.githubpages',
-	'sphinx.ext.doctest',
 	'sphinx.ext.napoleon',
+    'sphinx.ext.githubpages',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -140,7 +140,7 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
     (master_doc, 'StoveOpt.tex', u'StoveOpt Documentation',
-     u'Liam Cassidy', 'manual'),
+     u'Liam J. Cassidy', 'manual'),
 ]
 
 
@@ -185,3 +185,8 @@ epub_exclude_files = ['search.html']
 
 
 # -- Extension configuration -------------------------------------------------
+
+# -- Options for intersphinx extension ---------------------------------------
+
+# Example configuration for intersphinx: refer to the Python standard library.
+intersphinx_mapping = {'https://docs.python.org/': None}
