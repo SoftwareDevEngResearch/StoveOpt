@@ -14,6 +14,21 @@ Welcome to StoveOpt's documentation!
 	
 .. automodule:: new_case_setup
     :members:
+
+.. automodule:: import_geometry
+    :members:
+	
+.. automodule:: create_blockmeshfile
+    :members:
+	
+.. automodule:: run_surrounding_cases
+    :members:
+	
+.. automodule:: runner
+    :members:
+	
+	
+	
 	
 .. toctree::
    :maxdepth: 2

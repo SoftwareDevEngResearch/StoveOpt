@@ -8,3 +8,8 @@ Paper to do:
 
 --setup the foam case with 1e-3 timestep maybe --GCI
 ---see what the other cases use and mimic those--killed the current case
+
+
+-documentation website is up and running. Need to add all the modules to the index file (i think)
+	-Make sure and run make html, copy all files from html dir, paste into the docs folder.
+
