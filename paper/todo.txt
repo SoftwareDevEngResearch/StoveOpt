@@ -1,3 +1,16 @@
+linux installation:
+--open website
+---run the update
+---do the python3 command
+
+how to include directories in the file upload
+--figure out how to get the pip install to work on Linux, and add instructions
+
+
+
+
+
+
 
 
 TO DO:

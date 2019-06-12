@@ -8,7 +8,7 @@ Created on Mon Apr 22 15:52:06 2019
 
 """The purpose of master.py is to call the functions in sequence from the varipus modules"""
 
-#from import_geometry import *
+from import_geometry import *
 import os
 import fileinput
 
@@ -18,10 +18,10 @@ import sys
 import argparse
 import yaml
 
-#from create_blockmeshfile import *
-#from run_surrounding_cases import *
-#from new_case_setup import *
-#from post_processor import *
+from create_blockmeshfile import *
+from run_surrounding_cases import *
+from new_case_setup import *
+from post_processor import *
 
 
 def main():
