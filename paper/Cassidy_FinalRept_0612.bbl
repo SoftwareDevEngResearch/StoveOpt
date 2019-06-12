@@ -1,0 +1,26 @@
+\begin{thebibliography}{1}
+\expandafter\ifx\csname url\endcsname\relax
+  \def\url#1{\texttt{#1}}\fi
+\expandafter\ifx\csname urlprefix\endcsname\relax\def\urlprefix{URL }\fi
+\expandafter\ifx\csname href\endcsname\relax
+  \def\href#1#2{#2} \def\path#1{#1}\fi
+
+\bibitem{Nordica}
+K.~M.~B. Nordica~MacCarty, Modeling of household biomass cookstoves: a review,
+  Energy for Sustainable Development 26 (2015) 1--13.
+
+\bibitem{Bond}
+e.~a. T.C.~Bond, Bounding the role of black carbon in the climate system: A
+  scientific assessment, Journal of geophysical research: atmospheres 118
+  (2013) 5380--5552.
+
+\bibitem{OFapi}
+O.~Ltd., Openfoam: User guide v1812,
+  \url{https://www.openfoam.com/documentation/guides/latest/doc/index.html}
+  [Accessed: June 2019] (2017).
+
+\bibitem{Janaf}
+U.~D. of~Commerce, Nist janaf tables, National Institute of Standards and
+  Technology.
+
+\end{thebibliography}

@@ -1,15 +1,42 @@
-Paper to do:
-
--Abstract?
 
 
---The paper for now won't be 2 columned for now I guess.
+TO DO:
+--Citation
+--Fix that header shit
+
+packaging:
+--PyPI might be it the only thing
+
+preparing the package upload:
+--clear out the files that exist in the foamfiles dir (besides case25-150) 
+		-Toss em into a results directory somewhere
 
 
---setup the foam case with 1e-3 timestep maybe --GCI
----see what the other cases use and mimic those--killed the current case
+-------STOVEOPT SKELETON
 
 
--documentation website is up and running. Need to add all the modules to the index file (i think)
-	-Make sure and run make html, copy all files from html dir, paste into the docs folder.
-
+setup.py
+/StoveOpt
+   |- __init__.py
+   |- _version.py
+   |- __main__.py
+   |- import_geometry.py
+   |- create_blockmeshfile.py
+   |- runner.py
+   |- run_surrounding_cases.py
+   |- post_processor.py
+   |- new_case_setup.py
+   /foam_files/
+	/counterFlowFlame2D/
+           # Case files: Using case_100 as ex.
+	   |-case_100
+	      /constant
+	         # Physical models used
+              /0
+	         # Initial conditions
+              /system
+	         # Mesh file, solution control
+   /inputFiles/
+   /stovegeom/
+   /tests/
+	

@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=latex 2019.6.5)  10 JUN 2019 14:50
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.6.5)  11 JUN 2019 18:26
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**Cassidy_ME599_2019_FinRept
-(./Cassidy_ME599_2019_FinRept.tex
+**Cassidy_FinalReport_0610
+(./Cassidy_FinalReport_0610.tex
 LaTeX2e <2017-04-15>
 Babel <3.18> and hyphenation patterns for 5 language(s) loaded.
 (./elsarticle.cls
@@ -42,10 +42,10 @@ Package: trig 2016/01/03 v1.10 sin cos tan (DPC)
 (/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
 File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
 )
-Package graphics Info: Driver file: dvips.def on input line 99.
+Package graphics Info: Driver file: pdftex.def on input line 99.
 
-(/usr/share/texlive/texmf-dist/tex/latex/graphics-def/dvips.def
-File: dvips.def 2017/06/20 v3.1d Graphics/color driver for dvips
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-def/pdftex.def
+File: pdftex.def 2018/01/08 v1.0l Graphics/color driver for pdftex
 ))
 \Gin@req@height=\dimen104
 \Gin@req@width=\dimen105
@@ -80,7 +80,7 @@ File: upsy.fd 2001/06/04 font definitions for U/psy.
 \@sep=\skip43
 \@@sep=\skip44
 
-(./Cassidy_ME599_2019_FinRept.spl)
+(./Cassidy_FinalReport_0610.spl)
 (/usr/share/texlive/texmf-dist/tex/latex/natbib/natbib.sty
 Package: natbib 2010/09/13 8.31b (PWD, AO)
 \bibhang=\skip45
@@ -89,7 +89,7 @@ LaTeX Info: Redefining \cite on input line 694.
 \c@NAT@ctr=\count93
 )
 \splwrite=\write3
-\openout3 = `Cassidy_ME599_2019_FinRept.spl'.
+\openout3 = `Cassidy_FinalReport_0610.spl'.
 
 
 (/usr/share/texlive/texmf-dist/tex/latex/geometry/geometry.sty
@@ -473,8 +473,8 @@ Package: ifthen 2014/09/29 v1.1c Standard LaTeX ifthen package (DPC)
 \rot@float@box=\box30
 \rot@mess@toks=\toks19
 )
-(./Cassidy_ME599_2019_FinRept.aux)
-\openout1 = `Cassidy_ME599_2019_FinRept.aux'.
+(./Cassidy_FinalReport_0610.aux)
+\openout1 = `Cassidy_FinalReport_0610.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/txmi/m/it on input line 125.
 LaTeX Font Info:    Try loading font information for OML+txmi on input line 125
@@ -518,10 +518,74 @@ LaTeX Font Info:    Try loading font information for OT1+txr on input line 125.
 (/usr/share/texlive/texmf-dist/tex/latex/txfonts/ot1txr.fd
 File: ot1txr.fd 2000/12/15 v3.1
 )
+(/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count99
+\scratchdimen=\dimen121
+\scratchbox=\box31
+\nofMPsegments=\count100
+\nofMParguments=\count101
+\everyMPshowfont=\toks20
+\MPscratchCnt=\count102
+\MPscratchDim=\dimen122
+\MPnumerator=\count103
+\makeMPintoPDFobject=\count104
+\everyMPtoPDFconversion=\toks21
+) (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
+Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
+
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/infwarerr.sty
+Package: infwarerr 2016/05/16 v1.4 Providing info/warning/error messages (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/oberdiek/grfext.sty
+Package: grfext 2016/05/16 v1.2 Manage graphics extensions (HO)
+
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/kvdefinekeys.sty
+Package: kvdefinekeys 2016/05/16 v1.4 Define keys (HO)
+
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
+Package: ltxcmds 2016/05/16 v1.23 LaTeX kernel commands for general use (HO)
+)))
+(/usr/share/texlive/texmf-dist/tex/latex/oberdiek/kvoptions.sty
+Package: kvoptions 2016/05/16 v3.12 Key value format for package options (HO)
+
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/kvsetkeys.sty
+Package: kvsetkeys 2016/05/16 v1.17 Key value parser (HO)
+
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/etexcmds.sty
+Package: etexcmds 2016/05/16 v1.6 Avoid name clashes with e-TeX commands (HO)
+
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ifluatex.sty
+Package: ifluatex 2016/05/16 v1.4 Provides the ifluatex switch (HO)
+Package ifluatex Info: LuaTeX not detected.
+)
+Package etexcmds Info: Could not find \expanded.
+(etexcmds)             That can mean that you are not using pdfTeX 1.50 or
+(etexcmds)             that some package has redefined \expanded.
+(etexcmds)             In the latter case, load this package earlier.
+)))
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
+Package: pdftexcmds 2018/01/21 v0.26 Utility functions of pdfTeX for LuaTeX (HO
+)
+Package pdftexcmds Info: LuaTeX not detected.
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+)
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
+38.
+Package grfext Info: Graphics extension search list:
+(grfext)             [.PNG,.eps]
+(grfext)             \AppendGraphicsExtensions on input line 456.
+
+(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
+e
+))
 *geometry* driver: auto-detecting
-*geometry* detected driver: dvips
+*geometry* detected driver: pdftex
 *geometry* verbose mode - [ preamble ] result:
-* driver: dvips
+* driver: pdftex
 * paper: custom
 * layout: <same size as paper>
 * layoutoffset:(h,v)=(0.0pt,0.0pt)
@@ -645,390 +709,856 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 Overfull \vbox (49.56999pt too high) has occurred while \output is active []
 
 
-[1
+[1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}
 
 
 ]
 
-! LaTeX Error: Cannot determine size of graphic in ./figures/geometryfrompres.P
-NG (no BoundingBox).
+! LaTeX Error: Environment wrapfigure undefined.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.207 \includegraphics{geometryfrompres.PNG}
-                                            
+l.207 \begin{wrapfigure}
+                        {\linewidth}
 ? 
-File: ./figures/geometryfrompres.PNG Graphic file (type eps)
-<./figures/geometryfrompres.PNG>
-Underfull \hbox (badness 1762) in paragraph at lines 206--208
+! Missing number, treated as zero.
+<to be read again> 
+                   }
+l.207 \begin{wrapfigure}{\linewidth}
+                                    
+? 
+! Illegal unit of measure (pt inserted).
+<to be read again> 
+                   }
+l.207 \begin{wrapfigure}{\linewidth}
+                                    
+? 
+<./figures/geometryfrompres.PNG, id=11, 343.88475pt x 286.671pt>
+File: ./figures/geometryfrompres.PNG Graphic file (type png)
+<use ./figures/geometryfrompres.PNG>
+Package pdftex.def Info: ./figures/geometryfrompres.PNG  used on input line 208
+.
+(pdftex.def)             Requested size: 222.0pt x 185.0654pt.
+
+! LaTeX Error: \caption outside float.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.210 	\caption
+               {Cookstove Geometry}
+? 
+
+! LaTeX Error: \begin{document} ended by \end{wrapfigure}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.211 \end{wrapfigure}
+                      
+? 
+
+Underfull \hbox (badness 1762) in paragraph at lines 206--212
 []\OT1/txr/m/n/10 The ro-bust qual-ity of the StoveOpt soft-ware is
  []
 
+
+! LaTeX Error: Environment wraptable undefined.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.215 \begin{wraptable}
+                       {\linewidth}
+? 
+! Missing number, treated as zero.
+<to be read again> 
+                   }
+l.215 \begin{wraptable}{\linewidth}
+                                   
+? 
+! Illegal unit of measure (pt inserted).
+<to be read again> 
+                   }
+l.215 \begin{wraptable}{\linewidth}
+                                   
+? 
+
+! LaTeX Error: \caption outside float.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.217 	\caption
+               {Geometry Parameter Table}
+? 
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.215 		     1 & Combustion chamber diameter & d_
-                                                 {c} \\
+l.222 		     Combustion chamber diameter & d_
+                                             {c} \\
 ? 
 ! Extra }, or forgotten $.
 <template> \unskip \hfil }
-                          \hskip \tabcolsep \endtemplate 
-l.216 		      2
-                & Combustion chamber height & h_{c} \\
+                          \hskip \tabcolsep \hskip -.5\arrayrulewidth \vrule...
+l.223 		     C
+              ombustion chamber height & h_{c} \\
 ? 
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.216 		      2
-                & Combustion chamber height & h_{c} \\
+l.223 		     C
+              ombustion chamber height & h_{c} \\
 ? 
 ! Missing } inserted.
 <inserted text> 
                 }
-l.216 		      2
-                & Combustion chamber height & h_{c} \\
+l.223 		     C
+              ombustion chamber height & h_{c} \\
 ? 
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.216 		      2 & Combustion chamber height & h_
-                                                {c} \\
+l.223 		     Combustion chamber height & h_
+                                           {c} \\
 ? 
 ! Extra }, or forgotten $.
 <template> \unskip \hfil }
-                          \hskip \tabcolsep \endtemplate 
-l.217 		       3
-                 & Secondary inlet height & h_{FD} \\
+                          \hskip \tabcolsep \hskip -.5\arrayrulewidth \vrule...
+l.224 		     S
+              econdary inlet height & h_{FD} \\
 ? 
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.217 		       3
-                 & Secondary inlet height & h_{FD} \\
+l.224 		     S
+              econdary inlet height & h_{FD} \\
 ? 
 ! Missing } inserted.
 <inserted text> 
                 }
-l.217 		       3
-                 & Secondary inlet height & h_{FD} \\
+l.224 		     S
+              econdary inlet height & h_{FD} \\
 ? 
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.217 		       3 & Secondary inlet height & h_
-                                              {FD} \\
+l.224 		     Secondary inlet height & h_
+                                        {FD} \\
 ? 
 ! Extra }, or forgotten $.
 <template> \unskip \hfil }
-                          \hskip \tabcolsep \endtemplate 
-l.218 			4
-           & Secondary inlet diameter & d_{FD} \\
+                          \hskip \tabcolsep \hskip -.5\arrayrulewidth \vrule...
+l.225 		     S
+              econdary inlet diameter & d_{FD} \\
 ? 
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.218 			4
-           & Secondary inlet diameter & d_{FD} \\
+l.225 		     S
+              econdary inlet diameter & d_{FD} \\
 ? 
 ! Missing } inserted.
 <inserted text> 
                 }
-l.218 			4
-           & Secondary inlet diameter & d_{FD} \\
+l.225 		     S
+              econdary inlet diameter & d_{FD} \\
 ? 
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.218 			4 & Secondary inlet diameter & d_
+l.225 		     Secondary inlet diameter & d_
                                           {FD} \\
 ? 
 ! Extra }, or forgotten $.
 <template> \unskip \hfil }
-                          \hskip \tabcolsep \endtemplate 
-l.219 			 5
-            & Channel width & w_{ch} \\ [1ex]
+                          \hskip \tabcolsep \hskip -.5\arrayrulewidth \vrule...
+l.226 		     C
+              hannel width & w_{ch} \\ [1ex]
 ? 
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.219 			 5
-            & Channel width & w_{ch} \\ [1ex]
+l.226 		     C
+              hannel width & w_{ch} \\ [1ex]
 ? 
 ! Missing } inserted.
 <inserted text> 
                 }
-l.219 			 5
-            & Channel width & w_{ch} \\ [1ex]
+l.226 		     C
+              hannel width & w_{ch} \\ [1ex]
 ? 
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.219 			 5 & Channel width & w_
-                                {ch} \\ [1ex]
+l.226 		     Channel width & w_
+                               {ch} \\ [1ex]
 ? 
 ! Extra }, or forgotten $.
 <template> \unskip \hfil }
-                          \hskip \tabcolsep \endtemplate 
-l.219 			 5 & Channel width & w_{ch} \\ [1ex]
-                                             
+                          \hskip \tabcolsep \hskip -.5\arrayrulewidth \vrule...
+l.226 		     Channel width & w_{ch} \\ [1ex]
+                                            
 ? 
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.219 			 5 & Channel width & w_{ch} \\ [1ex]
-                                             
+l.226 		     Channel width & w_{ch} \\ [1ex]
+                                            
 ? 
 ! Missing } inserted.
 <inserted text> 
                 }
-l.219 			 5 & Channel width & w_{ch} \\ [1ex]
-                                             
+l.226 		     Channel width & w_{ch} \\ [1ex]
+                                            
 ? 
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.220 			  6 & Channel height & h_
-                                  {ch} \\ [1ex]
+l.227 	             Channel height & h_
+                                       {ch} \\ [1ex]
 ? 
 ! Extra }, or forgotten $.
 <template> \unskip \hfil }
-                          \hskip \tabcolsep \endtemplate 
-l.220 			  6 & Channel height & h_{ch} \\ [1ex]
-                                               
-? 
-! Missing $ inserted.
-<inserted text> 
-                $
-l.220 			  6 & Channel height & h_{ch} \\ [1ex]
-                                               
-? 
-! Missing } inserted.
-<inserted text> 
-                }
-l.220 			  6 & Channel height & h_{ch} \\ [1ex]
-                                               
-? 
-! Missing $ inserted.
-<inserted text> 
-                $
-l.221 			   7 & Cone deck length & l_
-                                     {cd} \\ [1ex]
-? 
-! Extra }, or forgotten $.
-<template> \unskip \hfil }
-                          \hskip \tabcolsep \endtemplate 
-l.221 			   7 & Cone deck length & l_{cd} \\ [1ex]
+                          \hskip \tabcolsep \hskip -.5\arrayrulewidth \vrule...
+l.227 ...         Channel height & h_{ch} \\ [1ex]
                                                   
 ? 
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.221 			   7 & Cone deck length & l_{cd} \\ [1ex]
+l.227 ...         Channel height & h_{ch} \\ [1ex]
                                                   
 ? 
 ! Missing } inserted.
 <inserted text> 
                 }
-l.221 			   7 & Cone deck length & l_{cd} \\ [1ex]
+l.227 ...         Channel height & h_{ch} \\ [1ex]
                                                   
 ? 
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.222 			    8 & Pot spacing & p_
-                                 [sp} \\ [1ex]
-? 
-! Extra }, or forgotten $.
-l.222 			    8 & Pot spacing & p_[sp}
-                                      \\ [1ex]
+l.228 		     Cone deck length & l_
+                                  {cd} \\ [1ex]
 ? 
 ! Extra }, or forgotten $.
 <template> \unskip \hfil }
-                          \hskip \tabcolsep \endtemplate 
-l.222 			    8 & Pot spacing & p_[sp} \\ [1ex]
-                                              
+                          \hskip \tabcolsep \hskip -.5\arrayrulewidth \vrule...
+l.228 		     Cone deck length & l_{cd} \\ [1ex]
+                                               
 ? 
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.222 			    8 & Pot spacing & p_[sp} \\ [1ex]
-                                              
+l.228 		     Cone deck length & l_{cd} \\ [1ex]
+                                               
 ? 
 ! Missing } inserted.
 <inserted text> 
                 }
-l.222 			    8 & Pot spacing & p_[sp} \\ [1ex]
-                                              
+l.228 		     Cone deck length & l_{cd} \\ [1ex]
+                                               
+? 
+! Missing $ inserted.
+<inserted text> 
+                $
+l.229 	             Pot spacing & p_
+                                    [sp} \\ [1ex]
+? 
+! Extra }, or forgotten $.
+l.229 	             Pot spacing & p_[sp}
+                                         \\ [1ex]
+? 
+! Extra }, or forgotten $.
+<template> \unskip \hfil }
+                          \hskip \tabcolsep \hskip -.5\arrayrulewidth \vrule...
+l.229 	             Pot spacing & p_[sp} \\ [1ex]
+                                                 
+? 
+! Missing $ inserted.
+<inserted text> 
+                $
+l.229 	             Pot spacing & p_[sp} \\ [1ex]
+                                                 
+? 
+! Missing } inserted.
+<inserted text> 
+                }
+l.229 	             Pot spacing & p_[sp} \\ [1ex]
+                                                 
 ? 
 
-Underfull \hbox (badness 10000) in paragraph at lines 235--236
-[]\OT1/txr/m/n/10 LIAM PUT THE GEN-ERAL DIS-CRETIZED
+! LaTeX Error: \begin{document} ended by \end{wraptable}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.233 \end{wraptable}
+                     
+? 
+
+Underfull \hbox (badness 10000) in paragraph at lines 217--234
+[]\OT1/txr/m/n/10 Geometry Pa-ram-e-ter Ta-ble
  []
 
+
+Underfull \vbox (badness 7379) has occurred while \output is active []
+
+ [2 <./figures/geometryfrompres.PNG>]
 ! Missing } inserted.
 <inserted text> 
                 }
-l.241 \[$
+l.253 \[$
          \Psi$ = (RT)^-1\]
 ? 
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.241 \[$\Psi
+l.253 \[$\Psi
              $ = (RT)^-1\]
 ? 
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.241 \[$\Psi$ = (RT)^
+l.253 \[$\Psi$ = (RT)^
                       -1\]
 ? 
 ! Extra }, or forgotten $.
 \]  ->\relax \ifmmode \egroup 
                               $\hfil \egroup \end {trivlist}\else \@badmath ...
-l.241 \[$\Psi$ = (RT)^-1\]
+l.253 \[$\Psi$ = (RT)^-1\]
                           
 ? 
 ! Missing } inserted.
 <inserted text> 
                 }
-l.244 \[$
+l.256 \[$
          \mu$ = (A_{s}\sqrt{T})/(1 + T_{s}/T)\]
 ? 
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.244 \[$\mu
+l.256 \[$\mu
             $ = (A_{s}\sqrt{T})/(1 + T_{s}/T)\]
 ? 
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.244 \[$\mu$ = (A_
+l.256 \[$\mu$ = (A_
                    {s}\sqrt{T})/(1 + T_{s}/T)\]
 ? 
 ! Extra }, or forgotten $.
 \]  ->\relax \ifmmode \egroup 
                               $\hfil \egroup \end {trivlist}\else \@badmath ...
-l.244 \[$\mu$ = (A_{s}\sqrt{T})/(1 + T_{s}/T)\]
+l.256 \[$\mu$ = (A_{s}\sqrt{T})/(1 + T_{s}/T)\]
                                                
 ? 
-[2]
-! Missing } inserted.
-<inserted text> 
-                }
-l.273 ..._{P}) = (\phi_{E}-2\phi_{P} + phi_{W})/($
-                                                  \triangle$x^{2}) + (\phi_{...
 
-? 
-! Missing $ inserted.
-<inserted text> 
-                $
-l.273 ...\phi_{E}-2\phi_{P} + phi_{W})/($\triangle
-                                                  $x^{2}) + (\phi_{N}-2\phi_...
-
-? 
-! Missing $ inserted.
-<inserted text> 
-                $
-l.273 ...i_{E}-2\phi_{P} + phi_{W})/($\triangle$x^
-                                                  {2}) + (\phi_{N}-2\phi_{P}...
-
-? 
-! Missing $ inserted.
-<inserted text> 
-                $
-l.273 ...phi_{N}-2\phi_{P} + \phi_{S})/($\triangle
-                                                  $y^{2}$)\]
-? 
-! Missing $ inserted.
-<inserted text> 
-                $
-l.273 ..._{N}-2\phi_{P} + \phi_{S})/($\triangle$y^
-                                                  {2}$)\]
-? 
-
-! LaTeX Error: Bad math environment delimiter.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.273 ...phi_{P} + \phi_{S})/($\triangle$y^{2}$)\]
-                                                  
-? 
-
-! LaTeX Error: Something's wrong--perhaps a missing \item.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.277 \section
-              {Implementation}
-? 
-
-! LaTeX Error: Something's wrong--perhaps a missing \item.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.277 \section
-              {Implementation}
-? 
-! Missing } inserted.
-<inserted text> 
-                }
-l.277 \section{Implementation}
-                              
-? 
-
-Overfull \hbox (109.25993pt too wide) detected at line 277
-$ []$$\OMS/txsy/m/n/10 4$\OT1/txr/m/n/10 x$[]) + (\OML/txmi/m/it/10 ^^^[] \OMS/
-txsy/m/n/10 ^^@ \OT1/txr/m/n/10 2\OML/txmi/m/it/10 ^^^[] \OT1/txr/m/n/10 + \OML
-/txmi/m/it/10 ^^^[]\OT1/txr/m/n/10 )\OML/txmi/m/it/10 =\OT1/txr/m/n/10 ($$\OMS/
-txsy/m/n/10 4$\OT1/txr/m/n/10 y$[]$) []\OT1/txr/bx/n/10 Implementation[]
+Overfull \hbox (46.46297pt too wide) detected at line 285
+$ []$ 
  []
 
 
-! LaTeX Error: Cannot determine size of graphic in ./figures/skeleton.PNG (no B
-oundingBox).
+! LaTeX Error: Environment wrapfigure undefined.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.282 \includegraphics{skeleton.PNG}
+l.293 \begin{wrapfigure}
+                        {\linewidth}
+? 
+! Missing number, treated as zero.
+<to be read again> 
+                   }
+l.293 \begin{wrapfigure}{\linewidth}
                                     
 ? 
-File: ./figures/skeleton.PNG Graphic file (type eps)
-<./figures/skeleton.PNG>
-No file Cassidy_ME599_2019_FinRept.bbl.
+! Illegal unit of measure (pt inserted).
+<to be read again> 
+                   }
+l.293 \begin{wrapfigure}{\linewidth}
+                                    
+? 
 
-! LaTeX Error: \begin{trivlist} on input line 273 ended by \end{document}.
+LaTeX Warning: File `methaneair.PNG' not found on input line 294.
+
+
+! Package pdftex.def Error: File `methaneair.PNG' not found: using draft settin
+g.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.294 ...raphics[width=\linewidth]{methaneair.PNG}
+                                                  
+? 
+
+! LaTeX Error: \caption outside float.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.349 \end{document}
-                    
+l.295 	\caption
+               {Adiabatic Flame Temperature}
 ? 
-[3] (./Cassidy_ME599_2019_FinRept.aux) )
-(\end occurred inside a group at level 1)
 
-### semi simple group (level 1) entered at line 273 (\begingroup)
-### bottom level 
+! LaTeX Error: \begin{document} ended by \end{wrapfigure}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.296 \end{wrapfigure}
+                      
+? 
+
+Underfull \hbox (badness 6157) in paragraph at lines 292--297
+[]\OT1/txr/m/n/10 The op-ti-miza-tion pro-cess was de-signed based
+ []
+
+
+Underfull \hbox (badness 6032) in paragraph at lines 292--297
+\OT1/txr/m/n/10 on the as-sump-tion that the tem-per-a-ture of the
+ []
+
+
+Underfull \hbox (badness 2293) in paragraph at lines 292--297
+\OT1/txr/m/n/10 cookpot as a func-tion of sec-ondary air flow ve-
+ []
+
+
+Underfull \hbox (badness 3333) in paragraph at lines 292--297
+\OT1/txr/m/n/10 loc-ity would be-have qual-i-ta-tively as the am-bi-ent
+ []
+
+
+Underfull \hbox (badness 1635) in paragraph at lines 292--297
+\OT1/txr/m/n/10 tem-per-a-ture varies with re-spect to the air-fuel ra-
+ []
+
+
+Underfull \hbox (badness 1533) in paragraph at lines 292--297
+\OT1/txr/m/n/10 tio for methane-air com-bus-tion. For the pur-pose
+ []
+
+
+Underfull \hbox (badness 2351) in paragraph at lines 292--297
+\OT1/txr/m/n/10 of il-lus-tra-tion, the op-ti-miza-tion ap-proach as-sumes
+ []
+
+
+Underfull \hbox (badness 2173) in paragraph at lines 292--297
+\OT1/txr/m/n/10 qual-i-ta-tive be-hav-ior as de-picted by FIG-URE XX.
+ []
+
+[3]
+
+! LaTeX Error: Environment wrapfigure undefined.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.308 \begin{wrapfigure}
+                        {\linewidth}
+? 
+! Missing number, treated as zero.
+<to be read again> 
+                   }
+l.308 \begin{wrapfigure}{\linewidth}
+                                    
+? 
+! Illegal unit of measure (pt inserted).
+<to be read again> 
+                   }
+l.308 \begin{wrapfigure}{\linewidth}
+                                    
+? 
+<./figures/skeleton.PNG, id=23, 356.532pt x 327.02174pt>
+File: ./figures/skeleton.PNG Graphic file (type png)
+<use ./figures/skeleton.PNG>
+Package pdftex.def Info: ./figures/skeleton.PNG  used on input line 309.
+(pdftex.def)             Requested size: 222.0pt x 203.62961pt.
+
+! LaTeX Error: \caption outside float.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.310 	\caption
+               {Package Structure}
+? 
+
+! LaTeX Error: \begin{document} ended by \end{wrapfigure}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.311 \end{wrapfigure}
+                      
+? 
+
+Overfull \hbox (10.00002pt too wide) in paragraph at lines 309--312
+[][]
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+
+! LaTeX Error: Environment wrapfigure undefined.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.333 \begin{wrapfigure}
+                        {\linewidth}
+? 
+! Missing number, treated as zero.
+<to be read again> 
+                   }
+l.333 \begin{wrapfigure}{\linewidth}
+                                    
+? 
+! Illegal unit of measure (pt inserted).
+<to be read again> 
+                   }
+l.333 \begin{wrapfigure}{\linewidth}
+                                    
+? 
+<./figures/commandline.PNG, id=24, 475.7775pt x 15.6585pt>
+File: ./figures/commandline.PNG Graphic file (type png)
+<use ./figures/commandline.PNG>
+Package pdftex.def Info: ./figures/commandline.PNG  used on input line 334.
+(pdftex.def)             Requested size: 222.0pt x 7.30643pt.
+
+! LaTeX Error: \caption outside float.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.335 	\caption
+               {Command Line Instruction}
+? 
+
+! LaTeX Error: \begin{document} ended by \end{wrapfigure}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.336 \end{wrapfigure}
+                      
+? 
+[4 <./figures/skeleton.PNG> <./figures/commandline.PNG>]
+
+! LaTeX Error: Environment wraptable undefined.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.349 \begin{wraptable}
+                       {\linewidth}
+? 
+! Missing number, treated as zero.
+<to be read again> 
+                   }
+l.349 \begin{wraptable}{\linewidth}
+                                   
+? 
+! Illegal unit of measure (pt inserted).
+<to be read again> 
+                   }
+l.349 \begin{wraptable}{\linewidth}
+                                   
+? 
+
+! LaTeX Error: \caption outside float.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.365 	\caption
+               {Test Case Geometry}
+? 
+
+! LaTeX Error: \begin{document} ended by \end{wraptable}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.366 \end{wraptable}
+                     
+? 
+
+Underfull \hbox (badness 10000) in paragraph at lines 348--367
+[]\OT1/txr/m/n/10 The ge-om-e-try of the test case
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 348--367
+\OT1/txr/m/n/10 is pre-sented be-low in TA-BLE XX.
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 348--367
+[]
+ []
+
+
+! LaTeX Error: Environment wrapfigure undefined.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.372 \begin{wrapfigure}
+                        {\linewidth}
+? 
+! Missing number, treated as zero.
+<to be read again> 
+                   }
+l.372 \begin{wrapfigure}{\linewidth}
+                                    
+? 
+! Illegal unit of measure (pt inserted).
+<to be read again> 
+                   }
+l.372 \begin{wrapfigure}{\linewidth}
+                                    
+? 
+<./figures/mesh.PNG, id=31, 608.2725pt x 395.076pt>
+File: ./figures/mesh.PNG Graphic file (type png)
+<use ./figures/mesh.PNG>
+Package pdftex.def Info: ./figures/mesh.PNG  used on input line 373.
+(pdftex.def)             Requested size: 222.0pt x 144.18646pt.
+
+! LaTeX Error: \caption outside float.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.374 	\caption
+               {Test Case Mesh}
+? 
+
+! LaTeX Error: \begin{document} ended by \end{wrapfigure}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.375 \end{wrapfigure}
+                      
+? 
+
+Overfull \hbox (10.00002pt too wide) in paragraph at lines 373--376
+[][]
+ []
+
+
+Underfull \vbox (badness 1082) has occurred while \output is active []
+
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.379 The time step was restricted to 10^
+                                         {-3} seconds to provide reasonable ...
+
+? 
+! Missing $ inserted.
+<inserted text> 
+                $
+l.380 
+      
+? 
+
+Underfull \hbox (badness 10000) in paragraph at lines 379--380
+[]\OT1/txr/m/n/10 The time step was re-stricted to
+ []
+
+
+Overfull \hbox (917.9581pt too wide) in paragraph at lines 379--380
+\OT1/txr/m/n/10 10$[]\OML/txmi/m/it/10 secondstoprovidereasonabletemporalresolu
+tionwithlowcomputationalcost:Asdiscussedpreviously; thetemporalschemeusedisimpl
+icit; therefore; thesolutionisboundedregardlessofthetimestepused:Eachsimulation
+wasrunfor\OT1/txr/m/n/10 10\OML/txmi/m/it/10 seconds; withoutputfileswritteneve
+ry\OT1/txr/m/n/10 0\OML/txmi/m/it/10 :\OT1/txr/m/n/10 5\OML/txmi/m/it/10 second
+s:$ 
+ []
+
+
+! LaTeX Error: Environment wrapfigure undefined.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.383 \begin{wrapfigure}
+                        {\linewidth}
+? 
+! Missing number, treated as zero.
+<to be read again> 
+                   }
+l.383 \begin{wrapfigure}{\linewidth}
+                                    
+? 
+! Illegal unit of measure (pt inserted).
+<to be read again> 
+                   }
+l.383 \begin{wrapfigure}{\linewidth}
+                                    
+? 
+
+LaTeX Warning: File `prelim_result.PNG' not found on input line 384.
+
+
+! Package pdftex.def Error: File `prelim_result.PNG' not found: using draft set
+ting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.384 ...hics[width=\linewidth]{prelim_result.PNG}
+                                                  
+? 
+
+! LaTeX Error: \caption outside float.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.385 	\caption
+               {Pot Temperature vs Flow Velocity: Five Cases}
+? 
+
+! LaTeX Error: \begin{document} ended by \end{wrapfigure}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.386 \end{wrapfigure}
+                      
+? 
+
+Underfull \hbox (badness 2269) in paragraph at lines 382--387
+[]\OT1/txr/m/n/10 The av-er-age pot tem-per-a-tures for the first five
+ []
+
+
+Underfull \hbox (badness 2293) in paragraph at lines 382--387
+\OT1/txr/m/n/10 sim-u-la-tions were com-puted and plot-ted as shown
+ []
+
+
+Underfull \hbox (badness 7326) in paragraph at lines 389--390
+[]\OT1/txr/m/n/10 Following the pre-lim-i-nary anal-y-sis, the post-
+ []
+
+[5 <./figures/mesh.PNG>]
+
+! LaTeX Error: Environment wrapfigure undefined.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.391 \begin{wrapfigure}
+                        
+? 
+
+LaTeX Warning: File `second_runs.PNG' not found on input line 392.
+
+
+! Package pdftex.def Error: File `second_runs.PNG' not found: using draft setti
+ng.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.392 ...aphics[width=\linewidth]{second_runs.PNG}
+                                                  
+? 
+
+! LaTeX Error: \caption outside float.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.393 	\caption
+               {Pot Temperature vs Flow Velocity: Nine cases}
+? 
+
+! LaTeX Error: \begin{document} ended by \end{wrapfigure}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.394 \end{wrapfigure}
+                      
+? 
+
+Overfull \hbox (10.00002pt too wide) in paragraph at lines 392--395
+[][]
+ []
+
+
+Underfull \hbox (badness 3713) in paragraph at lines 399--400
+\OT1/txr/m/n/10 FOR COM-PAR-I-SON TO THE 52 CASE. THIS
+ []
+
+No file Cassidy_FinalReport_0610.bbl.
+[6
+
+] (./Cassidy_FinalReport_0610.aux) ) 
 Here is how much of TeX's memory you used:
- 2839 strings out of 494881
- 35541 string characters out of 6179628
- 195891 words of memory out of 5000000
- 6108 multiletter control sequences out of 15000+600000
- 25107 words of font info for 74 fonts, out of 8000000 for 9000
+ 3725 strings out of 494880
+ 49255 string characters out of 6179602
+ 210233 words of memory out of 5000000
+ 6925 multiletter control sequences out of 15000+600000
+ 38943 words of font info for 96 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
- 32i,12n,31p,1627b,264s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 41i,12n,31p,1451b,264s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/share/texlive/texmf-dist/fonts/enc/dv
+ips/base/8r.enc}</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/c
+mtt10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.p
+fb></usr/share/texlive/texmf-dist/fonts/type1/public/txfonts/rtxi.pfb></usr/sha
+re/texlive/texmf-dist/fonts/type1/public/txfonts/rtxmi.pfb></usr/share/texlive/
+texmf-dist/fonts/type1/public/txfonts/rtxr.pfb></usr/share/texlive/texmf-dist/f
+onts/type1/public/txfonts/txsy.pfb></usr/share/texlive/texmf-dist/fonts/type1/u
+rw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a
+.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on Cassidy_FinalReport_0610.pdf (6 pages, 196751 bytes).
+PDF statistics:
+ 69 PDF objects out of 1000 (max. 8388607)
+ 43 compressed objects within 1 object stream
+ 0 named destinations out of 1000 (max. 500000)
+ 21 words of extra memory for PDF output out of 10000 (max. 10000000)
 
-Output written on Cassidy_ME599_2019_FinRept.dvi (3 pages, 15696 bytes).

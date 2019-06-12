@@ -203,36 +203,46 @@ The intent of this paper is, first, to provide a review of existing computationa
 The StoveOpt software package convert user-defined geometric parameters to create input files compatible with OpenFOAM version 6, an open-source CFD package commonly used by engineers and scientists within academia and various other industries (LIAM GO REFERENCE THE SOFTWARE FROM OPENFOAM MAIN PAGE). Analyzing results of simulations of the user-defined geometry at various secondary air flow bulk velocites automates the creation of new text based OpenFOAM input files via a simple optimization approach. Cases are created and analyzed in an iterative fashion until an optimal secondary air flow velocity is recovered from the design space. A detailed discussion of the full methodology is as follows.   
 
 \subsection{Geometry}
-The robust quality of the StoveOpt software is boasted by the abilty for a user to define any cookstove geometry, allowing for a potential interpretation and optimization of any stove design. The initial geometry definition is performed by editing a formatted Excel (REFERENCE EXCEL??) file existing within the \textit{stovegeom} folder within the StoveOpt directory. The specific parameters required to fully define the geometry are presented below in Figure 1 and Table 1 (LEE FIGURE OUT HOW TO DO FIGURES BETTER).     
-\includegraphics{geometryfrompres.PNG}
+The robust quality of the StoveOpt software is boasted by the abilty for a user to define any cookstove geometry, allowing for a potential interpretation and optimization of any stove design. The initial geometry definition is performed by editing a formatted Excel (REFERENCE EXCEL??) file existing within the \textit{stovegeom} folder within the StoveOpt directory. The specific parameters required to fully define the geometry are presented below in Figure 1 and Table 1.
 
-\begin{table}[h!]
+\begin{wrapfigure}{\linewidth}
+	\includegraphics[width=\linewidth]{geometryfrompres.PNG}
 	\centering
-	 \begin{tabular}{||c c c c||} 
+	\caption{Figure 1. Cookstove Geometry}
+\end{wrapfigure}
+
+
+
+\begin{wraptable}{\linewidth}
+	\centering
+	\begin{tabular}{||c c||} 
 		  \hline
-		   Parameter & Variable Designation \\ [0.5ex] 
+		   Parameter & Variable \\ [0.4ex] 
 		    \hline\hline
-		     1 & Combustion chamber diameter & d_{c} \\ 
-		      2 & Combustion chamber height & h_{c} \\
-		       3 & Secondary inlet height & h_{FD} \\
-			4 & Secondary inlet diameter & d_{FD} \\
-			 5 & Channel width & w_{ch} \\ [1ex] 
-			  6 & Channel height & h_{ch} \\ [1ex]
-			   7 & Cone deck length & l_{cd} \\ [1ex]
-			    8 & Pot spacing & p_[sp} \\ [1ex]
-			  \hline
-			   \end{tabular}
-\end{table}
+		     Combustion chamber diameter & d_{c} \\ 
+		     Combustion chamber height & h_{c} \\
+		     Secondary inlet height & h_{FD} \\
+		     Secondary inlet diameter & d_{FD} \\
+		     Channel width & w_{ch} \\ [1ex] 
+	             Channel height & h_{ch} \\ [1ex]
+		     Cone deck length & l_{cd} \\ [1ex]
+	             Pot spacing & p_[sp} \\ [1ex]
+		     \hline
+		     \end{tabular}
+		     \caption{Table 1. Geometric Parameters}
+	   
+\end{wraptable}
+
 
 \subsection{Mesh}
-All mesh details for OpenFOAM CFD simulations are defined in the \textit{blockMeshDict} file within the \textit{system} folder of a case directory. OpenFOAM meshes are created by defining hexehedral blocks within using vertice definitions. The StoveOpt backend uses the user-defined geometry to create within the domain. The vertices written to the \textit{blockMeshDict} file are used to create the various blocks of the cookstove model.
+All mesh details for OpenFOAM CFD simulations are defined in the \textit{blockMeshDict} file within the \textit{system} folder of a case directory. OpenFOAM meshes are created by defining hexehedral blocks within using vertice definitions. The StoveOpt backend uses the user-defined geometry to create within the domain. The vertices written to the \textit{blockMeshDict} file are used to create the various blocks of the cookstove model. To validate the default level of mesh refinement, grid convergence studies are underway for the test case discussed in next sections. Results from the GCI will be covered in future work. 
+\subsection{Auxilary Conditions}
+FIGURE XX below represents the computational domain and will be used to discuss boundary and intial conditions. The cookstove primary inlet is modelled as a constant bulk flow velocity of 2.5 m/s composed of room temperature air composed of 23 percent $O_{2}$ and 77 percent $N_{2}$ by volume; the primary inlet flow velocity was computed based on air mass flow rates predicted by existing CFD work (LEEE REFERENCE THE UW ARTICLE... CAN I THOUGH?). The fuel zone was assumed to have a constant release of 100 percent methane from each edge. Although this is an inaccurate representation of solid-fuel combustion pertaining to cookstoves, this assumption has far-less complexity than wood combustion, and was deemed reasonable for initial development. The secondary air had the same composition of the primary inlet, however, the bulk flow velocity, although a constant value for an individual simulation, was variable among the different simulation cases; the secondary air flow velocity is the design variable for the optimization and, therefore, is not held constant. For the purposes of this analysis work, the secondary air bulk flow velocity ranged from 25 m/s and 150 m/s; this range was chosen to include the theoretical air-fuel ratio for stoichiometric methane-air combustion. The cookstove outlets were each modelled as atmospheric pressure outlets. The entire domain is assumed to be at a uniform 300 K intially. 
 
-To validate the default level of mesh refinement, grid convergence studies are underway for the test case discussed in next sections.   (LIAM REVISIT THIS AND POTENTIALLY DO THE ACTUAL GCI)
 
 \subsection{Physical Models}
 The study calls on an existing OpenFOAM solver called \textit{reactingFoam}, a transient CFD solver that includes combustion chemisty, heat transfer for a compressible fluid flow. The various methods used to model the flow physics are as follows; note, the following information was obtained directly from the OpenFOAM API guide (v1812) (LIAM GO GET A LINK).
 
-LIAM PUT THE GENERAL DISCRETIZED EQUATION RIGHT HERE. CAN MAKE IT GAUSS, OR VOLUMETRIC HOWEVER WANTED.
 
 The reacting flow is assumed to be laminar throughout the computational domain. This was chosen to limit the complexity and runtime of the first attempts of the software.
 
@@ -270,43 +280,136 @@ Divergence terms from the general transport equation are approximated using Open
 
 The Laplacian terms, similar to the gradient terms, are approximated using second order central differencing of the form:
 
-\[\nabla^{2}(\phi_{P}) = (\phi_{E}-2\phi_{P} + phi_{W})/($\triangle$x^{2}) + (\phi_{N}-2\phi_{P} + \phi_{S})/($\triangle$y^{2}$)\]
+\[\nabla^{2}(\phi_{P}) = (\phi_{E}-2\phi_{P} +\phi_{W})/(\triangle(x)^{2}) + (\phi_{N}-2\phi_{P} + \phi_{S})/(\triangle(y)^{2})\]
 
-\newline
+The spatial schemes are each second order accurate.
+
+\subsection{Optimization}
+The optimization process works to identify an optimal average secondary air flow velocity based on the average cook pot temperature. The optimization process, therefore, involves the secondary air flow velocity as the single design variable, and the average cook pot temperature as the single performance metric.  
+
+The optimization process was designed based on the assumption that the temperature of the cookpot as a function of secondary air flow velocity would behave qualitatively as the ambient temperature varies with respect to the air-fuel ratio for methane-air combustion. For the purpose of illustration, the optimization approach assumes qualitative behavior as depicted by Figure 2.
+\begin{wrapfigure}{\linewidth}
+	\includegraphics[width=\linewidth]{methaneair.PNG}
+	\caption{Figure 2. Adiabatic Flame Temperature}
+\end{wrapfigure}
+
+
+Given the results of the initial five simulation cases, the optimization algorithm results in four new cases. Because, theoretically, the optimal flow velocity might exist outside of the range of the first five cases, then the algorithm must have robust functionality. A schematic of the optimization algorithm is presented below in FIGURE XX.
+
+
 
 \section{Implementation}
 
 \subsection{Software Layout}
-The StoveOpt software contains a collection of modules, which are called within a the main program script. Additionally, the package contains a test suite compatible with Pytest and an input file which is to be included as a required command line argument. FIGURE XX below shows a general structure of the software package. Table XX below presents responsibilities of the modules within the package, as well the contents of the most important subdirectories (referenced from FIGURE XX) within the package..
+The StoveOpt software contains a collection of modules, which are called within a the main program script. Additionally, the package contains a test suite compatible with Pytest and an input file which is to be included as a required command line argument. Figure 3 below shows a general structure of the software package. Table 2 below presents responsibilities of the modules within the package, as well the contents of the most important subdirectories (referenced from Figure 3) within the package.
 
-\includegraphics{skeleton.PNG}
+\begin{wrapfigure}{\linewidth}
+	\includegraphics[width=\linewidth]{skeleton.PNG}
+	\caption{Figure 3. Package Structure}
+\end{wrapfigure}
 
-	PUT TABLE HERE
+
+PUT TABLE HERE LCCCCCCC
 
 
 
 \subsection{Functionality}
 
-
+CONSIDER MOVING THE TABLE DESCRIPTION INTO THIS.... I THINK THAT IS WHAT HE IS LOOKING FOR HERE
 
 \subsection{Dependencies}
-The StoveOpt software depends on various python packages, and additional software. 
+The StoveOpt software depends on various python packages, and additional software. For general navigation and file writing, os, sys, and shutil libraries are required. For array operations, Numpy is used. In order to use the input file and command line arguments, Argparse and Yaml packages are required. matplotlib is used for visualizing data. Lastly, the runner.py module, which is still in development stages, calls upon PyFoam, a python library used to control OpenFOAM simulations. In the current stage of the project, users must have a linux subsystem to run simulations; during development, a Ubuntu terminal was installed for this purpose.
+
 
 
 \subsection{Installation}
 
+LC THIS WILL BE THE WEDNESDAY PORTION OF THE WORK.....
+
 \subsection{Running the Software}
+To run the software, first, the user must add the filename and directory of the user-defined stove geometry workbook to the \textit{input.yaml} file within the \textit{inputFiles} directory. Subsequently, users should open a command prompt, and navigate to the StoveOpt directory. The software can then be initiated by calling the main script with the path of the input file as a required argument:
+
+\begin{wrapfigure}{\linewidth}
+	\includegraphics[width=\linewidth]{commandline.PNG}
+	\caption{Figure 4. Command Line Instruction}
+\end{wrapfigure}
+
+
+Following the intial run, five OpenFOAM case files will be written. At the current stage of the software, the user then must manually pre-process and run within a Linux-Ubuntu command window. To set up the mesh, users should navigate to a case directory within \textit{/foamfiles/counterFlowFlame2D}; running a \textit{dir} command within a case directory should show \textit{0}, \textit{constant}, and \textit{system} folders. Once at this location, the user should write the command \textit{blockMesh} in the Ubuntu command window; this calls an OpenFOAM script to create the meshed file. Once the mesh is complete, the user will see a success message, and then should run the command \textit{reactingFoam}. This begins the simulation as dictated by the control files. Running 2-3 cases in parallel is recomended to use computational time economically; multiple cases can be run by openning additional Ubuntu windows, and following the simulation process described above. 
+
+CONSIDER MAKING A LITTLE TABLE FOR INSTRUCTIONS
 
 \section{Test Case}
+A test case was run in order to evaluate the ability of the software package and understand necessary future work. The inputs used to run the case are shared below.
+
+\subsection{Geometry}
+
+The geometry of the test case is presented below in Table 2.
+
+\begin{wraptable}{\linewidth}
+	\centering
+	\begin{tabular}{||c c c||}
+		\hline
+		Parameter & Value & Unit \\ [0.4ex]
+		\hline\hline
+		Combustion chamber diameter & 10 & cm \\
+		Combustion chamber height & 29.1 & cm \\
+		Secondary inlet height & 15.5 & cm \\
+		Secondary inlet diameter & 1 & cm \\
+		Channel width & 3 & cm \\
+		Channel height & 20 & cm \\
+		Cone deck length & 7 & cm \\
+		Pot spacing & 3 & cm \\
+		\hline
+	\end{tabular}
+	\caption{Table 2. Test Case Geometry}
+\end{wraptable}
+
+
+\subsection{Mesh}
+A nonuniform mesh was created by assigning exactly three cells within each of the eleven blocks within the domain. The mesh resulted in 560 grid points and 297 cells. An image of the meshed test domain is shown below in Figure 5.
+
+\begin{wrapfigure}{\linewidth}
+	\includegraphics[width=\linewidth]{mesh.PNG}
+	\caption{Figure 5. Test Case Mesh}
+\end{wrapfigure}
+
+
+\subsection{Temporal Inputs}
+The time step was restricted to 10^{-3} seconds to provide reasonable temporal resolution with low computational cost. As discussed previously, the temporal scheme used is implicit, therefore, the solution is bounded regardless of the time step used. Each simulation was run for 10 seconds, with output files written every 0.5 seconds.
 
 \section{Results}
-%% Subsection for the inputs
-%% subsection for results
-%
+The average pot temperatures for the first five simulations were computed and plotted as shown in Figure 6. The preliminary maximum average pot temperature was about 312 K, and was associated with a seconday air flow velocity of 50 m/s. 
+\begin{wrapfigure}{\linewidth}
+	\includegraphics[width=\linewidth]{prelim_result.PNG}
+	\caption{Figure 6. Pot Temperature vs Flow Velocity: Five Cases}
+\end{wrapfigure}
+
+
+Following the preliminary analysis, the post-processor file was run to identify the max and create the new cases for the purposes of the optimization study. The algorithm correctly identified the flow velocity of 50 m/s as the current maximum, and created four new surrounding cases for the next round of simulaitons. The average pot temperature was plotted once again relative to the secondary air flow velocity; results are shown below in Figure 7.
+
+\begin{wrapfigure}
+	\includegraphics[width=\linewidth]{second_runs.PNG}
+	\caption{Figure 7. Pot Temperature vs Flow Velocity: Nine cases}
+\end{wrapfigure}
+
+
+After post-processing the second batch of simulations, a new optimal air flow rate was identified for the case of 52.8 m/s bulk flow velocity.
+
+CREATE A TEMP CONTOUR OF THE 50 CASE FOR COMPARISON TO THE 52 CASE. THIS WOULD BE A GOOD RESULT TO SHARE
+
 
 \section{Conclusions}
+The design curve derived from the test case presented reasonable qualitative results with respect to the expected behavior. Additionally, the algorithm written for the application correctly creates neighboring cases about the optimal design case. The complexities of biomass combustion are not included in the current state of the software. Finally, the cases are computationally expensive due to the nature of the problem, and will require more powerful equipment for most efficient future development.
+
+Algorithm correctly creates cases near maximum cases in the design space for a single design variable
+Firewood combustion not modelled
+Intensive computationally
+
 
 \section{Future Work}
+Future work is essential for the purposes of more robust modelling practice, as well as for a stronger optimization algorithm. First, in order to reduce the computational time, the model should be converted to a steady state model with an axisymetric boundary condition along the cookstove centerline. Moreover, a more accurate representation of biomass (both solid and gas phase) combustion is essential for providing a useful software tool for the cookstove development industry. Lastly, the optimization algorithm should be adapted to include multiple design variables to improve the search within the design space.
+
 
 
 
