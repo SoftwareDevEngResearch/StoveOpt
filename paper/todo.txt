@@ -1,29 +1,16 @@
-linux installation:
---open website
----run the update
----do the python3 command
 
-how to include directories in the file upload
---figure out how to get the pip install to work on Linux, and add instructions
-
-
-
-
+intstallation working.
 
 
 
 
 TO DO:
---Citation
 --Fix that header shit
+--zenodo thing
 
 packaging:
---PyPI might be it the only thing
 
 preparing the package upload:
---clear out the files that exist in the foamfiles dir (besides case25-150) 
-		-Toss em into a results directory somewhere
-
 
 -------STOVEOPT SKELETON
 

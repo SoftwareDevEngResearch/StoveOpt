@@ -180,10 +180,12 @@ Biomass \sep%
 Cookstove \sep%
 Computational Fluid Dynamics
 \end{keyword}
+\newline
+\newline
 
 
 \end{frontmatter}
-
+\newline
 %%
 %% Start line numbering here if you want
 %%
@@ -195,7 +197,7 @@ In recent years, numerous research studies have identified a compelling case for
 
 Research studies in the recent past have investigated the state of clean cooking development from social, economic, and technological perspectives. Within the clean cookstove industry, investigations focus primarily on understanding how to improve biomass combustion products and thermal efficiencies of cookstove technology. Research groups around the globe have contributed to the library of engineering evaluations of existing cookstoves by sharing model details and results of computational simulations. Many existing computational models, however, draw physical conclusions based on individual cookstove configurations leaving a vacancy in understanding for numerous different cookstove designs. The impact of producing a computational model of a biomass cookstove could be greatly improved by allowing designers to simulate a variety of cookstove configurations by way of a user-friendly open source software package. 
 
-The intent of this research is, first, to provide a review of existing computational modelling and software development efforts within the cookstove industry. Additionally, the paper presents a preliminary release of the StoveOpt (LC MAKE SURE CITATIONS ARE SOLID WHEN REFERRING TO OWN SOFTWARE) software package; an open source biomass cookstove computational fluid dynamics (CFD) simulator with built in optimimzation functionality. Specifically, the paper will discuss the methodoly used in the CFD simulations and the implementation of the software (design, layout, functionality, etc.). The paper will share results from a preliminary test case, draw conclusions about the package, and discuss future work.
+The intent of this research is, first, to provide a review of existing computational modelling and software development efforts within the cookstove industry. Additionally, the paper presents a preliminary release of the StoveOpt \cite{Liam} software package; an open source biomass cookstove computational fluid dynamics (CFD) simulator with built in optimimzation functionality. Specifically, the paper will discuss the methodoly used in the CFD simulations and the implementation of the software (design, layout, functionality, etc.). The paper will share results from a preliminary test case, draw conclusions about the package, and discuss future work.
 
 \section{Methodolgy}
 The StoveOpt software package convert user-defined geometric parameters to create case files compatible with OpenFOAM version 6, an open-source CFD package commonly used by engineers and scientists within academia and various industries. Cases are created and analyzed in an iterative fashion until an optimal secondary air flow velocity is recovered from the design space. A detailed discussion of the full methodology is as follows.   
@@ -204,12 +206,12 @@ The StoveOpt software package convert user-defined geometric parameters to creat
 The quality of the StoveOpt software is boasted by the abilty for a user to define any cookstove geometry, allowing for simulation and optimization of any stove design. The initial geometry definition is performed by editing a formatted Excel file existing within the \textit{stovegeom} directory within the StoveOpt master directory. The specific parameters required to fully define the geometry are presented below in Figure 1 and Table 1.
 
 \begin{wrapfigure}{\linewidth}
-	\includegraphics[width=\linewidth]{geometryfrompres.PNG}
 	\centering
+	\includegraphics[width=\linewidth]{geometryfrompres.PNG}
 	\caption{Figure 1. Cookstove Geometry}
 \end{wrapfigure}
 
-
+\newline
 
 \begin{wraptable}{\linewidth}
 	\centering
@@ -227,6 +229,8 @@ The quality of the StoveOpt software is boasted by the abilty for a user to defi
 	             Pot spacing & p_[sp} \\ [1ex]
 		     \hline
 		     \end{tabular}
+		     \newline
+		     \newline
 		     \caption{Table 1. Geometric Parameters}
 	   
 \end{wraptable}
@@ -242,6 +246,7 @@ Figure 2 below represents the computational domain and will be used to discuss a
 	\includegraphics[width=\linewidth]{auxconditions}
 	\centering
 	\caption{Figure 2. Auxilary Conditions}
+	\newline
 \end{wrapfigure}
 
 The cookstove primary inlet is modelled as a constant bulk flow velocity of 2.5 m/s of room temperature air composed of 23 percent $O_{2}$ and 77 percent $N_{2}$ by volume; the primary inlet flow velocity was derived based on air mass flow rates predicted by existing experimental results. The fuel zone was assumed to have a constant release of 100 percent methane from each edge. Although this is an inaccurate representation of solid-fuel combustion pertaining to cookstoves, this assumption has less complexity than actual wood combustion, and was deemed reasonable for initial development purposes. The secondary air had the same composition of the primary inlet, however, the bulk flow velocity, although a constant value for an individual simulation, was variable among the different simulation cases; the secondary air flow velocity is the design variable for the optimization and, therefore, is not held constant. For the purposes of this research, the secondary air bulk flow velocity ranged from 25 m/s and 150 m/s; this range was chosen to include the theoretical air-fuel ratio for stoichiometric methane-air combustion. The cookstove outlets were each modelled as atmospheric pressure outlets. The entire domain is assumed to be at a uniform 300 K intially. No slip condition was assigned to all wall boundaries of the cookstove. 
@@ -299,24 +304,27 @@ The optimization algorithm works to identify an optimal average secondary air fl
 
 
 
-The optimization process was designed based on the assumption that the temperature of the cookpot as a function of secondary air flow velocity would behave qualitatively as the ambient temperature varies with respect to the air-fuel ratio for methane-air combustion. For the purpose of illustration, the optimization approach assumes qualitative behavior as depicted by Figure 3.
+The optimization process was designed based on the assumption that the temperature of the cookpot as a function of secondary air flow velocity would behave qualitatively as the ambient temperature varies with respect to the air-fuel ratio for methane-air combustion. For the purpose of illustration, the optimization approach assumes qualitative behavior as depicted by Figure 4.
+\newline
 
 \begin{wrapfigure}{\linewidth}
 	\includegraphics[width=\linewidth]{methair.png}
 	\caption{Figure 4. Adiabatic Flame Temperature}
+	\newline
 \end{wrapfigure}
 
 
 Given the results of the initial five simulation cases, the optimization algorithm triggers four new cases. Because, theoretically, the optimal flow velocity might exist outside of the range of the first five cases, then the algorithm must have robust functionality. A schematic of the optimization algorithm is presented below in Figure 4.
 
 \section{Implementation}
+The StoveOpt software package uses continuous integration by way of the Travis CI tool. Additionally, documentation of the software is available via the link at the master github page (https://github.com/Liam-Cassidy/StoveOpt). Sphinx was used to create the documentation website.
 
 \subsection{Software Layout}
-The StoveOpt software contains a collection of modules, which are called within a the main program script. The package contains a test suite compatible with Pytest and an input file which is to be included as a required command line argument. Figure 3 below shows a general structure of the software package.
+The StoveOpt software contains a collection of modules, which are called within a the main program script. The package contains a test suite compatible with Pytest and an input file which is to be included as a required command line argument. Figure 5 below shows a general structure of the software package.
 
 \begin{wrapfigure}{\linewidth}
 	\includegraphics[width=\linewidth]{skeleton.PNG}
-	\caption{Figure 3. Package Structure}
+	\caption{Figure 5. Package Structure}
 \end{wrapfigure}
 
 \subsection{Functionality}
@@ -331,35 +339,37 @@ The core functionality of each of the modules within the package are presented b
 \subsection{Dependencies}
 The StoveOpt software depends on various python packages. For general navigation and file writing, os, sys, and shutil libraries are required. For array operations, Numpy is required. In order to use the input file and command line arguments, Argparse and Yaml packages are required. matplotlib is used for visualizing data. Lastly, the runner.py module, which is still in development stages, calls upon PyFoam, a python library used to control OpenFOAM simulations. In the current stage of the project, users must have a linux subsystem to run simulations; during development, a Ubuntu terminal was installed for this purpose.
 
+
 \subsection{Installation}
 
-LC THIS WILL BE THE WEDNESDAY PORTION OF THE WORK.....
+The software was packaged, and uploaded to PyPI. The package is installable via the pip command. In order to install the current version of the software, simply enter "pip install StoveOpt" from a command line that has pip already installed. 
 
 \subsection{Running the Software}
+The current state of the installable package is not capable of excecuting as designed due to complications with packaging. The OpenFOAM input files do not have file type extensions, and were not able to be packaged with the rest of the software. As noted in the $\textit{Installation}$ subsection, the package is installable. However, for the sake of testing the software, the package should be forked from github (https://github.com/Liam-Cassidy/StoveOpt) and cloned locally. The following conversation will assume the software was cloned locally.
+
 To run the software, first, the user must add the filename and directory of the user-defined stove geometry workbook to the \textit{input.yaml} file within the \textit{inputFiles} directory.
 
 \begin{wrapfigure}
 	\includegraphics[width=\linewidth]{inputyamlex.PNG}
-	\caption{Figure 4. Input Example}
+	\caption{Figure 6. Input Example}
 \end{wrapfigure}
 
 Subsequently, users should open a command prompt, and navigate to the StoveOpt directory. The software can then be initiated by calling the main script with the path of the input file as a required argument:
 
 \begin{wrapfigure}{\linewidth}
 	\includegraphics[width=\linewidth]{commandline.PNG}
-	\caption{Figure 4. Command Line Instruction}
+	\caption{Figure 7. Command Line Instruction}
 \end{wrapfigure}
 
-
 Following the intial run, five OpenFOAM case files will be written. The user then must manually pre-process and enter commands within a Linux-Ubuntu command window. To set up the mesh, users should navigate to a case directory within \textit{/foamfiles/counterFlowFlame2D}; running a \textit{dir} command within a case directory should show \textit{0}, \textit{constant}, and \textit{system} folders. Once at this location, the user should command \textit{blockMesh} in the Ubuntu command window; this calls an OpenFOAM script to create the meshed file. Once the mesh is complete, the user will see a success message, and then should run the command \textit{reactingFoam}. This begins the simulation as dictated by the control files. Running 2-3 cases in parallel is recomended to use computational time economically; multiple cases can be run by openning additional Ubuntu windows, and following the simulation process described above. 
-APPENDIX AND REFERENCE (SHOW SOME EXAMPLE COMMANDS)
-
 \section{Test Case}
 A test case was run in order to evaluate the ability of the software package and understand necessary future work. The inputs used to run the case are presented below.
 
 \subsection{Geometry}
 
-The geometry of the test case is presented below in Table 2.
+The geometry of the test case is presented below in Table 4.
+\newline
+\newline
 
 \begin{wraptable}{\linewidth}
 	\centering
@@ -377,16 +387,18 @@ The geometry of the test case is presented below in Table 2.
 		Pot spacing & 3 & cm \\
 		\hline
 	\end{tabular}
-	\caption{Table 2. Test Case Geometry}
+	\newline
+	\newline
+	\caption{Table 3. Test Case Geometry}
 \end{wraptable}
 
 
 \subsection{Mesh}
-A nonuniform mesh was created by assigning three cells within each of the eleven blocks within the domain. The mesh resulted in 560 grid points and 297 cells. An image of the meshed test domain is shown below in Figure 5.
-
+A nonuniform mesh was created by assigning three cells within each of the eleven blocks within the domain. The mesh resulted in 560 grid points and 297 cells. An image of the meshed test domain is shown below in Figure 8.
+\newline
 \begin{wrapfigure}{\linewidth}
 	\includegraphics[width=\linewidth]{mesh.PNG}
-	\caption{Figure 5. Test Case Mesh}
+	\caption{Figure 8. Test Case Mesh}
 \end{wrapfigure}
 
 
@@ -394,33 +406,30 @@ A nonuniform mesh was created by assigning three cells within each of the eleven
 The time step was restricted to $10^{-3}$ seconds to provide reasonable temporal resolution with low computational cost. As discussed previously, the temporal scheme used is implicit, therefore, the solution is bounded regardless of the time step used. Each simulation was run for 10 seconds, with output files written every 0.5 seconds.
 
 \section{Results}
-The average pot temperatures for the first five simulations were computed and plotted as shown in Figure 6. The preliminary maximum average pot temperature was about 312 K, and was associated with a secondary air flow velocity of 50 m/s.
+The average pot temperatures for the first five simulations were computed and plotted as shown in Figure 9. The preliminary maximum average pot temperature was about 312 K, and was associated with a secondary air flow velocity of 50 m/s.
 
 \begin{wrapfigure}{\linewidth}
 	\includegraphics[width=\linewidth]{prelim.png}
-	\caption{Figure 6. Pot Temperature vs Flow Velocity: Five Cases}
+	\caption{Figure 9. Pot Temperature vs Flow Velocity: Five Cases}
 \end{wrapfigure}
 
 
-Following the preliminary analysis, the post-processor file was run to identify the max and create the new cases for the purposes of the optimization study. The algorithm correctly identified the flow velocity of 50 m/s as the current maximum, and created four new surrounding cases for the next round of simulaitons. The average pot temperature was plotted once again relative to the secondary air flow velocity; results are shown below in Figure 7.
+Following the preliminary analysis, the post-processor file was run to identify the max and create the new cases for the purposes of the optimization study. The algorithm correctly identified the flow velocity of 50 m/s as the current maximum, and created four new surrounding cases for the next round of simulaitons. The average pot temperature was plotted once again relative to the secondary air flow velocity; results are shown below in Figure 10.
 
 \begin{wrapfigure}
 	\includegraphics[width=\linewidth]{second.png}
-	\caption{Figure 7. Pot Temperature vs Flow Velocity: Nine cases}
+	\caption{Figure 10. Pot Temperature vs Flow Velocity: Nine cases}
 \end{wrapfigure}
 
 
 After post-processing the second batch of simulations, a new optimal air flow rate was identified for the case of 52.8 m/s bulk flow velocity.
-
-CREATE A TEMP CONTOUR OF THE 50 CASE FOR COMPARISON TO THE 52 CASE. THIS WOULD BE A GOOD RESULT TO SHARE
-
 
 \section{Conclusions}
 The design curve derived from the test case presented reasonable qualitative results with respect to the expected behavior. Additionally, the algorithm written for the application correctly creates neighboring cases about the optimal design case. The complexities of biomass combustion are not included in the current state of the software. Finally, the cases are computationally expensive due to the nature of the problem, and will require more powerful equipment for most efficient future development.
 
 
 \section{Future Work}
-Future work is essential to provide more robust simulation and optimization, as well as for a stronger optimization algorithm. First, in order to reduce the computational time, the model should be converted to a steady state model with an axisymetric boundary condition along the cookstove centerline. Moreover, a more accurate representation of biomass combustion (both solid and gas phase) is essential for providing a useful software tool for the cookstove development industry. Lastly, the optimization algorithm should be adapted to include multiple design variables to improve the search within the design space.
+Future work is essential to provide more robust simulation and optimization, as well as for a stronger optimization algorithm. First, in order to reduce the computational time, the model should be converted to a steady state model with an axisymetric boundary condition along the cookstove centerline. Moreover, a more accurate representation of biomass combustion (both solid and gas phase) is essential for providing a useful software tool for the cookstove development industry. The optimization algorithm should be adapted to include multiple design variables to improve the search within the design space. Lastly, the packaging process needs to be modified to include all of the required OpenFOAM input files.
 
 \section{References}
 \bibliography{mybibfile}{}

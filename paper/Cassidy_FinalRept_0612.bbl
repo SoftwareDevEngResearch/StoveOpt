@@ -14,6 +14,10 @@ e.~a. T.C.~Bond, Bounding the role of black carbon in the climate system: A
   scientific assessment, Journal of geophysical research: atmospheres 118
   (2013) 5380--5552.
 
+\bibitem{Liam}
+L.~J. Cassidy, Stoveopt: A biomass cookstove combustion simulation tool,
+  Software Development for Engineering Research. 10.5281/zenodo.3244466.
+
 \bibitem{OFapi}
 O.~Ltd., Openfoam: User guide v1812,
   \url{https://www.openfoam.com/documentation/guides/latest/doc/index.html}
