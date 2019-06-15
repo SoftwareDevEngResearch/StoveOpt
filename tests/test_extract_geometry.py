@@ -8,14 +8,11 @@ import inspect
 import os
 import xlrd
 import numpy
-import tkinter as tk
-from tkinter import filedialog
 from pathlib import Path
 
 def extract_geometry(file_path):
     """Pulling Data from excel workbook"""
     file_path = Path(file_path)
-    
     
     """singleSlash = "\\" #    WOW THIS IS INCREDIBLE FRUSTRATING--I think the tests folder might need to be capatilized...
     doubleSlash = "\\\\"---THE FILEPATH NEEDS TO BE SINGLE FORWARD SLASHES FOR THE PATH FUNCTION TO WORK
@@ -73,6 +70,10 @@ def extract_geometry(file_path):
     pt16x = worksheet.cell(16,2).value
     pt16z = worksheet.cell(16,3).value
     pt16y = worksheet.cell(16,4).value
+    #U_100x = worksheet.cell(17,2).value
+    #U_100z = worksheet.cell(17,3).value # Not really using the other 2-dimensions for now
+    #U_100y = worksheet.cell(17,4).value
+    
     if pt16z == 0:
         print("Top point has a 0 height value--error in data import")
     return pt1x, pt1z, pt1y, pt2x, pt2z, pt2y, pt3x, pt3z, pt3y, pt4x, pt4z, pt4y, pt5x, pt5z, pt5y, pt6x, pt6z, pt6y, pt7x, pt7z, pt7y, pt8x, pt8z, pt8y, pt9x, pt9z, pt9y, pt10x, pt10z, pt10y, pt11x, pt11z, pt11y, pt12x, pt12z, pt12y, pt13x, pt13z, pt13y,  pt14x, pt14z, pt14y, pt15x, pt15z, pt15y, pt16x, pt16z, pt16y
@@ -80,11 +81,8 @@ def extract_geometry(file_path):
 
 def test_extract_geometry():
     """ purpose of the test is to test that geometry can be pulled from xlsx (modern) excel versions--comparing returned values to a locked spreadsheet"""
-    file_path = "C:/Oregon_State/Spring_2019/Soft_dev_eng/StoveOpt/tests/Stove_test_Geometry.xlsx"
+    file_path = 'C:/Oregon_State/Spring_2019/Soft_dev_eng/StoveOpt/tests/Stove_test_Geometry.xlsx'
     pt1x, pt1z, pt1y, pt2x, pt2z, pt2y, pt3x, pt3z, pt3y, pt4x, pt4z, pt4y, pt5x, pt5z, pt5y, pt6x, pt6z, pt6y, pt7x, pt7z, pt7y, pt8x, pt8z, pt8y, pt9x, pt9z, pt9y, pt10x, pt10z, pt10y, pt11x, pt11z, pt11y, pt12x, pt12z, pt12y, pt13x, pt13z, pt13y,  pt14x, pt14z, pt14y, pt15x, pt15z, pt15y, pt16x, pt16z, pt16y = extract_geometry(file_path)
-    assert pt1x == 0
-    assert pt1z == 0
-    assert pt1y == 0
     assert pt2x == 0.1
     assert pt2z == 0
     assert pt2y == 0
@@ -130,5 +128,8 @@ def test_extract_geometry():
     assert pt16x == 0.14
     assert pt16z == 0.33
     assert pt16y == 0
+    #assert U_100x == 1
+    #assert U_100y == 0
+    #assert U_100z == 0
     
     

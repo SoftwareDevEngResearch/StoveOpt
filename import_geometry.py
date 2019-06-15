@@ -5,13 +5,18 @@ Created on Mon Apr 22 15:39:27 2019
 @author: Lee
 """
 import numpy
-import tkinter as tk
-from tkinter import filedialog
 
 """Need to figure out the correct_arguments script"""
 def correct_arguments(args):
-    """Goal is to convert the geometry file argument to working syntax:
-    Single quote, back slash"""
+    """
+    Goal is to convert the geometry file argument to working syntax: Single quote, back slash
+    
+    Args:
+        
+        args (dictionary): Object contains the contents of the input file specified by the user
+    
+    
+    """
     input_file = args.inputfile
     with open(input_file, 'r') as f:
         doc = yaml.load(f)
@@ -44,7 +49,18 @@ def correct_arguments(args):
         
 import yaml
 def locate_geometry(args):
-    """ Pull file path and name from the input file (command line argument)"""
+    """
+    Pull file path and name from the input file (command line argument)
+    
+    Args:
+        
+        args (dictionary): Object contains the contents of the input file specified by the user
+    
+    Returns:
+        file_path (str): full file path for input stove geometry defined by user in input yaml file.
+    
+    
+    """
     input_file = args.inputfile #first element of args = input file
     with open(input_file, 'r') as f:
         # Pull the filename and path for geometry. return file path and name for future modification
@@ -60,7 +76,17 @@ def locate_geometry(args):
        
 import xlrd
 def extract_geometry(file_path):
-    """Pulling Data from excel workbook"""
+    """
+    Pulling Data from excel workbook
+    
+    Args:
+    
+        file_path (str): full file path for input stove geometry defined by user in input yaml file.
+    
+    Returns:
+        pt#i (float): A series of points pulled from the user defined geometry
+    
+    """
     workbook = xlrd.open_workbook(file_path)
     worksheet = workbook.sheet_by_name('Outputs')
     pt0x = worksheet.cell(1,2).value
@@ -111,25 +137,34 @@ def extract_geometry(file_path):
     pt15x = worksheet.cell(16,2).value
     pt15z = worksheet.cell(16,3).value
     pt15y = worksheet.cell(16,4).value
+    U_100x = worksheet.cell(17,2).value
+    U_100z = worksheet.cell(17,3).value # Not really using the other 2-dimensions for now
+    U_100y = worksheet.cell(17,4).value
     if pt15z == 0:
         print("Top point has a 0 height value--error in data import")
-    return pt1x, pt1z, pt1y, pt2x, pt2z, pt2y, pt3x, pt3z, pt3y, pt4x, pt4z, pt4y, pt5x, pt5z, pt5y, pt6x, pt6z, pt6y, pt7x, pt7z, pt7y, pt8x, pt8z, pt8y, pt9x, pt9z, pt9y, pt10x, pt10z, pt10y, pt11x, pt11z, pt11y, pt12x, pt12z, pt12y, pt13x, pt13z, pt13y,  pt14x, pt14z, pt14y, pt15x, pt15z, pt15y, pt0x, pt0z, pt0y
+    return U_100x, U_100y, U_100z, pt1x, pt1z, pt1y, pt2x, pt2z, pt2y, pt3x, pt3z, pt3y, pt4x, pt4z, pt4y, pt5x, pt5z, pt5y, pt6x, pt6z, pt6y, pt7x, pt7z, pt7y, pt8x, pt8z, pt8y, pt9x, pt9z, pt9y, pt10x, pt10z, pt10y, pt11x, pt11z, pt11y, pt12x, pt12z, pt12y, pt13x, pt13z, pt13y,  pt14x, pt14z, pt14y, pt15x, pt15z, pt15y, pt0x, pt0z, pt0y
 
 # Create additional front face points including wood zone
 def create_fuel_blocks(pt0x, pt1x):
-    """Uses the geometric variables computed in assign_geomvars to create zones for the wood fuel zone:
-       1) Rectangular fuel source
-       2) centered along the flow axis of combustion chamber
-       3) Half the width of the bottom of the chamber
-       4) Assumed fuel wood height of 3 inches (0.0762 m)
-       5) Assumed the bottom of the wood is 3 inches off of the ground (0.0762 m)
-       6) pt17 is bottom left, pt18 is bottom right, pt19 is top right, pt20 is top left"""
-    fuel_width = (pt1x - pt0x)/2
+    """
+    Creates geometry for the fuel block with the following assumptions:  Rectangular fuel source, Centered along the vertical axis of the combustion chamber, Width of fuel block is half the diameter of the combustion chamber, Assumed fuel height of 3 inches (0.0762 m), bottom of the fuel is 3 inches off the ground.
+    
+    Args:
+    
+        pt0x (float): origin x-coordinate of cookstove geometry        
+        pt1x (float): Bottom east vertice of cookstove combustion chamber
+    
+     Returns:
+         
+         points (float): x,y,z coordinates of the wood fuel block
+    
+    """
+    fuel_width = 0.5*(pt1x - pt0x)
     fuel_x_center = fuel_width
     fuel_x_left_coord = fuel_x_center - (fuel_width)/2
     fuel_x_right_coord = fuel_x_center + (fuel_width)/2
-    fuel_height = 0.0762 # [m]
-    fuel_bottom_coords = 0.0762
+    fuel_height = 0.02 # [m]
+    fuel_bottom_coords = 0.02
     fuel_top_coords = fuel_bottom_coords + fuel_height
     pt16x = fuel_x_left_coord
     pt17x = fuel_x_right_coord
@@ -149,8 +184,19 @@ def create_fuel_blocks(pt0x, pt1x):
 # 21 defined by 7x and 15z
 # 44 defined by 14x and 9z
 # 46 defined by 15x and 8z    
-def create_additional_front_points(pt6x, pt14z, pt7x, pt15z, pt14x, pt9z, pt15x, pt8z):
-    """Create pot surface points to create faces--Nameing them 21(L)-22(R) to not collide with current fuel vert numbers"""
+def create_additional_front_points(pt6x, pt7x, pt14x, pt9z, pt15x, pt8z, pt14z, pt9x, pt8x, pt15z):
+    """
+    Create pot surface points to create faces--Naming them 21(L)-22(R) to not collide with current fuel vert numbers
+    
+    Args:
+        points (float): cookstove geometry
+    
+    Returns:
+        
+        points (float): series of points created as the back plane of the stove. Used to create a 2D geometry
+    
+    
+    """
     # Left point
     pt20x = pt6x
     pt20z = pt14z
@@ -168,11 +214,30 @@ def create_additional_front_points(pt6x, pt14z, pt7x, pt15z, pt14x, pt9z, pt15x,
     pt46z = pt8z
     pt46y = 0
     
-    return pt20x, pt20z, pt20y, pt21x, pt21z, pt21y, pt44x, pt44z, pt44y, pt46x, pt46z, pt46y
+    pt48x = pt9x
+    pt48z = pt14z
+    pt48y = 0
+    
+    pt50x =  pt8x
+    pt50z = pt15z
+    pt50y = 0
+    
+    
+    return pt48x, pt48z, pt48y, pt20x, pt20z, pt20y, pt21x, pt21z, pt21y, pt44x, pt44z, pt44y, pt46x, pt46z, pt46y, pt50x, pt50z, pt50y
 
 # Stove front (0-15), wood front (16-19), additional points front (20,21,44,46)
-def points_to_strings(pt1x, pt1z, pt1y, pt2x, pt2z, pt2y, pt3x, pt3z, pt3y, pt4x, pt4z, pt4y, pt5x, pt5z, pt5y, pt6x, pt6z, pt6y, pt7x, pt7z, pt7y, pt8x, pt8z, pt8y, pt9x, pt9z, pt9y, pt10x, pt10z, pt10y, pt11x, pt11z, pt11y, pt12x, pt12z, pt12y, pt13x, pt13z, pt13y,  pt14x, pt14z, pt14y, pt15x, pt15z, pt15y, pt0x, pt0z, pt0y, pt17x, pt18x, pt19x, pt16x, pt17z, pt18z, pt19z, pt16z, pt17y, pt18y, pt19y, pt16y, pt20x, pt20z, pt20y, pt21x, pt21z, pt21y, pt44x, pt44z, pt44y, pt46x, pt46z, pt46y):
-    """ Take in the raw vertice information from spreadsheet, and format the floats into strings->For front vertices"""
+def points_to_strings(pt1x, pt1z, pt1y, pt2x, pt2z, pt2y, pt3x, pt3z, pt3y, pt4x, pt4z, pt4y, pt5x, pt5z, pt5y, pt6x, pt6z, pt6y, pt7x, pt7z, pt7y, pt8x, pt8z, pt8y, pt9x, pt9z, pt9y, pt10x, pt10z, pt10y, pt11x, pt11z, pt11y, pt12x, pt12z, pt12y, pt13x, pt13z, pt13y,  pt14x, pt14z, pt14y, pt15x, pt15z, pt15y, pt0x, pt0z, pt0y, pt17x, pt18x, pt19x, pt16x, pt17z, pt18z, pt19z, pt16z, pt17y, pt18y, pt19y, pt16y, pt20x, pt20z, pt20y, pt21x, pt21z, pt21y, pt44x, pt44z, pt44y, pt46x, pt46z, pt46y, pt48x, pt48y, pt48z, pt50x, pt50y, pt50z):
+    """
+    Take in the raw vertice information from spreadsheet, and format the floats into strings->For front vertices
+    
+    Args:
+        points (float): all front coordinates
+    
+    Returns:
+        points as strings (str): Coordinates converted to strings compatible with openfoam convention (length 5).
+    
+
+    """
     pt0xstr= str(pt0x)[:5]
     pt0zstr = str(pt0z)[:5]
     pt0ystr = str(pt0y)[:5]  
@@ -247,13 +312,31 @@ def points_to_strings(pt1x, pt1z, pt1y, pt2x, pt2z, pt2y, pt3x, pt3z, pt3y, pt4x
     pt46xstr= str(pt46x)[:5]
     pt46zstr = str(pt46z)[:5]
     pt46ystr = str(pt46y)[:5]
-    return pt1xstr, pt1zstr, pt1ystr, pt2xstr, pt2zstr, pt2ystr, pt3xstr, pt3zstr, pt3ystr, pt4xstr, pt4zstr, pt4ystr, pt5xstr, pt5zstr, pt5ystr, pt6xstr, pt6zstr, pt6ystr, pt7xstr, pt7zstr, pt7ystr, pt8xstr, pt8zstr, pt8ystr, pt9xstr, pt9zstr, pt9ystr, pt10xstr, pt10zstr, pt10ystr, pt11xstr, pt11zstr, pt11ystr, pt12xstr, pt12zstr, pt12ystr, pt13xstr, pt13zstr, pt13ystr,  pt14xstr, pt14zstr, pt14ystr, pt15xstr, pt15zstr, pt15ystr, pt0xstr, pt0zstr, pt0ystr, pt16xstr, pt16zstr, pt16ystr, pt17xstr, pt17zstr, pt17ystr, pt18xstr, pt18zstr, pt18ystr, pt19xstr, pt19zstr, pt19ystr, pt20xstr, pt20zstr, pt20ystr, pt21xstr, pt21zstr, pt21ystr, pt44xstr, pt44zstr, pt44ystr, pt46xstr, pt46zstr, pt46ystr
+    
+    pt48xstr= str(pt48x)[:5]
+    pt48zstr = str(pt48z)[:5]
+    pt48ystr = str(pt48y)[:5]
+    
+    pt50xstr= str(pt50x)[:5]
+    pt50zstr = str(pt50z)[:5]
+    pt50ystr = str(pt50y)[:5]
+    return pt1xstr, pt1zstr, pt1ystr, pt2xstr, pt2zstr, pt2ystr, pt3xstr, pt3zstr, pt3ystr, pt4xstr, pt4zstr, pt4ystr, pt5xstr, pt5zstr, pt5ystr, pt6xstr, pt6zstr, pt6ystr, pt7xstr, pt7zstr, pt7ystr, pt8xstr, pt8zstr, pt8ystr, pt9xstr, pt9zstr, pt9ystr, pt10xstr, pt10zstr, pt10ystr, pt11xstr, pt11zstr, pt11ystr, pt12xstr, pt12zstr, pt12ystr, pt13xstr, pt13zstr, pt13ystr,  pt14xstr, pt14zstr, pt14ystr, pt15xstr, pt15zstr, pt15ystr, pt0xstr, pt0zstr, pt0ystr, pt16xstr, pt16zstr, pt16ystr, pt17xstr, pt17zstr, pt17ystr, pt18xstr, pt18zstr, pt18ystr, pt19xstr, pt19zstr, pt19ystr, pt20xstr, pt20zstr, pt20ystr, pt21xstr, pt21zstr, pt21ystr, pt44xstr, pt44zstr, pt44ystr, pt46xstr, pt46zstr, pt46ystr, pt48xstr, pt48zstr, pt48ystr, pt50xstr, pt50zstr, pt50ystr
 
 
 # Stove front (0-15), wood front (16-19), additional points front (20,21,44,46)
 # x = x1, y = x2, z = x3 coordinates based on OpenFOAM convention
-def vertice_concatenate(pt1xstr, pt1zstr, pt1ystr, pt2xstr, pt2zstr, pt2ystr, pt3xstr, pt3zstr, pt3ystr, pt4xstr, pt4zstr, pt4ystr, pt5xstr, pt5zstr, pt5ystr, pt6xstr, pt6zstr, pt6ystr, pt7xstr, pt7zstr, pt7ystr, pt8xstr, pt8zstr, pt8ystr, pt9xstr, pt9zstr, pt9ystr, pt10xstr, pt10zstr, pt10ystr, pt11xstr, pt11zstr, pt11ystr, pt12xstr, pt12zstr, pt12ystr, pt13xstr, pt13zstr, pt13ystr,  pt14xstr, pt14zstr, pt14ystr, pt15xstr, pt15zstr, pt15ystr, pt0xstr, pt0zstr, pt0ystr, pt16xstr, pt16zstr, pt16ystr, pt17xstr, pt17zstr, pt17ystr, pt18xstr, pt18zstr, pt18ystr, pt19xstr, pt19zstr, pt19ystr, pt20xstr, pt20zstr, pt20ystr, pt21xstr, pt21zstr, pt21ystr, pt44xstr, pt44zstr, pt44ystr, pt46xstr, pt46zstr, pt46ystr): 
-    """convert the individual vertex strings and concatenate to the format required for blockmeshdict file"""
+def vertice_concatenate(pt1xstr, pt1zstr, pt1ystr, pt2xstr, pt2zstr, pt2ystr, pt3xstr, pt3zstr, pt3ystr, pt4xstr, pt4zstr, pt4ystr, pt5xstr, pt5zstr, pt5ystr, pt6xstr, pt6zstr, pt6ystr, pt7xstr, pt7zstr, pt7ystr, pt8xstr, pt8zstr, pt8ystr, pt9xstr, pt9zstr, pt9ystr, pt10xstr, pt10zstr, pt10ystr, pt11xstr, pt11zstr, pt11ystr, pt12xstr, pt12zstr, pt12ystr, pt13xstr, pt13zstr, pt13ystr,  pt14xstr, pt14zstr, pt14ystr, pt15xstr, pt15zstr, pt15ystr, pt0xstr, pt0zstr, pt0ystr, pt16xstr, pt16zstr, pt16ystr, pt17xstr, pt17zstr, pt17ystr, pt18xstr, pt18zstr, pt18ystr, pt19xstr, pt19zstr, pt19ystr, pt20xstr, pt20zstr, pt20ystr, pt21xstr, pt21zstr, pt21ystr, pt44xstr, pt44zstr, pt44ystr, pt46xstr, pt46zstr, pt46ystr, pt48xstr, pt48zstr, pt48ystr, pt50xstr, pt50zstr, pt50ystr): 
+    """
+    Convert the individual vertex strings and concatenate to the format required for blockmeshdict file
+    
+    Args:
+        points as strings (str): Coordinates converted to strings compatible with openfoam convention (length 5).
+    
+    Returns:
+        concatenated front points (str): The x,y,z values of front points concatenated into single vertice location
+    
+    
+    """
     # Stove Body
     pt0str = "(" + pt0ystr + " " + pt0xstr + " " + pt0zstr + ")"
     pt1str = "(" + pt1ystr + " " + pt1xstr + " " + pt1zstr + ")"
@@ -283,11 +366,22 @@ def vertice_concatenate(pt1xstr, pt1zstr, pt1ystr, pt2xstr, pt2zstr, pt2ystr, pt
     pt21str = "(" + pt21ystr + " " + pt21xstr + " " + pt21zstr + ")"
     pt44str = "(" + pt44ystr + " " + pt44xstr + " " + pt44zstr + ")"
     pt46str = "(" + pt46ystr + " " + pt46xstr + " " + pt46zstr + ")"
-    return pt0str, pt1str, pt2str, pt3str, pt4str, pt5str, pt6str, pt7str, pt8str, pt9str, pt10str, pt11str, pt12str, pt13str, pt14str, pt15str, pt16str, pt17str, pt18str, pt19str, pt20str, pt21str, pt44str, pt46str
+    pt48str = "(" + pt48ystr + " " + pt48xstr + " " + pt48zstr + ")"
+    pt50str = "(" + pt50ystr + " " + pt50xstr + " " + pt50zstr + ")"
+    
+    
+    return pt0str, pt1str, pt2str, pt3str, pt4str, pt5str, pt6str, pt7str, pt8str, pt9str, pt10str, pt11str, pt12str, pt13str, pt14str, pt15str, pt16str, pt17str, pt18str, pt19str, pt20str, pt21str, pt44str, pt46str, pt48str, pt50str
 
 
-def create_back_points(shift, pt1xstr, pt1zstr, pt1ystr, pt2xstr, pt2zstr, pt2ystr, pt3xstr, pt3zstr, pt3ystr, pt4xstr, pt4zstr, pt4ystr, pt5xstr, pt5zstr, pt5ystr, pt6xstr, pt6zstr, pt6ystr, pt7xstr, pt7zstr, pt7ystr, pt8xstr, pt8zstr, pt8ystr, pt9xstr, pt9zstr, pt9ystr, pt10xstr, pt10zstr, pt10ystr, pt11xstr, pt11zstr, pt11ystr, pt12xstr, pt12zstr, pt12ystr, pt13xstr, pt13zstr, pt13ystr,  pt14xstr, pt14zstr, pt14ystr, pt15xstr, pt15zstr, pt15ystr, pt0xstr, pt0zstr, pt0ystr, pt16xstr, pt16zstr, pt16ystr, pt17xstr, pt17zstr, pt17ystr, pt18xstr, pt18zstr, pt18ystr, pt19xstr, pt19zstr, pt19ystr, pt20xstr, pt20zstr, pt20ystr, pt21xstr, pt21zstr, pt21ystr, pt44xstr, pt44zstr, pt44ystr, pt46xstr, pt46zstr, pt46ystr):
-    """Back coordinates of the cookstove--simply shifting the x2 (y) coordinate back by a value shift"""
+def create_back_points(shift, pt1xstr, pt1zstr, pt1ystr, pt2xstr, pt2zstr, pt2ystr, pt3xstr, pt3zstr, pt3ystr, pt4xstr, pt4zstr, pt4ystr, pt5xstr, pt5zstr, pt5ystr, pt6xstr, pt6zstr, pt6ystr, pt7xstr, pt7zstr, pt7ystr, pt8xstr, pt8zstr, pt8ystr, pt9xstr, pt9zstr, pt9ystr, pt10xstr, pt10zstr, pt10ystr, pt11xstr, pt11zstr, pt11ystr, pt12xstr, pt12zstr, pt12ystr, pt13xstr, pt13zstr, pt13ystr,  pt14xstr, pt14zstr, pt14ystr, pt15xstr, pt15zstr, pt15ystr, pt0xstr, pt0zstr, pt0ystr, pt16xstr, pt16zstr, pt16ystr, pt17xstr, pt17zstr, pt17ystr, pt18xstr, pt18zstr, pt18ystr, pt19xstr, pt19zstr, pt19ystr, pt20xstr, pt20zstr, pt20ystr, pt21xstr, pt21zstr, pt21ystr, pt44xstr, pt44zstr, pt44ystr, pt46xstr, pt46zstr, pt46ystr, pt48xstr, pt48zstr, pt48ystr, pt50xstr, pt50ystr, pt50zstr):
+    """
+    Back coordinates of the cookstove--simply shifting the x2 (y) coordinate back by a value shift
+    
+    Args:
+        concatenated back points (str): The x,y,z values of back points concatenated into single vertice location
+    
+    
+    """
     if shift > 0:
         shift = shift*(-1)
         print('Shift multiplied by -1')
@@ -326,7 +420,11 @@ def create_back_points(shift, pt1xstr, pt1zstr, pt1ystr, pt2xstr, pt2zstr, pt2ys
     pt43str = "(" + shift_str + " " + pt21xstr + " " + pt21zstr + ")"
     pt45str = "(" + shift_str + " " + pt44xstr + " " + pt44zstr + ")"
     pt47str = "(" + shift_str + " " + pt46xstr + " " + pt46zstr + ")"
-    return pt22str, pt23str, pt24str, pt25str, pt26str, pt27str, pt28str, pt29str, pt30str, pt31str, pt32str, pt33str, pt34str, pt35str, pt36str, pt37str, pt38str, pt39str, pt40str, pt41str, pt42str, pt43str, pt45str, pt47str
+    pt49str = "(" + shift_str + " " + pt48xstr + " " + pt48zstr + ")"
+    pt51str = "(" + shift_str + " " + pt50xstr + " " + pt50zstr + ")"
+    
+    
+    return pt22str, pt23str, pt24str, pt25str, pt26str, pt27str, pt28str, pt29str, pt30str, pt31str, pt32str, pt33str, pt34str, pt35str, pt36str, pt37str, pt38str, pt39str, pt40str, pt41str, pt42str, pt43str, pt45str, pt47str, pt49str, pt51str
     
     
     
