@@ -1,2 +1,0 @@
-StoveOpt
-test_package_loc
