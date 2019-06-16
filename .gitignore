@@ -1,0 +1,27 @@
+# Compiled files
+__pycache__/
+*.py[cod]
+*.egg-info/
+*$py.class
+
+# Distribution and Packaging Data
+build/
+
+
+
+# Random
+functions/
+Obselete/
+paper/
+work_material/
+backupmain/
+inputFiles/
+*.docx
+
+
+
+# Extensions
+*.yml.un~
+*.test-environment.yaml.un~
+
+
