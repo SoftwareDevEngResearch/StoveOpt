@@ -1,5 +1,5 @@
 # Compiled files
-.cache/v/cache/
+.cache/v/cache
 __pycache__/
 *.py[cod]
 *.egg-info/
