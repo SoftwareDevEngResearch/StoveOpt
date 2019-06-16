@@ -1,5 +1,0 @@
-{
-  "test_extract_geometry.py::test_nsv_geometry": true, 
-  "test_extract_geometry.py::test_xlsx_geometry": true, 
-  "test_locate_geometry.py": true
-}
