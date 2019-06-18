@@ -18,12 +18,11 @@ import sys
 import argparse
 import yaml
 
-import StoveOpt.import_geometry
-import StoveOpt.create_blockmeshfile
-import StoveOpt.new_case_setup
-import StoveOpt.post_processor
-import StoveOpt.run_surrounding_cases
-
+import import_geometry
+import create_blockmeshfile
+import new_case_setup
+import post_processor
+import run_surrounding_cases
 
 from import_geometry import *
 from create_blockmeshfile import *
