@@ -1,0 +1,73 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  6
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    location    "0";
+    object      p;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [1 -1 -2 0 0 0 0];
+
+internalField   uniform 1e5;
+
+boundaryField
+{
+    top_fuel
+    {
+        type            zeroGradient;
+    }
+	L_fuel
+    {
+        type            zeroGradient;
+    }
+	R_fuel
+    {
+        type            zeroGradient;
+    }
+	bottom_fuel
+    {
+        type            zeroGradient;
+    }
+    outlet_LHS
+    {
+        type            totalPressure;
+        p0              $internalField;
+    }
+	outlet_RHS
+    {
+        type            totalPressure;
+        p0              $internalField;
+    }
+	primary_inlets //hmmmm
+	{
+		type			zeroGradient;
+	}
+	secondary_air_RHS 
+	{
+		type			zeroGradient;
+	}	
+	secondary_air_LHS
+	{
+		type			zeroGradient;
+	}
+	stove_body
+	{
+		type			zeroGradient;
+	}
+    frontAndBack
+    {
+        type            empty;
+    }
+}
+
+
+// ************************************************************************* //
