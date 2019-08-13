@@ -5,7 +5,7 @@ from shutil import copy
 import os
 
 
-def locate_controldit_template():
+def locate_controldict_template():
     """the function uses the StoveOpt path and controldict template name to open the
     template version of the controldict file for editing in the system folder
 
@@ -25,15 +25,15 @@ def locate_controldit_template():
 
 #controldict_template = locate_controldit_template()
 # For test
-start_time = 0
+"""start_time = 0
 end_time = 5
 delta_t =0.001
 write_interval = 0.5
 write_format = "ascii"
 max_co = 0.4
+"""
 
-
-def write_controldict_template(controldict_template, start_time, end_time, delta_t, write_interval, write_format, max_co, pt10str, pt11str, pt9str, pt48str, pt44str, pt14str, pt20str, pt6str, pt21str, pt7str, pt46str, pt15str, pt8str, pt50str, pt12str, pt13str):
+def write_controldict_template(controldict_template, start_time, end_time, delta_t, write_interval, write_format, max_co, pt_18_str, pt_14_str, pt_12_str, pt_13_str, pt_15_str, pt_19_str):
     """Open and write to the control dict template
     Args:
     controldict_template (str): full file path where controldict template lives
@@ -116,7 +116,7 @@ def write_controldict_template(controldict_template, start_time, end_time, delta
 
             # THIS IS WHERE THE VERTICE STRINGS NEED TO GO
             # FOR PURPOSES OF DEVELOPMENT, GOING TO JUST USE THE VALUES FROM THE CONTROLDICT FILES OF OLD
-            f.write(pt10str + "\n" + pt11str +"\n" +  pt9str + "\n" + pt48str + "\n" + pt44str + "\n" + pt14str + "\n" + pt20str + "\n" + pt6str + "\n" + pt21str + "\n" + pt7str + "\n" + pt46str + "\n" + pt15str + "\n" + pt8str + "\n" + pt50str + "\n" + pt12str + "\n" + pt13str + "\n")
+            f.write(pt_18_str + "\n" + pt_14_str +"\n" +  pt_12_str + "\n" + pt_13_str + "\n" + pt_15_str + "\n" + pt_19_str + "\n")
             f.write(");")
 
 #write_controldict_template(controldict_template, start_time, end_time, delta_t, write_interval, write_format, max_co)

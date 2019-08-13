@@ -264,7 +264,7 @@ def write_details_file(case_zero_paths, velocity_dictionary, k_tot):
     return case_details_files
 
 # Boundary conditions
-def write_velocity_files(velocity_dictionary, case_zero_paths, Q_primary, k_tot):
+def write_velocity_files(velocity_dictionary, case_zero_paths, k_tot, V_primary_model_str):
     """Write  the U-initial condition files for the cases created
     Args:
     case_zero_paths (dict): Dictionary containing full case zero paths as strings
@@ -298,35 +298,79 @@ def write_velocity_files(velocity_dictionary, case_zero_paths, Q_primary, k_tot)
             f.write("internalField" + " " + "uniform" + " " + "(0 0 0)" + ";" + "\n")
             f.write("boundaryField" + "\n")
             f.write("{" + "\n")
-            f.write("fuel" + "\n")
+
+
+            # fuel top
+            f.write("top_fuel" + "\n")
             f.write("{" + "\n")
             f.write("type" + " " + "fixedValue" + ";" + "\n")
             f.write("value" + " " + "uniform" + " " + "(0 0 0.25)" + ";" + "\n")
             f.write("}" + "\n")
-            f.write("primary_air" + "\n")
+
+
+            # fuel LHS
+            f.write("L_fuel" + "\n")
             f.write("{" + "\n")
             f.write("type" + " " + "fixedValue" + ";" + "\n")
-            f.write("value" + " " + "uniform" + " " + "(0 0" + " " + str(Q_primary) + ")" + ";" + "\n")
+            f.write("value" + " " + "uniform" + " " + "(0 -0.25 0)" + ";" + "\n")
             f.write("}" + "\n")
-            f.write("Secondary_air_RHS" + "\n")
+
+            # fuel RHS
+            f.write("R_fuel" + "\n")
             f.write("{" + "\n")
             f.write("type" + " " + "fixedValue" + ";" + "\n")
-            f.write("value" + " " + "uniform" + " " + "(0" + " " + velocity_dictionary[j] + " " + "0)" + ";" + "\n")
+            f.write("value" + " " + "uniform" + " " + "(0 0.25 0)" + ";" + "\n")
             f.write("}" + "\n")
-            f.write("Secondary_air_LHS" + "\n")
+
+            # fuel bottom
+            f.write("bottom_fuel" + "\n")
+            f.write("{" + "\n")
+            f.write("type" + " " + "noSlip" + ";" + "\n")
+            f.write("}" + "\n")
+
+
+            # primary inlets --> LC return here
+            f.write("primary_inlets" + "\n")
+            f.write("{" + "\n")
+            f.write("type" + " " + "fixedValue" + ";" + "\n")
+            f.write("value" + " " + "uniform" + " " + "(0 0" + " " + V_primary_model_str + ")" + ";" + "\n")
+            f.write("}" + "\n")
+
+            # secondary RHS
+            f.write("secondary_air_RHS" + "\n")
             f.write("{" + "\n")
             f.write("type" + " " + "fixedValue" + ";" + "\n")
             f.write("value" + " " + "uniform" + " " + "(0" + " " + "-" + velocity_dictionary[j] + " " + "0)" + ";" + "\n")
             f.write("}" + "\n")
-            f.write("outlet" + "\n")
+
+            # secondary LHS
+            f.write("secondary_air_LHS" + "\n")
+            f.write("{" + "\n")
+            f.write("type" + " " + "fixedValue" + ";" + "\n")
+            f.write("value" + " " + "uniform" + " " + "(0" + " " + velocity_dictionary[j] + " " + "0)" + ";" + "\n")
+            f.write("}" + "\n")
+
+            # outlet LHS
+            f.write("outlet_LHS" + "\n")
             f.write("{" + "\n")
             f.write("type pressureInletOutletVelocity;" + "\n")
             f.write("value $internalField;" + "\n")
             f.write("}" + "\n")
+
+            # outlet RHS
+            f.write("outlet_RHS" + "\n")
+            f.write("{" + "\n")
+            f.write("type pressureInletOutletVelocity;" + "\n")
+            f.write("value $internalField;" + "\n")
+            f.write("}" + "\n")
+
+            # front and back
             f.write("frontAndBack" + "\n")
             f.write("{" + "\n")
             f.write("type empty;" + "\n")
             f.write("}" + "\n")
+
+            # stove body
             f.write("stove_body" + "\n")
             f.write("{" + "\n")
             f.write("type noSlip;" + "\n")

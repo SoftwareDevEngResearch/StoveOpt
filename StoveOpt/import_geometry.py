@@ -9,6 +9,8 @@ import yaml
 import sys
 import argparse
 import xlrd
+import time
+from time import sleep
 
 def convert_namespace(args):
     """Purpose is to convert the namespace from the args to a pure input file for reading
@@ -52,8 +54,8 @@ def pull_input_data(input_file):
 
         # Secondary flow Definitions
         Q_100 = doc['case']['Secondary air flow rate'] # 100% flow rate [m^3/s]
-        dfd = doc['case']['Diameter of secondary air inlet']
-        zfd = doc['case']['Height of secondary air inlet']
+        D_fd = doc['case']['Diameter of secondary air inlet']
+        H_fd = doc['case']['Height of secondary air inlet']
 
         # Air tray flow definitons
         Q_primary = doc['case']['Primary air flow rate'] # maximum primary airflow rate
@@ -73,15 +75,18 @@ def pull_input_data(input_file):
 
         # Stove geometry Definitions
         Dc = doc['case']['Combustion chamber diameter']
-        hcc = doc['case']['Combustion chamber height']
-        wc = doc['case']['Channel width']
-        hc = doc['case']['Channel height']
-        hcd = doc['case']['Height of cone deck']
-        lcd = doc['case']['Length of cone deck']
-        psp = doc['case']['Pot spacing']
+        H_cc = doc['case']['Combustion chamber height']
+        W_gap = doc['case']['Channel width']
+        L_channel = doc['case']['Channel height']
+        #H_deck = doc['case']['Height of cone deck']
+        L_deck = doc['case']['Length of cone deck']
+        h_deck_pot = doc['case']['Pot spacing']
+
+        # sticks
+        stick_width = doc['case']['Dimension of wood sticks']
 
 
-    return Q_100, dfd, zfd, Q_primary, N_holes, D_holes, max_delta_x, start_time, end_time, delta_t, num_cases_initial, write_interval, write_format, max_co, OS, Dc, hcc, wc, hc, hcd, lcd, psp
+    return Q_100, D_fd, H_fd, Q_primary, N_holes, D_holes, max_delta_x, start_time, end_time, delta_t, num_cases_initial, write_interval, write_format, max_co, OS, Dc, H_cc, L_channel, L_deck, h_deck_pot, stick_width, W_gap
 
 
 def locate_geometry(path, fname):
@@ -173,14 +178,14 @@ def extract_geometry(file_path):
 
     pt0x, pt0z, pt0y, pt1x, pt1z, pt1y, pt2x, pt2z, pt2y, pt3x, pt3z, pt3y, pt4x, pt4z, pt4y, pt5x, pt5z, pt5y, pt6x, pt6z, pt6y, pt7x, pt7z, pt7y, pt8x, pt8z, pt8y, pt9x, pt9z, pt9y, pt10x, pt10z, pt10y, pt11x, pt11z, pt11y, pt12x, pt12z, pt12y, pt13x, pt13z, pt13y,  pt14x, pt14z, pt14y, pt15x, pt15z, pt15y
 
-def calculate_first_vertices(dfd, zfd, Dc, hcc, wc, hc, hcd, lcd, psp):
+def calculate_first_vertices(dfd, zfd, Dc, hcc, wc, hc, hcd, lcd, psp, Q_100):
     """Compute the first batch of vertices based on the user inputs
     Args:
 
 
     Returns:
     pt#i (double): General coordinate where x is the horizontal, z is vertical, and y is in/out of the domain
-
+    Q_100 (double): Velocity of secondary inlet.
     """
     pt0x = 0
     pt0z = 0
@@ -260,7 +265,12 @@ def calculate_first_vertices(dfd, zfd, Dc, hcc, wc, hc, hcd, lcd, psp):
     pt15z = hcd + psp
     pt15y = 0
 
-    return pt0x, pt0z, pt0y, pt1x, pt1z, pt1y, pt2x, pt2z, pt2y, pt3x, pt3z, pt3y, pt4x, pt4z, pt4y, pt5x, pt5z, pt5y, pt6x, pt6z, pt6y, pt7x, pt7z, pt7y, pt8x, pt8z, pt8y, pt9x, pt9z, pt9y, pt10x, pt10z, pt10y, pt11x, pt11z, pt11y, pt12x, pt12z, pt12y, pt13x, pt13z, pt13y,  pt14x, pt14z, pt14y, pt15x, pt15z, pt15y
+    # Convert the Q_100 to flow velocity:
+    A_secondary = 3.1415923*(dfd**2) # Area of circle
+    U_100 = Q_100*A_secondary
+    Q_100 = U_100 # Reassign
+
+    return pt0x, pt0z, pt0y, pt1x, pt1z, pt1y, pt2x, pt2z, pt2y, pt3x, pt3z, pt3y, pt4x, pt4z, pt4y, pt5x, pt5z, pt5y, pt6x, pt6z, pt6y, pt7x, pt7z, pt7y, pt8x, pt8z, pt8y, pt9x, pt9z, pt9y, pt10x, pt10z, pt10y, pt11x, pt11z, pt11y, pt12x, pt12z, pt12y, pt13x, pt13z, pt13y,  pt14x, pt14z, pt14y, pt15x, pt15z, pt15y, Q_100
 
 # Create additional front face points including wood zone
 def create_fuel_blocks(pt0x, pt1x):
@@ -304,7 +314,7 @@ def create_fuel_blocks(pt0x, pt1x):
 # 46 defined by 15x and 8z
 
 def create_primary_inlets(Dc, Q_primary, N_holes, D_holes, shift_str, shift, shift_positive):
-    """Create the four equally spaced primary fuel inlets based on user definition
+    """Create the four equally spaced primary fuel inlets based on user definition.
     Args:
     Dc (double): Diameter of combustion chamber as defined by user in input.yaml
     Q_primary (double): Primary flow rate as defined by user in input.yaml
@@ -348,24 +358,32 @@ def create_primary_inlets(Dc, Q_primary, N_holes, D_holes, shift_str, shift, shi
     pt81str (str): Shifted vertice along the bottom of the body
     pt82str (str): Shifted vertice along the bottom of the body
     pt83str (str): Shifted vertice along the bottom of the body
-
+    V_primary_model (double): Primary velocity through each of the inlets
+    V_primary_model_str (str): String version of primary velocity through each inlet
 
     """
+
 
     N_inlets = 4 # Number of inlets to be modelled
     N_spaces = N_inlets + 1 # Number of stove body segments along the bottom of C-chamber
     N_segments = N_inlets + N_spaces # total number of equally spaced segments along bottom of domain
     size_segments = Dc/N_segments # Used for creating vertices
 
+
     # Computing the sum of average flow velocities through air tray assuming equal flow distrobution for air tray
     A_hole = 3.1415926*0.25*(D_holes**2) # Area of individual hole in air tray
     v_sum_airtray = Q_primary*N_holes*A_hole
 
+
     # Computing the bulk velocity through the four inlets included in the CFD model
     V_primary_model = v_sum_airtray/N_inlets
-
+    V_primary_model_str = str(V_primary_model)[:10]
     # Now, creating the vertices for the geometry
     # Example: pt1xstr= str(pt1x)[:5]
+
+    print("size segments diameter")
+    print(size_segments)
+    sleep(10)
     pt52xstr = str(size_segments)[:5]
     pt52ystr = str(0)
     pt52zstr = str(0)
@@ -373,10 +391,12 @@ def create_primary_inlets(Dc, Q_primary, N_holes, D_holes, shift_str, shift, shi
     pt53xstr = str(2*size_segments)[:5]
     pt53ystr = str(0)
     pt53zstr = str(0)
+    pt53x = 2*size_segments
 
     pt54xstr = str(3*size_segments)[:5]
     pt54ystr = str(0)
     pt54zstr = str(0)
+    pt54x = 3*size_segments
 
     pt55xstr = str(4*size_segments)[:5]
     pt55ystr = str(0)
@@ -470,7 +490,139 @@ def create_primary_inlets(Dc, Q_primary, N_holes, D_holes, shift_str, shift, shi
     pt82str = "(" + shift_str + " " + pt66xstr + " " + shift_str + ")"
     pt83str = "(" + shift_str + " " + pt67xstr + " " + shift_str + ")"
 
-    return pt52str, pt53str, pt54str, pt55str, pt56str, pt57str, pt58str, pt59str, pt60str, pt61str, pt62str, pt63str, pt64str, pt65str, pt66str, pt67str, pt68str, pt69str, pt70str, pt71str, pt72str, pt73str, pt74str, pt75str, pt76str, pt77str, pt78str, pt79str, pt80str, pt81str, pt82str, pt83str
+    # creating outer points
+
+    # LHS front
+    pt84xstr = str(0)
+    pt84zstr = str(-1*shift/2)
+    pt84ystr = pt52ystr
+    # LHS back
+    pt85xstr = str(0)
+    pt85zstr = str(-1*shift/2)
+    pt85ystr = shift_str
+    # RHS Front
+    pt86xstr = str(Dc)
+    pt86zstr = str(-1*shift/2)
+    pt86ystr = pt59ystr
+    # RHS back
+    pt87xstr = str(Dc)
+    pt87zstr = str(-1*shift/2)
+    pt87ystr = shift_str
+
+    # LHS short boundary
+    # Front
+    pt88xstr = pt52xstr
+    pt88ystr = pt52ystr
+    pt88zstr = str(-1*shift/2)
+    # Back
+    pt89xstr = pt52xstr
+    pt89ystr = shift_str
+    pt89zstr = str(-1*shift/2)
+
+    # RHS short boundary
+    pt90xstr = pt59xstr
+    pt90ystr = pt52ystr
+    pt90zstr = str(-1*shift/2)
+    # Back
+    pt91xstr = pt59xstr
+    pt91ystr = shift_str
+    pt91zstr = str(-1*shift/2)
+
+    # Should this work, need to go create the block vertices for the 3 inner sections
+    pt84str = "(" + pt84ystr + " " + pt84xstr + " " + pt84zstr + ")"
+    pt85str = "(" + pt85ystr + " " + pt85xstr + " " + pt85zstr + ")"
+    pt86str = "(" + pt86ystr + " " + pt86xstr + " " + pt86zstr + ")"
+    pt87str = "(" + pt87ystr + " " + pt87xstr + " " + pt87zstr + ")"
+    # The short shifts on the outer primary inlets
+    pt88str = "(" + pt88ystr + " " + pt88xstr + " " + pt88zstr + ")"
+    pt89str = "(" + pt89ystr + " " + pt89xstr + " " + pt89zstr + ")"
+    pt90str = "(" + pt90ystr + " " + pt90xstr + " " + pt90zstr + ")"
+    pt91str = "(" + pt91ystr + " " + pt91xstr + " " + pt91zstr + ")"
+
+    # Inner section 1 l
+    pt92xstr = pt53xstr
+    pt92ystr = pt53ystr
+    pt92zstr = str(-1*shift/2)
+    pt93xstr = pt54xstr
+    pt93ystr = pt54ystr
+    pt93zstr = str(-1*shift/2)
+    pt94xstr = pt62xstr
+    pt94ystr = shift_str
+    pt94zstr = str(-1*shift/2)
+    pt95xstr = pt61xstr
+    pt95ystr = shift_str
+    pt95zstr = str(-1*shift/2)
+
+
+    # ----------Inner section 2
+    pt96xstr = pt55xstr
+    pt96ystr = pt55ystr
+    pt96zstr = str(-1*shift/2)
+    pt97xstr = pt56xstr
+    pt97ystr = pt56ystr
+    pt97zstr = str(-1*shift/2)
+    pt98xstr = pt64xstr
+    pt98ystr = shift_str
+    pt98zstr = str(-1*shift/2)
+    pt99xstr = pt63xstr
+    pt99ystr = shift_str
+    pt99zstr = str(-1*shift/2)
+
+    # ----------Inner section 3 R
+    pt100xstr = pt57xstr
+    pt100ystr = pt57ystr
+    pt100zstr = str(-1*shift/2)
+    pt101xstr = pt58xstr
+    pt101ystr = pt58ystr
+    pt101zstr = str(-1*shift/2)
+    pt102xstr = pt66xstr
+    pt102ystr = shift_str
+    pt102zstr = str(-1*shift/2)
+    pt103xstr = pt65xstr
+    pt103ystr = shift_str
+    pt103zstr = str(-1*shift/2)
+
+    # concatenate the primary inlet strings:
+    pt92str = "(" + pt92ystr + " " + pt92xstr + " " + pt92zstr + ")"
+    pt93str = "(" + pt93ystr + " " + pt93xstr + " " + pt93zstr + ")"
+    pt94str = "(" + pt94ystr + " " + pt94xstr + " " + pt94zstr + ")"
+    pt95str = "(" + pt95ystr + " " + pt95xstr + " " + pt95zstr + ")"
+    pt96str = "(" + pt96ystr + " " + pt96xstr + " " + pt96zstr + ")"
+    pt97str = "(" + pt97ystr + " " + pt97xstr + " " + pt97zstr + ")"
+    pt98str = "(" + pt98ystr + " " + pt98xstr + " " + pt98zstr + ")"
+    pt99str = "(" + pt99ystr + " " + pt99xstr + " " + pt99zstr + ")"
+    pt100str = "(" + pt100ystr + " " + pt100xstr + " " + pt100zstr + ")"
+    pt101str = "(" + pt101ystr + " " + pt101xstr + " " + pt101zstr + ")"
+    pt102str = "(" + pt102ystr + " " + pt102xstr + " " + pt102zstr + ")"
+    pt103str = "(" + pt103ystr + " " + pt103xstr + " " + pt103zstr + ")"
+
+
+    return pt52str, pt53str, pt54str, pt55str, pt56str, pt57str, pt58str, pt59str, pt60str, pt61str, pt62str, pt63str, pt64str, pt65str, pt66str, pt67str, pt68str, pt69str, pt70str, pt71str, pt72str, pt73str, pt74str, pt75str, pt76str, pt77str, pt78str, pt79str, pt80str, pt81str, pt82str, pt83str, pt84str, pt85str, pt86str, pt87str, pt88str, pt89str, pt90str, pt91str, pt92str, pt93str, pt94str, pt95str, pt96str, pt97str, pt98str, pt99str, pt100str, pt101str, pt102str, pt103str, pt53x, pt54x, V_primary_model, V_primary_model_str
+
+
+
+
+def correct_primary_flow(Q_primary, N_holes, D_holes, pt53x, pt54x):
+    """Compute the primary flow velocites, assuming uniform flow in each primary inlet
+    Args:
+    Q_primary (double): total primary air flow rate input by user
+    N_holes (int): Number of holes in air tray input by user
+    D_holes (double): Diameter of primary inlet holes in air tray
+    pt53x (double): LHS inlet x-coordinate primary hole
+    pt54x (double): RHS inlet x-coordinate primary hole
+
+    Returns:
+    Q_per (double): Primary flow rate distributed to each inlet
+    V_primary (double): Velocity through primary inlets
+    A_primary (double): Areas of primary inlets
+    diam_primary (double): Diameter of the primary inlet holes in the model
+    """
+    Q_per = Q_primary/3 # Evenly distributed
+    diam_primary = pt54x-pt53x # Difference is the diameter
+    A_primary = (3.1415926/4)*diam_primary**2 # Area of each primary inlet
+    V_primary = Q_per*A_primary # Velocity through each of the inlets
+    return Q_per, V_primary, A_primary, diam_primary
+
 
 def create_additional_front_points(pt6x, pt7x, pt14x, pt9z, pt15x, pt8z, pt14z, pt9x, pt8x, pt15z):
     """
@@ -668,6 +820,218 @@ def vertice_concatenate(pt1xstr, pt1zstr, pt1ystr, pt2xstr, pt2zstr, pt2ystr, pt
     pt50str = "(" + pt50ystr + " " + pt50xstr + " " + pt50zstr + ")"
 
     return pt0str, pt1str, pt2str, pt3str, pt4str, pt5str, pt6str, pt7str, pt8str, pt9str, pt10str, pt11str, pt12str, pt13str, pt14str, pt15str, pt16str, pt17str, pt18str, pt19str, pt20str, pt21str, pt44str, pt46str, pt48str, pt50str
+
+
+def create_three_fuel_blocks(Dc, stick_width, shift_str):
+    """Create the three wood stick vertices for pyrolysis gas release
+    Args:
+    Dc (double): Combustion chamber Diameter supplied by User
+    stick_width (double): Wood stick dimension supplied by user
+    shift_str (str): Distance shifted in the y-direction to create the back face of the cookstove
+
+    Returns:
+    pt104str through pt123str (str): Vertices required for fuel block definition
+    stick_pitch (double): Pitch between sticks computed based on 3 sticks equally spaced in Dc combustion diam
+    stick_bottom (double): z-coordinate associated with bottom of N_sticks
+    stick_top (double): z-coordinate associated with top of N_sticks
+    """
+
+    # Assumed stick height
+    height_stick = 0.02 # [m] Height of the bottom of the sticks from the datum ASSUMED
+    stick_bottom = height_stick
+    stick_top = stick_bottom + stick_width
+
+    # Computing pitch
+    N_sticks = 3 # Held constant for analysis
+    stick_pitch = Dc/(N_sticks+1)
+
+    # Wood block 1:
+    # bottom
+    pt104x = stick_pitch-0.5*(stick_width)
+    pt104z = stick_bottom
+    pt104y = 0
+    pt105x = pt104x + stick_width
+    pt105z = stick_bottom
+    pt105y = 0
+    pt106x = pt105x
+    pt106z = stick_bottom
+    pt106y = shift_str
+    pt107x = pt104x
+    pt107z = stick_bottom
+    pt107y = shift_str
+    # Top
+    pt108x = pt104x
+    pt108z = stick_top
+    pt108y = 0
+    pt109x = pt105x
+    pt109z = stick_top
+    pt109y = 0
+    pt110x = pt109x
+    pt110z = stick_top
+    pt110y = shift_str
+    pt111x = pt104x
+    pt111z = stick_top
+    pt111y = shift_str
+
+    # Wood block 2
+    # bottom
+    pt112x = pt104x + stick_pitch
+    pt112z = stick_bottom
+    pt112y = 0
+    pt113x = pt112x + stick_width
+    pt113z = stick_bottom
+    pt113y = 0
+    pt114x = pt113x
+    pt114z = stick_bottom
+    pt114y = shift_str
+    pt115x = pt112x
+    pt115z = stick_bottom
+    pt115y = shift_str
+    # Top
+    pt116x = pt112x
+    pt116z = stick_top
+    pt116y = 0
+    pt117x = pt113x
+    pt117z = stick_top
+    pt117y = 0
+    pt118x = pt114x
+    pt118z = stick_top
+    pt118y = shift_str
+    pt119x = pt115x
+    pt119z = stick_top
+    pt119y = shift_str
+
+    # Wood block 3
+    # bottom
+    pt120x = pt112x + stick_pitch
+    pt120z = stick_bottom
+    pt120y = 0
+    pt121x = pt120x + stick_width
+    pt121z = stick_bottom
+    pt121y = 0
+    pt122x = pt121x
+    pt122z = stick_bottom
+    pt122y = shift_str
+    pt123x = pt120x
+    pt123z = stick_bottom
+    pt123y = shift_str
+    # Top
+    pt124x = pt120x
+    pt124z = stick_top
+    pt124y = 0
+    pt125x = pt121x
+    pt125z = stick_top
+    pt125y = 0
+    pt126x = pt122x
+    pt126z = stick_top
+    pt126y = shift_str
+    pt127x = pt120x
+    pt127z = stick_top
+    pt127y = shift_str
+
+    # Convert individual coordinates to strings of length 5
+    pt104xstr = str(pt104x)[:5]
+    pt104zstr = str(pt104z)[:5]
+    pt104ystr = str(pt104y)[:5]
+    pt105xstr = str(pt105x)[:5]
+    pt105zstr = str(pt105z)[:5]
+    pt105ystr = str(pt105y)[:5]
+    pt106xstr = str(pt106x)[:5]
+    pt106zstr = str(pt106z)[:5]
+    pt106ystr = str(pt106y)[:5]
+    pt107xstr = str(pt107x)[:5]
+    pt107zstr = str(pt107z)[:5]
+    pt107ystr = str(pt107y)[:5]
+    pt108xstr = str(pt108x)[:5]
+    pt108zstr = str(pt108z)[:5]
+    pt108ystr = str(pt108y)[:5]
+    pt109xstr = str(pt109x)[:5]
+    pt109zstr = str(pt109z)[:5]
+    pt109ystr = str(pt109y)[:5]
+    pt110xstr = str(pt110x)[:5]
+    pt110zstr = str(pt110z)[:5]
+    pt110ystr = str(pt110y)[:5]
+    pt111xstr = str(pt111x)[:5]
+    pt111zstr = str(pt111z)[:5]
+    pt111ystr = str(pt111y)[:5]
+    pt112xstr = str(pt112x)[:5]
+    pt112zstr = str(pt112z)[:5]
+    pt112ystr = str(pt112y)[:5]
+    pt113xstr = str(pt113x)[:5]
+    pt113zstr = str(pt113z)[:5]
+    pt113ystr = str(pt113y)[:5]
+    pt114xstr = str(pt114x)[:5]
+    pt114zstr = str(pt114z)[:5]
+    pt114ystr = str(pt114y)[:5]
+    pt115xstr = str(pt115x)[:5]
+    pt115zstr = str(pt115z)[:5]
+    pt115ystr = str(pt115y)[:5]
+    pt116xstr = str(pt116x)[:5]
+    pt116zstr = str(pt116z)[:5]
+    pt116ystr = str(pt116y)[:5]
+
+    pt117xstr = str(pt117x)[:5]
+    pt117zstr = str(pt117z)[:5]
+    pt117ystr = str(pt117y)[:5]
+    pt118xstr = str(pt118x)[:5]
+    pt118zstr = str(pt118z)[:5]
+    pt118ystr = str(pt118y)[:5]
+    pt119xstr = str(pt119x)[:5]
+    pt119zstr = str(pt119z)[:5]
+    pt119ystr = str(pt119y)[:5]
+    pt120xstr = str(pt120x)[:5]
+    pt120zstr = str(pt120z)[:5]
+    pt120ystr = str(pt120y)[:5]
+    pt121xstr = str(pt121x)[:5]
+    pt121zstr = str(pt121z)[:5]
+    pt121ystr = str(pt121y)[:5]
+    pt122xstr = str(pt122x)[:5]
+    pt122zstr = str(pt122z)[:5]
+    pt122ystr = str(pt122y)[:5]
+    pt123xstr = str(pt123x)[:5]
+    pt123zstr = str(pt123z)[:5]
+    pt123ystr = str(pt123y)[:5]
+    pt124xstr = str(pt124x)[:5]
+    pt124zstr = str(pt124z)[:5]
+    pt124ystr = str(pt124y)[:5]
+    pt125xstr = str(pt125x)[:5]
+    pt125zstr = str(pt125z)[:5]
+    pt125ystr = str(pt125y)[:5]
+    pt126xstr = str(pt126x)[:5]
+    pt126zstr = str(pt126z)[:5]
+    pt126ystr = str(pt126y)[:5]
+    pt127xstr = str(pt127x)[:5]
+    pt127zstr = str(pt127z)[:5]
+    pt127ystr = str(pt127y)[:5]
+
+    # Concatenating coordinates
+    pt104str = "(" + pt104ystr + " " + pt104xstr + " " + pt104zstr + ")"
+    pt105str = "(" + pt105ystr + " " + pt105xstr + " " + pt105zstr + ")"
+    pt106str = "(" + pt106ystr + " " + pt106xstr + " " + pt106zstr + ")"
+    pt107str = "(" + pt107ystr + " " + pt107xstr + " " + pt107zstr + ")"
+    pt108str = "(" + pt108ystr + " " + pt108xstr + " " + pt108zstr + ")"
+    pt109str = "(" + pt109ystr + " " + pt109xstr + " " + pt109zstr + ")"
+    pt110str = "(" + pt110ystr + " " + pt110xstr + " " + pt110zstr + ")"
+    pt111str = "(" + pt111ystr + " " + pt111xstr + " " + pt111zstr + ")"
+    pt112str = "(" + pt112ystr + " " + pt112xstr + " " + pt112zstr + ")"
+    pt113str = "(" + pt113ystr + " " + pt113xstr + " " + pt113zstr + ")"
+    pt114str = "(" + pt114ystr + " " + pt114xstr + " " + pt114zstr + ")"
+    pt115str = "(" + pt115ystr + " " + pt115xstr + " " + pt115zstr + ")"
+    pt116str = "(" + pt116ystr + " " + pt116xstr + " " + pt116zstr + ")"
+    pt117str = "(" + pt117ystr + " " + pt117xstr + " " + pt117zstr + ")"
+    pt118str = "(" + pt118ystr + " " + pt118xstr + " " + pt118zstr + ")"
+    pt119str = "(" + pt119ystr + " " + pt119xstr + " " + pt119zstr + ")"
+    pt120str = "(" + pt120ystr + " " + pt120xstr + " " + pt120zstr + ")"
+    pt121str = "(" + pt121ystr + " " + pt121xstr + " " + pt121zstr + ")"
+    pt122str = "(" + pt122ystr + " " + pt122xstr + " " + pt122zstr + ")"
+    pt123str = "(" + pt123ystr + " " + pt123xstr + " " + pt123zstr + ")"
+    pt124str = "(" + pt124ystr + " " + pt124xstr + " " + pt124zstr + ")"
+    pt125str = "(" + pt125ystr + " " + pt125xstr + " " + pt125zstr + ")"
+    pt126str = "(" + pt126ystr + " " + pt126xstr + " " + pt126zstr + ")"
+    pt127str = "(" + pt127ystr + " " + pt127xstr + " " + pt127zstr + ")"
+
+    return stick_pitch, stick_bottom, stick_top, pt104str, pt105str, pt106str, pt107str, pt108str, pt109str, pt110str, pt111str, pt112str, pt113str, pt114str, pt115str, pt116str, pt117str, pt118str, pt119str, pt120str, pt121str, pt122str, pt123str, pt124str, pt125str, pt126str, pt127str
+
 
 
 def create_back_points(shift, pt1xstr, pt1zstr, pt1ystr, pt2xstr, pt2zstr, pt2ystr, pt3xstr, pt3zstr, pt3ystr, pt4xstr, pt4zstr, pt4ystr, pt5xstr, pt5zstr, pt5ystr, pt6xstr, pt6zstr, pt6ystr, pt7xstr, pt7zstr, pt7ystr, pt8xstr, pt8zstr, pt8ystr, pt9xstr, pt9zstr, pt9ystr, pt10xstr, pt10zstr, pt10ystr, pt11xstr, pt11zstr, pt11ystr, pt12xstr, pt12zstr, pt12ystr, pt13xstr, pt13zstr, pt13ystr,  pt14xstr, pt14zstr, pt14ystr, pt15xstr, pt15zstr, pt15ystr, pt0xstr, pt0zstr, pt0ystr, pt16xstr, pt16zstr, pt16ystr, pt17xstr, pt17zstr, pt17ystr, pt18xstr, pt18zstr, pt18ystr, pt19xstr, pt19zstr, pt19ystr, pt20xstr, pt20zstr, pt20ystr, pt21xstr, pt21zstr, pt21ystr, pt44xstr, pt44zstr, pt44ystr, pt46xstr, pt46zstr, pt46ystr, pt48xstr, pt48zstr, pt48ystr, pt50xstr, pt50ystr, pt50zstr):
